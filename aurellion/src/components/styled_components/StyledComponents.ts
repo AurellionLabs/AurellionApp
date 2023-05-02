@@ -54,6 +54,18 @@ export const UnSelectedBox = styled.View`
   justify-content: space-between;
 `;
 
+export const buttonBox = styled.View`
+padding: 8px;
+border-top-color:  rgba(0, 0, 0, 0.2);
+flex-direction: row;
+border-top-width: 1px;
+margin: 2%;
+width: 100%;
+height: 25%;
+justify-content: space-between;
+`;
+
+
 export const Container = styled.View`
   flex: 1;
   align-items: center;

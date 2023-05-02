@@ -5,6 +5,9 @@ import {
   Alert,
   SafeAreaView,
   StyleSheet,
+  Animated,
+  PanResponder,
+  Dimensions,
   Text,
   TouchableOpacity,
   useColorScheme,
@@ -69,7 +72,6 @@ return (
           </View>
           <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
         </UnSelectedBox>
-
         <BlueButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
           <BlueButtonText>Begin</BlueButtonText>
         </BlueButton>

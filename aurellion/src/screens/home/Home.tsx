@@ -37,9 +37,6 @@ const HomeScreen = () => {
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
     : LightTheme.background2;
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState<string>();
-  const [currentWCURI, setCurrentWCURI] = useState<string>();
   const [region, setRegion] = useState<Region>({
     latitude: 37.78825,
     longitude: -122.4324,

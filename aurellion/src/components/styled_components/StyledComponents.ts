@@ -37,7 +37,7 @@ export const SelectedBox = styled.View`
   border-width: 2px;
   flex-direction: row;
   border-radius: 20px;
-  width: 80%;
+  width: 100%;
   height: 25%;
   border-color: ${LightTheme.foreground2};
   justify-content: space-between;
@@ -45,11 +45,11 @@ export const SelectedBox = styled.View`
 
 export const UnSelectedBox = styled.View`
   padding: 8px;
-  border-top-color: ${LightTheme.accent};
+  border-top-color:  rgba(0, 0, 0, 0.2);
   flex-direction: row;
-  border-top-width: 2px;
-  margin: 10px;
-  width: 80%;
+  border-top-width: 1px;
+  margin: 2%;
+  width: 100%;
   height: 25%;
   justify-content: space-between;
 `;
@@ -84,7 +84,7 @@ export const BlueButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
   height: 50px;
   border-width: 1px;
   border-color: ${LightTheme.overlayThin};
-  ${({ isDarkMode }) =>
+  ${({ isDarkMode }: { isDarkMode: boolean }) =>
     isDarkMode &&
     `
     background-color: ${DarkTheme.accent};

@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { textAlign } from '@mui/system';
 import { height } from '@mui/system';
 import { Hidden } from '@mui/material';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Region } from 'react-native-maps';
 
 
 const HomeScreen = () => {
@@ -28,58 +28,77 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<string>();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
-  return (
-    <View style={styles.container}>
-      <Image source={require('../../assets/images/exampleMap.png')} style={{position: 'absolute',}} />
-      <View style={styles.box}>
-        <View style={styles.selectedBox}>
-          <View>
-            <Image source={require('../../assets/images/hare.png')} style={{ height: 20, width: 20, }} />
-            <Text style={{color: "green",fontWeight: "700",textAlign: "left"}}>Fast</Text>
-            <Text>Same Day</Text>
-            <Text>Edit...</Text>
-          </View>
-          <Text style={{ textAlign: "right", margin: 0, padding: 0, }}>100 AURA</Text>
-
+  const [region, setRegion] = useState<Region>({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  //const handleMapLayout = useCallback(() => {
+  //  setRegion({
+  //    latitude: 37.78825,
+  //    longitude: -122.4324,
+  //    latitudeDelta: 0.0922,
+  //    longitudeDelta: 0.0421,
+  //  });
+  //}, []);
+return (
+  <View style={styles.container}>
+    <MapView
+      style={{ flex: 1,  width: '100%', height: '100%' }}
+      region={region}
+      //onLayout={handleMapLayout}
+    >
+    </MapView>
+    <View style={styles.box}>
+      <View style={styles.selectedBox}>
+        <View>
+          <Image source={require('../../assets/images/hare.png')} style={{ height: 20, width: 20, }} />
+          <Text style={{ color: "green", fontWeight: "700", textAlign: "left" }}>Fast</Text>
+          <Text>Same Day</Text>
+          <Text>Edit...</Text>
         </View>
-        
-        <View style={styles.unSelectedBox}>
+        <Text style={{ textAlign: "right", margin: 0, padding: 0, }}>100 AURA</Text>
+
+      </View>
+
+      <View style={styles.unSelectedBox}>
         <TouchableOpacity>
           <View>
-          <TouchableOpacity>
-            <Image source={require('../../assets/images/running.png')} style={{ height: 20, width: 20, }} />
-            <Text style={{color: LightTheme.foreground2, fontWeight: "700",textAlign: "left"}}>Medium</Text>
-            <Text>Next Day</Text>
-            <Text>Edit...</Text>
+            <TouchableOpacity>
+              <Image source={require('../../assets/images/running.png')} style={{ height: 20, width: 20, }} />
+              <Text style={{ color: LightTheme.foreground2, fontWeight: "700", textAlign: "left" }}>Medium</Text>
+              <Text>Next Day</Text>
+              <Text>Edit...</Text>
             </TouchableOpacity>
           </View>
-          </TouchableOpacity>
-
-          <Text style={{ textAlign: "right", margin: 0, padding: 0, }}>100 AURA</Text>
-        </View>
-        <View style={styles.unSelectedBox}>
-          <View>
-            <Image source={require('../../assets/images/turtle.png')} style={{ height: 20, width: 20, }} />
-            <Text style={styles.boxHeadingText}>Slow</Text>
-            <Text>Next 3 Days</Text>
-            <Text>Edit...</Text>
-          </View>
-          <Text style={{ textAlign: "right", margin: 0, padding: 0, }}>100 AURA</Text>
-
-        </View>
-        
-        <TouchableOpacity
-          style={[
-            styles.blueButton,
-            styles.disconnectButton,
-            isDarkMode && styles.blueButtonDark,
-          ]}
-          onPress={() => { console.log("ran") }}>
-          <Text style={styles.blueButtonText}>Begin</Text>
         </TouchableOpacity>
+
+        <Text style={{ textAlign: "right", margin: 0, padding: 0, }}>100 AURA</Text>
       </View>
+      <View style={styles.unSelectedBox}>
+        <View>
+          <Image source={require('../../assets/images/turtle.png')} style={{ height: 20, width: 20, }} />
+          <Text style={styles.boxHeadingText}>Slow</Text>
+          <Text>Next 3 Days</Text>
+          <Text>Edit...</Text>
+        </View>
+        <Text style={{ textAlign: "right", margin: 0, padding: 0, }}>100 AURA</Text>
+
+      </View>
+
+      <TouchableOpacity
+        style={[
+          styles.blueButton,
+          styles.disconnectButton,
+          isDarkMode && styles.blueButtonDark,
+        ]}
+        onPress={() => { console.log("ran") }}>
+        <Text style={styles.blueButtonText}>Begin</Text>
+      </TouchableOpacity>
     </View>
-  );
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
@@ -98,23 +117,18 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
   },
   box: {
+    position: 'absolute',
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     padding: 8,
-    borderTopWidth: 1,
     width: "100%",
-    height: "50%",
-    marginBottom: 0,
-    //borderColor:  LightTheme.foreground2,
-    marginTop: "70%",
-
+    height: "60%",
     borderTopColor: 'rgba(0, 0, 0, 0.5)',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: 'white',
-    flexGrow: 1,
-
   },
   selectedBox: {
     padding: 8,

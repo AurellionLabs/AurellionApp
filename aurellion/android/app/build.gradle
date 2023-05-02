@@ -100,6 +100,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [      mapApiKey: "AIzaSyDBREo1ZzZXNDpnS8WI3kWn8tmnG8fT16E"    ]
+
     }
 
     splits {
@@ -151,7 +153,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")

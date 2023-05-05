@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { DarkTheme, LightTheme } from '../../constants/Colors';
-
+import Animated from 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
 `;
@@ -31,6 +32,33 @@ export const Box = styled.View`
   border-top-right-radius: 30px;
   background-color: white;
 `;
+export const AnimatedBox = styled(Animated.View)`
+  position: absolute;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  border-top-color: rgba(0, 0, 0, 0.5);
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: white;
+  
+`;
+export const AnimatedRoot = styled(GestureHandlerRootView)`
+  position: absolute;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 70%;
+  
+`;
+
+
 
 export const SelectedBox = styled.View`
   padding: 8px;

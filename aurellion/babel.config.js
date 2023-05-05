@@ -17,5 +17,8 @@ module.exports = {
       },
     ],
     ['@babel/plugin-proposal-private-methods', {loose: true}],
+    ["react-native-reanimated/plugin", {
+      "relativeSourceLocation": true
+    }]    
   ],
 };

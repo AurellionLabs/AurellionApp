@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   ActivityIndicator,
   Alert,
   SafeAreaView,
   StyleSheet,
-  Animated,
   PanResponder,
   Dimensions,
   Text,
@@ -14,6 +13,7 @@ import {
   View,
   Image
 } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { 
   SafeArea,
   Shadow,
@@ -27,7 +27,9 @@ import {
   BlueButton,
   BlueButtonText,
   DisconnectButton,
-  Logo, } from '../../components/styled_components/StyledComponents';
+  Logo,
+  AnimatedBox,
+AnimatedRoot } from '../../components/styled_components/StyledComponents';
 import { DarkTheme, LightTheme } from '../../constants/Colors';
 
 
@@ -37,8 +39,25 @@ const Menu = () => {
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
     : LightTheme.background2;
+    const {height: SCREEN_HEIGHT} = Dimensions.get('window') 
+    const translateY = useSharedValue(0)
+    const gesture = Gesture.Pan().onUpdate((event)=>{
+        console.log(translateY.value )
+        if (event.translationY >= 0) {
+            translateY.value = event.translationY;
+          }
+
+    })
+    const translateYStyle = useAnimatedStyle(() =>{
+        return{
+            transform: [{translateY: translateY.value}]
+        }
+    })
 return (
-      <Box>
+    
+    <AnimatedRoot>
+    <GestureDetector gesture={gesture}>
+    <AnimatedBox style={translateYStyle}>
         <SelectedBox>
           <View>
             <Image source={require('../../assets/images/hare.png')} style={{ height: 20, width: 20 }} />
@@ -75,7 +94,9 @@ return (
         <BlueButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
           <BlueButtonText>Begin</BlueButtonText>
         </BlueButton>
-      </Box>
+      </AnimatedBox>
+      </GestureDetector>
+      </AnimatedRoot>
   );
 };
 

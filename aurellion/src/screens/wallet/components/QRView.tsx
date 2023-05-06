@@ -6,12 +6,12 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../constants/Platform';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../../../common/constants/Platform';
 import NavigationHeader from './NavigationHeader';
 import QRCode from './QRCode';
-import CopyIcon from '../assets/Copy.png';
+import CopyIcon from '../../../common/assets/Copy.png';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 
 interface Props {
   uri?: string;

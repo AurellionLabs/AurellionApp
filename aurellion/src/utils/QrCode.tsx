@@ -2,7 +2,7 @@
 import React, {ReactNode} from 'react';
 import {Line, Rect, Circle} from 'react-native-svg';
 import QRCodeUtil from 'qrcode';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import {DarkTheme, LightTheme} from '../common/constants/Colors';
 
 type CoordinateMapping = [number, number[]];
 

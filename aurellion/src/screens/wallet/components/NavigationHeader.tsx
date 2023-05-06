@@ -7,8 +7,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import Chevron from '../assets/Chevron.png';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import Chevron from '../../../common/assets/Chevron.png';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 
 interface Props {
   title: string;

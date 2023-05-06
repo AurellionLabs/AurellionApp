@@ -6,9 +6,9 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import {DarkTheme, LightTheme} from '../constants/Colors';
-import {WalletInfo} from '../types/api';
-import {navigateDeepLink} from '../utils/ExplorerUtils';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
+import {WalletInfo} from '../../../types/api';
+import {navigateDeepLink} from '../../../utils/ExplorerUtils';
 
 interface ExplorerItemProps {
   currentWCURI: string;

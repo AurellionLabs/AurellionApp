@@ -6,8 +6,8 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import {DarkTheme, LightTheme} from '../constants/Colors';
-import {DEVICE_HEIGHT} from '../constants/Platform';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
+import {DEVICE_HEIGHT} from '../../../common/constants/Platform';
 import ExplorerItem, {ITEM_HEIGHT} from './ExplorerItem';
 
 import NavigationHeader from './NavigationHeader';

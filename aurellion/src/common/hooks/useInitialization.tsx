@@ -2,7 +2,7 @@ import 'react-native-get-random-values';
 import '@ethersproject/shims';
 
 import {useCallback, useEffect, useState} from 'react';
-import {createUniversalProvider} from '../utils/UniversalProvider';
+import {createUniversalProvider} from '../../utils/UniversalProvider';
 import {Alert} from 'react-native';
 
 function useInitialization() {

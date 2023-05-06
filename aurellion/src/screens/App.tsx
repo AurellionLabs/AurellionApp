@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import WalletScreen from './wallet/WalletScreen';
-import HomeScreen from './home/Home';
+import WalletScreen from './wallet/wallet.screen';
+import HomeScreen from './home/home.screen';
 import React, {useState, useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
@@ -13,7 +13,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import {DarkTheme, LightTheme} from '../common/constants/Colors';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';

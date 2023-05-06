@@ -7,10 +7,10 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import WCLogo from '../assets/WCLogo.png';
-import Close from '../assets/Close.png';
-import CloseWhite from '../assets/CloseWhite.png';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import WCLogo from '../../../common/assets/WCLogo.png';
+import Close from '../../../common/assets/Close.png';
+import CloseWhite from '../../../common/assets/CloseWhite.png';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 
 interface ExplorerModalHeaderProps {
   close: () => void;

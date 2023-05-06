@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import ExplorerItem from './ExplorerItem';
 import ViewAllBox from './ViewAllBox';
-import QRIcon from '../assets/QR.png';
+import QRIcon from '../../../common/assets/QR.png';
 import NavigationHeader from './NavigationHeader';
-import {WalletInfo} from '../types/api';
-import {DEVICE_HEIGHT} from '../constants/Platform';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import { WalletInfo } from '../../../types/api';
+import { DEVICE_HEIGHT } from '../../../common/constants/Platform';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface InitialExplorerContentProps {
   isLoading: boolean;
@@ -41,7 +41,7 @@ function InitialExplorerContent({
   }, [fadeAnim]);
 
   return (
-    <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       <NavigationHeader
         title="Connect your Wallet"
         onActionPress={onQRPress}

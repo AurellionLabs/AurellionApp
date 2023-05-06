@@ -10,23 +10,11 @@ import {
   View,
   Image
 } from 'react-native';
-import { 
-  SafeArea,
-  Shadow,
-  Box,
-  SelectedBox,
-  UnSelectedBox,
+import {
   Container,
-  BoldText,
-  WhiteText,
-  BoxHeadingText,
-  BlueButton,
-  BlueButtonText,
-  DisconnectButton,
-  Logo,
- } from '../../components/styled_components/StyledComponents';
-import Menu  from '../../components/styled_components/DeliveryMenu'
-import { DarkTheme, LightTheme } from '../../constants/Colors';
+} from '../../common/components/StyledComponents';
+import Menu from './components/DeliveryMenu'
+import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker, Region } from 'react-native-maps';
 
@@ -43,10 +31,10 @@ const HomeScreen = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-return (
-  <Container style={{ backgroundColor }}>
-      <MapView style={{ flex: 1, width: '100%', height: '100%' }} region={region}/>
-      <Menu/>
+  return (
+    <Container style={{ backgroundColor }}>
+      <MapView style={{ flex: 1, width: '100%', height: '100%' }} region={region} />
+      <Menu />
     </Container>
   );
 };

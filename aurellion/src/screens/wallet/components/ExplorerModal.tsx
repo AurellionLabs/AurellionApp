@@ -1,17 +1,17 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View, useColorScheme, ImageBackground} from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { StyleSheet, View, useColorScheme, ImageBackground } from 'react-native';
 import Modal from 'react-native-modal';
 import InitialExplorerContent from './InitialExplorerContent';
 import ViewAllExplorerContent from './ViewAllExplorerContent';
 
-import {fetchAllWallets} from '../utils/ExplorerUtils';
+import { fetchAllWallets } from '../../../utils/ExplorerUtils';
 import ExplorerModalHeader from './ExplorerModalHeader';
-import Background from '../assets/Background.png';
-import {DEVICE_WIDTH} from '../constants/Platform';
+import Background from '../../../common/assets/Background.png';
+import { DEVICE_WIDTH } from '../../../common/constants/Platform';
 import QRView from './QRView';
-import {Routes} from '../constants/Routes';
-import {WalletInfo} from '../types/api';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import { Routes } from '../../../common/constants/Routes';
+import { WalletInfo } from '../../../types/api';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 const INITIAL_ROUTE = 'INIT_WALLETS';
 

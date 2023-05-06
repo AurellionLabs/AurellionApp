@@ -8,8 +8,8 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import ViewAllIcon from '../assets/ViewAll.png';
-import {DarkTheme, LightTheme} from '../constants/Colors';
+import ViewAllIcon from '../../../common/assets/ViewAll.png';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 
 interface Props {
   onPress: any;

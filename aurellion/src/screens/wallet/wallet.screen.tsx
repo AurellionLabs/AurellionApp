@@ -13,7 +13,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import '@walletconnect/react-native-compat';
-import useInitialization from '../../hooks/useInitialization';
+import useInitialization from '../../common/hooks/useInitialization';
 import {
   universalProviderSession,
   universalProvider,
@@ -21,8 +21,8 @@ import {
   clearSession,
   createUniversalProviderSession,
 } from '../../utils/UniversalProvider';
-import ExplorerModal from '../../components/ExplorerModal';
-import {DarkTheme, LightTheme} from '../../constants/Colors';
+import ExplorerModal from './components/ExplorerModal';
+import {DarkTheme, LightTheme} from '../../common/constants/Colors';
 
 function WalletScreen(): JSX.Element {
 const navigation = useNavigation();
@@ -129,7 +129,7 @@ const navigation = useNavigation();
   return (
     <SafeAreaView style={[styles.safeArea, {backgroundColor}]}>
       <View style={[styles.container, {backgroundColor}]}>
-        <Image source={require('../../assets/images/logo.png')} style={styles.logo}/>
+        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo}/>
         {currentAccount ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>

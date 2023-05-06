@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react';
-import {Svg} from 'react-native-svg';
-import {View, Image, StyleSheet} from 'react-native';
-import {QrCodeUtil} from '../utils/QrCode';
-import WCIsotype from '../assets/WCIsotype.png';
+import React, { useMemo } from 'react';
+import { Svg } from 'react-native-svg';
+import { View, Image, StyleSheet } from 'react-native';
+import { QrCodeUtil } from '../../../utils/QrCode';
+import WCIsotype from '../../../common/assets/WCIsotype.png';
 
 interface Props {
   uri: string;
@@ -10,7 +10,7 @@ interface Props {
   theme?: 'light' | 'dark';
 }
 
-function QRCode({uri, size, theme = 'light'}: Props) {
+function QRCode({ uri, size, theme = 'light' }: Props) {
   const dots = useMemo(
     () => QrCodeUtil.generate(uri, size, size / 4, theme),
     [uri, size, theme],
@@ -24,7 +24,7 @@ function QRCode({uri, size, theme = 'light'}: Props) {
       <Image
         source={WCIsotype}
         resizeMode="contain"
-        style={[styles.logo, {width: size / 4}]}
+        style={[styles.logo, { width: size / 4 }]}
       />
     </View>
   );

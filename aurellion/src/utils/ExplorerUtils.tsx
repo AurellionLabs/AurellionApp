@@ -3,8 +3,8 @@ import {Alert, Linking} from 'react-native';
 // @ts-expect-error - `@env` is a virtualised module via Babel config.
 import {ENV_PROJECT_ID} from 'aurellion/src/utils/.env';
 import {WalletInfo} from '../types/api';
-import {isAndroid} from '../constants/Platform';
-import InstalledAppModule from '../modules/InstalledAppModule';
+import {isAndroid} from '../common/constants/Platform';
+import InstalledAppModule from '../common/modules/InstalledAppModule';
 
 function getUrlParams(url: string | null): {[key: string]: string} {
   if (!url) {

@@ -3,6 +3,7 @@ import { DarkTheme, LightTheme } from '../constants/Colors';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
 `;

@@ -13,7 +13,7 @@ import {
   View,
   Image
 } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import {
   SelectedBox,
   UnSelectedBox,
@@ -29,14 +29,25 @@ import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 const Menu = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
+
     ? DarkTheme.background2
     : LightTheme.background2;
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
+  const defaultHeight = 70/100 * SCREEN_HEIGHT
+  const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
+  
   const translateY = useSharedValue(0)
+  const setJSHeight = (selectedheight:number) => {
+    setRootPosition(selectedheight)
+  }
   const gesture = Gesture.Pan().onUpdate((event) => {
-    console.log(translateY.value)
-    if (event.translationY >= 0) {
-      translateY.value = event.translationY;
+    if (event.translationY >= 0 && rootPosition <= defaultHeight) {
+      const newHeight = 25/100 * SCREEN_HEIGHT
+      runOnJS(setJSHeight)(newHeight)
+    }
+    if (event.translationY <= 0 && rootPosition == 25/100 * SCREEN_HEIGHT) {
+     const newHeight = 70/100 * SCREEN_HEIGHT
+     runOnJS(setJSHeight)(newHeight)
     }
 
   })
@@ -47,7 +58,7 @@ const Menu = () => {
   })
   return (
 
-    <AnimatedRoot>
+    <AnimatedRoot height={rootPosition}>
       <GestureDetector gesture={gesture}>
         <AnimatedBox style={translateYStyle}>
           <SelectedBox>

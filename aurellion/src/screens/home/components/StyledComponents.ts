@@ -3,6 +3,9 @@ import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+interface Props {
+  height: number;
+}
 export const SelectedBox = styled.View`
   padding: 8px;
   border-width: 2px;
@@ -77,6 +80,6 @@ export const AnimatedRoot = styled(GestureHandlerRootView)`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 70%;
+  height: ${(props: Props) => props.height}px;
   
 `;

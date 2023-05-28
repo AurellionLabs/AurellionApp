@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { DarkTheme, LightTheme } from '../constants/Colors';
+import { View, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -55,7 +56,7 @@ export const Button = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props: ButtonProps) => props.backgroundColor };
+  background-color: ${(props: ButtonProps) => props.backgroundColor};
   border-radius: 20px;
   width: 150px;
   height: 50px;
@@ -79,9 +80,14 @@ export const BoldText = styled.Text`
   font-weight: 700;
 `;
 
+interface ContainerProps {
+  styles: ViewStyle
+}
+
 export const Container = styled.View`
   flex: 1;
   align-items: center;
+  ${({ styles }: ContainerProps) => styles};
 `;
 
 export const WhiteText = styled.Text`

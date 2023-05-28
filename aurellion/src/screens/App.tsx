@@ -1,34 +1,10 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import WalletScreen from './wallet/wallet.screen';
-import HomeScreen from './home/home.screen';
-import React, {useState, useCallback, useEffect} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {DarkTheme, LightTheme} from '../common/constants/Colors';
+import React, { useState, useCallback, useEffect } from 'react';
+import Routes from '../navigation'
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundColor = isDarkMode
-    ? DarkTheme.background2
-    : LightTheme.background2;
 
-  const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeScreen">
-        <Stack.Screen options={{ headerShown: false }} name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="WalletScreen" component={WalletScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Routes />
   );
 }
 

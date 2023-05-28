@@ -22,6 +22,8 @@
     "@walletconnect/react-native-compat": "^2.5.1",
     "@walletconnect/universal-provider": "^2.5.1",
     "ethers": "5.6.9",
+    "lottie-ios": "^3.4.0",
+    "lottie-react-native": "^5.1.6",
     "net": "^1.0.2",
     "qrcode": "^1.5.1",
     "react": "18.2.0",

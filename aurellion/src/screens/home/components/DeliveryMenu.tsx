@@ -21,11 +21,14 @@ import {
   AnimatedBox,
   AnimatedRoot
 } from '../components/StyledComponents';
+import { useNavigation } from '@react-navigation/native';
 
 import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 import { Button, ButtonText } from '../../../common/components/StyledComponents';
+import { HomeScreenNavigationProp } from '../../../navigation/types';
 
 const Menu = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
 
@@ -93,7 +96,7 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </UnSelectedBox>
-          <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={() => console.log('ran')}>
+          <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={() => navigation.navigate("Signature")}>
             <ButtonText>Begin</ButtonText>
           </Button>
         </AnimatedBox>

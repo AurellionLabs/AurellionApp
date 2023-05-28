@@ -23,9 +23,10 @@ import {
 } from '../../utils/UniversalProvider';
 import ExplorerModal from './components/ExplorerModal';
 import {DarkTheme, LightTheme} from '../../common/constants/Colors';
+import { WalletScreenNavigationProp } from '../../navigation/types';
 
 function WalletScreen(): JSX.Element {
-const navigation = useNavigation();
+const navigation = useNavigation<WalletScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
@@ -141,7 +142,7 @@ const navigation = useNavigation();
                 styles.disconnectButton,
                 isDarkMode && styles.blueButtonDark,
               ]}
-              onPress={() => navigation.navigate('HomeScreen')}>
+              onPress={() => navigation.navigate('Home')}>
               <Text style={styles.blueButtonText}>Home Screen</Text>
             </TouchableOpacity>
           </View>

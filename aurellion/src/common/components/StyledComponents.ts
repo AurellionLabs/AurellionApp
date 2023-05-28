@@ -35,7 +35,7 @@ export const Box = styled.View`
   background-color: white;
 `;
 
-export const buttonBox = styled.View`
+export const ButtonBox = styled.View`
 padding: 8px;
 border-top-color:  rgba(0, 0, 0, 0.2);
 flex-direction: row;
@@ -44,6 +44,34 @@ margin: 2%;
 width: 100%;
 height: 25%;
 justify-content: space-between;
+`;
+
+interface ButtonProps {
+  isDarkMode: boolean,
+  backgroundColor: string,
+}
+
+export const Button = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props: ButtonProps) => props.backgroundColor };
+  border-radius: 20px;
+  width: 150px;
+  height: 50px;
+  border-width: 1px;
+  border-color: ${LightTheme.overlayThin};
+  ${(props: ButtonProps) =>
+    props.isDarkMode &&
+    `
+    background-color: ${DarkTheme.accent};
+    border-color: ${DarkTheme.overlayThin};
+  `}
+`;
+
+export const ButtonText = styled.Text`
+  color: white;
+  font-weight: 700;
 `;
 
 export const BoldText = styled.Text`

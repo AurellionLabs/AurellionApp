@@ -24,7 +24,7 @@ function App(): JSX.Element {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="WalletScreen">
+      <Stack.Navigator initialRouteName="HomeScreen">
         <Stack.Screen options={{ headerShown: false }} name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="WalletScreen" component={WalletScreen} />
       </Stack.Navigator>

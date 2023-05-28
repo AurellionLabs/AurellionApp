@@ -13,18 +13,19 @@ import {
 import {
   Container,
 } from '../../common/components/StyledComponents';
-import Menu from './components/DeliveryMenu';
 import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker, Region } from 'react-native-maps';
+import LocationsMenu from './components/locationsMenu';
 
 
-const HomeScreen = () => {
+const LocationsScreen = () => {
   const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
     : LightTheme.background2;
+    
   const [region, setRegion] = useState<Region>({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -34,7 +35,7 @@ const HomeScreen = () => {
   return (
     <Container style={{ backgroundColor }}>
       <MapView style={{ flex: 1, width: '100%', height: '100%' }} region={region} />
-      <Menu />
+      <LocationsMenu />
     </Container>
   );
 };
@@ -42,4 +43,4 @@ const HomeScreen = () => {
 
 
 
-export default HomeScreen;
+export default LocationsScreen;

@@ -3,8 +3,14 @@ import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+interface CustomProps {
+  [key: string]: any;
+}
+
 interface Props {
   height: number;
+  boxState: boolean;
+  customProps: CustomProps;
 }
 export const SelectedBox = styled.View`
   padding: 8px;
@@ -17,7 +23,7 @@ export const SelectedBox = styled.View`
   justify-content: space-between;
 `;
 
-export const UnSelectedBox = styled.View`
+export const UnSelectedBox = styled.View<Props>`
   padding: 8px;
   border-top-color:  rgba(0, 0, 0, 0.2);
   flex-direction: row;
@@ -26,6 +32,7 @@ export const UnSelectedBox = styled.View`
   width: 100%;
   height: 25%;
   justify-content: space-between;
+  display: ${(props: Props) => (props.boxState ? 'flex' : 'none')};
 `;
 
 export const BoxHeadingText = styled.Text`

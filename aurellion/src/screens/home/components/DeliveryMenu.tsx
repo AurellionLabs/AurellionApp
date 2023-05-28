@@ -35,7 +35,8 @@ const Menu = () => {
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
   const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
-  
+  const [boxState,setBoxState] = useState<boolean>(true)
+
   const translateY = useSharedValue(0)
   const setJSHeight = (selectedheight:number) => {
     setRootPosition(selectedheight)
@@ -44,11 +45,17 @@ const Menu = () => {
     if (event.translationY >= 0 && rootPosition <= defaultHeight) {
       const newHeight = 25/100 * SCREEN_HEIGHT
       runOnJS(setJSHeight)(newHeight)
+      runOnJS(setBoxState)(false)
+
     }
     if (event.translationY <= 0 && rootPosition == 25/100 * SCREEN_HEIGHT) {
      const newHeight = 70/100 * SCREEN_HEIGHT
      runOnJS(setJSHeight)(newHeight)
+     runOnJS(setBoxState)(true)
+
+
     }
+    console.log(boxState)      
 
   })
   const translateYStyle = useAnimatedStyle(() => {
@@ -71,7 +78,7 @@ const Menu = () => {
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
 
-          <UnSelectedBox>
+          <UnSelectedBox boxState={boxState}>
             <TouchableOpacity>
               <View>
                 <TouchableOpacity>
@@ -85,7 +92,7 @@ const Menu = () => {
 
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </UnSelectedBox>
-          <UnSelectedBox>
+          <UnSelectedBox boxState={boxState}>
             <View>
               <Image source={require('../../../common/assets/images/turtle.png')} style={{ height: 20, width: 20 }} />
               <BoxHeadingText>Slow</BoxHeadingText>

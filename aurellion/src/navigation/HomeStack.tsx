@@ -11,7 +11,7 @@ const HomeStackNavigator = () => {
         <HomeStack.Navigator initialRouteName="Wallet">
             <HomeStack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
             <HomeStack.Screen name="Wallet" component={WalletScreen} />
-            <HomeStack.Screen name="Signature" component={SignatureScreen} />
+            <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />
         </HomeStack.Navigator>
     )
 }

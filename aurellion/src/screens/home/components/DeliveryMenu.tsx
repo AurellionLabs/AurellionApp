@@ -20,6 +20,7 @@ import {
 } from '../components/StyledComponents';
 
 import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
 
 const Menu = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -110,9 +111,9 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <BlueButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
-            <BlueButtonText>Begin</BlueButtonText>
-          </BlueButton>
+          <RedButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
+            <RedButtonText>Begin</RedButtonText>
+          </RedButton>
         </AnimatedBox>
       </GestureDetector>
     </AnimatedRoot>

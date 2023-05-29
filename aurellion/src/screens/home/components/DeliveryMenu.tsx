@@ -19,7 +19,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
-import { Button, ButtonText } from '../../../common/components/StyledComponents';
+import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
 import { HomeScreenNavigationProp } from '../../../navigation/types';
 
 const Menu = () => {
@@ -112,9 +112,9 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <BlueButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
-            <BlueButtonText>Begin</BlueButtonText>
-          </BlueButton>
+          <RedButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
+            <RedButtonText>Begin</RedButtonText>
+          </RedButton>
         </AnimatedBox>
       </GestureDetector>
     </AnimatedRoot>

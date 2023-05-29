@@ -20,7 +20,27 @@ export const Shadow = styled.View`
   align-items: center;
   shadow-radius: 20;
 `;
-
+export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${LightTheme.accent};
+  border-radius: 20px;
+  width: 150px;
+  height: 50px;
+  border-width: 1px;
+  border-color: ${LightTheme.overlayThin};
+  ${({ isDarkMode }: { isDarkMode: boolean }) =>
+    isDarkMode &&
+    `
+    background-color: ${DarkTheme.accent};
+    border-color: ${DarkTheme.overlayThin};
+  `}
+`;
+export const RedButtonText = styled.Text`
+  color: white;
+  font-weight: 700;
+`;
 export const Box = styled.View`
   position: absolute;
   bottom: 0;

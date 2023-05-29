@@ -11,17 +11,20 @@ interface Props {
   height: number;
   boxState: boolean;
   customProps: CustomProps;
+  boxSelected: boolean;
 }
-export const SelectedBox = styled.View`
+export const SelectedBox = styled.TouchableOpacity<Props>`
   padding: 8px;
-  margin: 3%;
-  border-width: 2px;
+  margin: ${(props: Props) => (props.boxSelected ? "3%" :  "2%")};
+  border-width: ${(props: Props) => (props.boxSelected ? "2px" :  "1px")};
   flex-direction: row;
-  border-radius: 20px;
+  border-radius: ${(props: Props) => (props.boxSelected ? "20px" :  "0px")};
   width: 100%;
   height: ${(props: Props) => (props.boxState ? '25%' : '60%')};
-  border-color: ${LightTheme.foreground2};
+  border-color:${(props: Props) => (props.boxSelected ? LightTheme.foreground2 : "white")};
+  border-top-color:  ${(props: Props) => (props.boxSelected ? LightTheme.foreground2 :  "rgba(0, 0, 0, 0.2)")};
   justify-content: space-between;
+  display: ${(props: Props) => (props.boxState ? 'flex' : (props: Props) => (props.boxSelected ? "flex" :  "none"))}; 
 `;
 
 export const UnSelectedBox = styled.View<Props>`

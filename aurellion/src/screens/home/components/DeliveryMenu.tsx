@@ -1,11 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useState} from 'react';
+import { Gesture, GestureDetector  } from 'react-native-gesture-handler';
 import {
-  ActivityIndicator,
-  Alert,
-  SafeAreaView,
-  StyleSheet,
-  PanResponder,
   Dimensions,
   Text,
   TouchableOpacity,
@@ -13,7 +8,7 @@ import {
   View,
   Image
 } from 'react-native';
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import {
   SelectedBox,
   UnSelectedBox,
@@ -36,6 +31,9 @@ const Menu = () => {
   const defaultHeight = 70/100 * SCREEN_HEIGHT
   const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
   const [boxState,setBoxState] = useState<boolean>(true)
+  const [selectedBox,setSelectedBox] = useState<boolean>(true)
+  const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
+  const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
 
   const translateY = useSharedValue(0)
   const setJSHeight = (selectedheight:number) => {
@@ -63,12 +61,29 @@ const Menu = () => {
       transform: [{ translateY: translateY.value }]
     }
   })
+  const selector = (box:number) =>{
+    if (box == 1) {
+      setSelectedBox(true)
+      setSelectedBox2(false)
+      setSelectedBox3(false)
+    }
+    if (box == 2) {
+      setSelectedBox(false)
+      setSelectedBox2(true)
+      setSelectedBox3(false)
+    }
+    if (box == 3) {
+      setSelectedBox(false)
+      setSelectedBox2(false)
+      setSelectedBox3(true)
+    }
+  }
   return (
 
     <AnimatedRoot height={rootPosition}>
       <GestureDetector gesture={gesture}>
         <AnimatedBox style={translateYStyle}>
-          <SelectedBox>
+          <SelectedBox boxState={boxState} boxSelected={selectedBox} onPress={() => selector(1)}>
             <View>
               <Image source={require('../../../common/assets/images/hare.png')} style={{ height: 20, width: 20 }} />
               <Text style={{ color: 'green', fontWeight: '700', textAlign: 'left' }}>Fast</Text>
@@ -77,22 +92,16 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-
-          <UnSelectedBox boxState={boxState}>
-            <TouchableOpacity>
+          <SelectedBox boxState={boxState} boxSelected={selectedBox2} onPress={() => selector(2)}>
               <View>
-                <TouchableOpacity>
                   <Image source={require('../../../common/assets/images/running.png')} style={{ height: 20, width: 20 }} />
                   <Text style={{ color: LightTheme.foreground2, fontWeight: '700', textAlign: 'left' }}>Medium</Text>
                   <Text>Next Day</Text>
                   <Text>Edit...</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-
+              </View>            
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
-          </UnSelectedBox>
-          <UnSelectedBox boxState={boxState}>
+          </SelectedBox>
+          <SelectedBox boxState={boxState} boxSelected={selectedBox3} onPress={() => selector(3)}>
             <View>
               <Image source={require('../../../common/assets/images/turtle.png')} style={{ height: 20, width: 20 }} />
               <BoxHeadingText>Slow</BoxHeadingText>
@@ -100,7 +109,7 @@ const Menu = () => {
               <Text>Edit...</Text>
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
-          </UnSelectedBox>
+          </SelectedBox>
           <BlueButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
             <BlueButtonText>Begin</BlueButtonText>
           </BlueButton>

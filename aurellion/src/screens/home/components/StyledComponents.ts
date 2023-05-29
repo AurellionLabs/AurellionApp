@@ -14,11 +14,12 @@ interface Props {
 }
 export const SelectedBox = styled.View`
   padding: 8px;
+  margin: 3%;
   border-width: 2px;
   flex-direction: row;
   border-radius: 20px;
   width: 100%;
-  height: 25%;
+  height: ${(props: Props) => (props.boxState ? '25%' : '60%')};
   border-color: ${LightTheme.foreground2};
   justify-content: space-between;
 `;

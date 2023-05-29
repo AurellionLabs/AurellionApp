@@ -18,36 +18,38 @@ import {
   SelectedBox,
   UnSelectedBox,
   BoxHeadingText,
-  BlueButton,
-  BlueButtonText,
   AnimatedBox,
   AnimatedRoot
 } from '../components/StyledComponents';
+import { useNavigation } from '@react-navigation/native';
 
 import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { Button, ButtonText } from '../../../common/components/StyledComponents';
+import { HomeScreenNavigationProp } from '../../../navigation/types';
 
 const Menu = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
 
     ? DarkTheme.background2
     : LightTheme.background2;
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
-  const defaultHeight = 70/100 * SCREEN_HEIGHT
-  const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
-  
+  const defaultHeight = 70 / 100 * SCREEN_HEIGHT
+  const [rootPosition, setRootPosition] = useState<number>(defaultHeight)
+
   const translateY = useSharedValue(0)
-  const setJSHeight = (selectedheight:number) => {
+  const setJSHeight = (selectedheight: number) => {
     setRootPosition(selectedheight)
   }
   const gesture = Gesture.Pan().onUpdate((event) => {
     if (event.translationY >= 0 && rootPosition <= defaultHeight) {
-      const newHeight = 25/100 * SCREEN_HEIGHT
+      const newHeight = 25 / 100 * SCREEN_HEIGHT
       runOnJS(setJSHeight)(newHeight)
     }
-    if (event.translationY <= 0 && rootPosition == 25/100 * SCREEN_HEIGHT) {
-     const newHeight = 70/100 * SCREEN_HEIGHT
-     runOnJS(setJSHeight)(newHeight)
+    if (event.translationY <= 0 && rootPosition == 25 / 100 * SCREEN_HEIGHT) {
+      const newHeight = 70 / 100 * SCREEN_HEIGHT
+      runOnJS(setJSHeight)(newHeight)
     }
 
   })
@@ -94,9 +96,9 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </UnSelectedBox>
-          <BlueButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
-            <BlueButtonText>Begin</BlueButtonText>
-          </BlueButton>
+          <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={() => navigation.navigate("Signature")}>
+            <ButtonText>Begin</ButtonText>
+          </Button>
         </AnimatedBox>
       </GestureDetector>
     </AnimatedRoot>

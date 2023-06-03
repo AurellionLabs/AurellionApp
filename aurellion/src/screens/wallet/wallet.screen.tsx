@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -24,9 +24,11 @@ import {
 import ExplorerModal from './components/ExplorerModal';
 import {DarkTheme, LightTheme} from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
+import { MainContext } from '../main.provider';
 
 function WalletScreen(): JSX.Element {
-const navigation = useNavigation<WalletScreenNavigationProp>();
+  const {wallet, setWallet} = useContext(MainContext)
+  const navigation = useNavigation<WalletScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
@@ -46,6 +48,9 @@ const navigation = useNavigation<WalletScreenNavigationProp>();
     try {
       if (web3Provider) {
         const signer = web3Provider.getSigner();
+        setWallet(signer)
+        console.log("wallet is set")
+        console.log(wallet)
         const currentAddress = await signer.getAddress();
         setCurrentAccount(currentAddress);
       }

@@ -25,7 +25,7 @@ import ExplorerModal from './components/ExplorerModal';
 import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
 import { useMainContext } from '../main.provider';
-
+import { getSigner } from '../walletprovider';
 
 function WalletScreen(): JSX.Element {
   const { setWallet, setWalletAddress } = useMainContext();
@@ -52,6 +52,7 @@ function WalletScreen(): JSX.Element {
         const currentAddress = await signer.getAddress();
         setWalletAddress(currentAddress)
         setCurrentAccount(currentAddress);
+        const thesigner = await getSigner()
       }
     } catch (err: unknown) {
       Alert.alert('Error', 'Error getting the Address');

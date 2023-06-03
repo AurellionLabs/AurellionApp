@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -22,12 +22,13 @@ import {
   createUniversalProviderSession,
 } from '../../utils/UniversalProvider';
 import ExplorerModal from './components/ExplorerModal';
-import {DarkTheme, LightTheme} from '../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
-import { MainContext } from '../main.provider';
+import { useMainContext } from '../main.provider';
+
 
 function WalletScreen(): JSX.Element {
-  const {wallet, setWallet} = useContext(MainContext)
+  const { setWallet, setWalletAddress } = useMainContext();
   const navigation = useNavigation<WalletScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
@@ -36,7 +37,6 @@ function WalletScreen(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<string>();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
-
   // Initialize universal provider
   const initialized = useInitialization();
 
@@ -49,15 +49,14 @@ function WalletScreen(): JSX.Element {
       if (web3Provider) {
         const signer = web3Provider.getSigner();
         setWallet(signer)
-        console.log("wallet is set")
-        console.log(wallet)
         const currentAddress = await signer.getAddress();
+        setWalletAddress(currentAddress)
         setCurrentAccount(currentAddress);
       }
     } catch (err: unknown) {
       Alert.alert('Error', 'Error getting the Address');
     }
-  }, [setCurrentAccount]);
+  }, []);
 
   const onSessionCreated = useCallback(async () => {
     getAddress();
@@ -71,7 +70,7 @@ function WalletScreen(): JSX.Element {
   }, []);
 
   const onSessionDelete = useCallback(
-    async ({topic}: {topic: string}) => {
+    async ({ topic }: { topic: string }) => {
       if (topic === universalProviderSession?.topic) {
         clearSession();
         setCurrentAccount(undefined);
@@ -107,17 +106,17 @@ function WalletScreen(): JSX.Element {
       });
 
       // Subscribe to session ping
-      universalProvider.on('session_ping', ({id, topic}) => {
+      universalProvider.on('session_ping', ({ id, topic }) => {
         console.log('session_ping', id, topic);
       });
 
       // Subscribe to session event
-      universalProvider.on('session_event', ({event, chainId}) => {
+      universalProvider.on('session_event', ({ event, chainId }) => {
         console.log('session_event', event, chainId);
       });
 
       // Subscribe to session update
-      universalProvider.on('session_update', ({topic, params}) => {
+      universalProvider.on('session_update', ({ topic, params }) => {
         console.log('session_update', topic, params);
       });
 
@@ -133,9 +132,9 @@ function WalletScreen(): JSX.Element {
   }, [initialized, subscribeToEvents]);
 
   return (
-    <SafeAreaView style={[styles.safeArea, {backgroundColor}]}>
-      <View style={[styles.container, {backgroundColor}]}>
-        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo}/>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
+      <View style={[styles.container, { backgroundColor }]}>
+        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo} />
         {currentAccount ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>
@@ -226,6 +225,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 250,
-    height:250
+    height: 250
   }
 });

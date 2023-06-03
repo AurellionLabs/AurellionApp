@@ -25,9 +25,9 @@ import ExplorerModal from './components/ExplorerModal';
 import {DarkTheme, LightTheme} from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
 import { MainContext } from '../main.provider';
+import {  getSigner  } from '../walletprovider';
 
 function WalletScreen(): JSX.Element {
-  const {wallet, setWallet} = useContext(MainContext)
   const navigation = useNavigation<WalletScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
@@ -48,10 +48,9 @@ function WalletScreen(): JSX.Element {
     try {
       if (web3Provider) {
         const signer = web3Provider.getSigner();
-        setWallet(signer)
-        console.log("wallet is set")
-        console.log(wallet)
+  
         const currentAddress = await signer.getAddress();
+        const thesigner = await getSigner()
         setCurrentAccount(currentAddress);
       }
     } catch (err: unknown) {

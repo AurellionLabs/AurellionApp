@@ -3,13 +3,15 @@ import { View, Text, TextInput, Button, PermissionsAndroid, ScrollView, StyleShe
 import Geolocation from '@react-native-community/geolocation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Region } from 'react-native-maps';
+import {RedButton, RedButtonText} from '../../../common/components/StyledComponents';
 
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA'; 
 interface LocationMenuProps {
     setRegion: React.Dispatch<React.SetStateAction<Region>>,
     isKeyboardVisible: boolean,
+    style: any,
 }
-const LocationsMenu = ({setRegion, isKeyboardVisible}:LocationMenuProps) => {
+const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) => {
   const [currentAddress, setCurrentAddress] = useState('');
   const [sendingAddress, setSendingAddress] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -84,8 +86,10 @@ const LocationsMenu = ({setRegion, isKeyboardVisible}:LocationMenuProps) => {
 
   return (
     <View style={
-        !isKeyboardVisible ? styles.container : styles.containerKeyboardOpen}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        // !isKeyboardVisible ? styles.container : styles.containerKeyboardOpen}
+        style}
+        >
+        <ScrollView contentContainerStyle={{backgroundColor: 'white',}}>
           <Text>Current Address: {currentAddress}</Text>
           <Text>Specify Sending Address:</Text>
           <GooglePlacesAutocomplete
@@ -117,52 +121,21 @@ const LocationsMenu = ({setRegion, isKeyboardVisible}:LocationMenuProps) => {
             currentLocation={false}
             styles={textInputStyles}
           />
-          <View style={styles.submitButtonContainer}>
-            <Button title="Submit" onPress={handleSubmit} />
+          <View style={{ borderRadius: 50, alignSelf: 'center', marginBottom: 5,}}>
+            <RedButton onPress={handleSubmit} styles={{width: '100px', height: '40px'}}>
+                <RedButtonText>Submit</RedButtonText>
+            </RedButton>
+            {/* <Button title="Submit" onPress={handleSubmit} /> */}
           </View>
         </ScrollView>
         </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-    container: {
-        //   flex: 0.78,
-        // backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        height: '29.5%',
-        width: '100%',
-    },
-    containerKeyboardOpen: {
-        //   flex: 0.78,
-        // backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        height: '100%',
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        // paddingHorizontal: 20,
-        // paddingTop: 10,
-      },
-      contentContainer: {
-        // paddingTop: 10,
-        // ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'white',
-        // backgroundColor: 'red',
-        paddingBottom: 0,
-      },
-    submitButtonContainer: {
-    //   marginTop: 10,
-        width: '25%',
-        borderRadius: 50,
-        alignSelf: 'center',
-        marginBottom: 10,
-    },
-  });
   
+
+
   const textInputStyles = {
     container: {
-    //   flex: 1,
       marginBottom: 10,
     },
     textInputContainer: {

@@ -1,23 +1,33 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { LightTheme } from '../../../common/constants/Colors';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+interface CustomProps {
+  [key: string]: any;
+}
+
 interface Props {
   height: number;
+  boxState: boolean;
+  customProps: CustomProps;
+  boxSelected: boolean;
 }
-export const SelectedBox = styled.View`
+export const SelectedBox = styled.TouchableOpacity<Props>`
   padding: 8px;
-  border-width: 2px;
+  margin: ${(props: Props) => (props.boxSelected ? "3%" :  "2%")};
+  border-width: ${(props: Props) => (props.boxSelected ? "2px" :  "1px")};
   flex-direction: row;
-  border-radius: 20px;
+  border-radius: ${(props: Props) => (props.boxSelected ? "20px" :  "0px")};
   width: 100%;
-  height: 25%;
-  border-color: ${LightTheme.foreground2};
+  height: ${(props: Props) => (props.boxState ? '25%' : '60%')};
+  border-color:${(props: Props) => (props.boxSelected ? LightTheme.foreground2 : "white")};
+  border-top-color:  ${(props: Props) => (props.boxSelected ? LightTheme.foreground2 :  "rgba(0, 0, 0, 0.2)")};
   justify-content: space-between;
+  display: ${(props: Props) => (props.boxState ? 'flex' : (props: Props) => (props.boxSelected ? "flex" :  "none"))}; 
 `;
 
-export const UnSelectedBox = styled.View`
+export const UnSelectedBox = styled.View<Props>`
   padding: 8px;
   border-top-color:  rgba(0, 0, 0, 0.2);
   flex-direction: row;
@@ -26,35 +36,13 @@ export const UnSelectedBox = styled.View`
   width: 100%;
   height: 25%;
   justify-content: space-between;
+  display: ${(props: Props) => (props.boxState ? 'flex' : 'none')};
 `;
 
 export const BoxHeadingText = styled.Text`
   color: ${LightTheme.accent};
   font-weight: 700;
   text-align: left;
-`;
-
-export const BlueButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${LightTheme.accent};
-  border-radius: 20px;
-  width: 150px;
-  height: 50px;
-  border-width: 1px;
-  border-color: ${LightTheme.overlayThin};
-  ${({ isDarkMode }: { isDarkMode: boolean }) =>
-    isDarkMode &&
-    `
-    background-color: ${DarkTheme.accent};
-    border-color: ${DarkTheme.overlayThin};
-  `}
-`;
-
-export const BlueButtonText = styled.Text`
-  color: white;
-  font-weight: 700;
 `;
 
 export const AnimatedBox = styled(Animated.View)`
@@ -73,6 +61,9 @@ export const AnimatedBox = styled(Animated.View)`
   
 `;
 
+interface AnimatedRootProps {
+  height: number;
+}
 export const AnimatedRoot = styled(GestureHandlerRootView)`
   position: absolute;
   bottom: 0;
@@ -80,6 +71,6 @@ export const AnimatedRoot = styled(GestureHandlerRootView)`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: ${(props: Props) => props.height}px;
+  height: ${(props: AnimatedRootProps) => props.height}px;
   
 `;

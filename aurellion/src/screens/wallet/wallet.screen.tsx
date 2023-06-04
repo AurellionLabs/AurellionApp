@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -22,11 +22,11 @@ import {
   createUniversalProviderSession,
 } from '../../utils/UniversalProvider';
 import ExplorerModal from './components/ExplorerModal';
-import {DarkTheme, LightTheme} from '../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
 
 function WalletScreen(): JSX.Element {
-const navigation = useNavigation<WalletScreenNavigationProp>();
+  const navigation = useNavigation<WalletScreenNavigationProp>();
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
@@ -34,7 +34,6 @@ const navigation = useNavigation<WalletScreenNavigationProp>();
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<string>();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
-
   // Initialize universal provider
   const initialized = useInitialization();
 
@@ -52,7 +51,7 @@ const navigation = useNavigation<WalletScreenNavigationProp>();
     } catch (err: unknown) {
       Alert.alert('Error', 'Error getting the Address');
     }
-  }, [setCurrentAccount]);
+  }, []);
 
   const onSessionCreated = useCallback(async () => {
     getAddress();
@@ -66,7 +65,7 @@ const navigation = useNavigation<WalletScreenNavigationProp>();
   }, []);
 
   const onSessionDelete = useCallback(
-    async ({topic}: {topic: string}) => {
+    async ({ topic }: { topic: string }) => {
       if (topic === universalProviderSession?.topic) {
         clearSession();
         setCurrentAccount(undefined);
@@ -102,17 +101,17 @@ const navigation = useNavigation<WalletScreenNavigationProp>();
       });
 
       // Subscribe to session ping
-      universalProvider.on('session_ping', ({id, topic}) => {
+      universalProvider.on('session_ping', ({ id, topic }) => {
         console.log('session_ping', id, topic);
       });
 
       // Subscribe to session event
-      universalProvider.on('session_event', ({event, chainId}) => {
+      universalProvider.on('session_event', ({ event, chainId }) => {
         console.log('session_event', event, chainId);
       });
 
       // Subscribe to session update
-      universalProvider.on('session_update', ({topic, params}) => {
+      universalProvider.on('session_update', ({ topic, params }) => {
         console.log('session_update', topic, params);
       });
 
@@ -128,9 +127,9 @@ const navigation = useNavigation<WalletScreenNavigationProp>();
   }, [initialized, subscribeToEvents]);
 
   return (
-    <SafeAreaView style={[styles.safeArea, {backgroundColor}]}>
-      <View style={[styles.container, {backgroundColor}]}>
-        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo}/>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
+      <View style={[styles.container, { backgroundColor }]}>
+        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo} />
         {currentAccount ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>
@@ -221,6 +220,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 250,
-    height:250
+    height: 250
   }
 });

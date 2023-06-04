@@ -3,7 +3,6 @@ import { Gesture, GestureDetector  } from 'react-native-gesture-handler';
 import {
   Dimensions,
   Text,
-  TouchableOpacity,
   useColorScheme,
   View,
   Image
@@ -11,24 +10,15 @@ import {
 import { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import {
   SelectedBox,
-  UnSelectedBox,
   BoxHeadingText,
   AnimatedBox,
   AnimatedRoot
 } from '../components/StyledComponents';
-import { useNavigation } from '@react-navigation/native';
 
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
-import { HomeScreenNavigationProp } from '../../../navigation/types';
 
 const Menu = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundColor = isDarkMode
-
-    ? DarkTheme.background2
-    : LightTheme.background2;
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
   const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
@@ -55,7 +45,6 @@ const Menu = () => {
 
 
     }
-    console.log(boxState)      
 
   })
   const translateYStyle = useAnimatedStyle(() => {
@@ -80,6 +69,7 @@ const Menu = () => {
       setSelectedBox3(true)
     }
   }
+
   return (
 
     <AnimatedRoot height={rootPosition}>
@@ -112,7 +102,7 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <RedButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
+          <RedButton onPress={() => console.log('ran')}>
             <RedButtonText>Begin</RedButtonText>
           </RedButton>
         </AnimatedBox>

@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, } from 'react';
+
 import {
   ActivityIndicator,
   Alert,
@@ -8,7 +9,9 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-  Image
+  Image,
+  Keyboard, 
+  Platform
 } from 'react-native';
 import {
   Container,
@@ -32,14 +35,54 @@ const LocationsScreen = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    console.log('\n\nkeyboard visible or not: ', isKeyboardVisible);
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  
   return (
-    <Container style={{ backgroundColor }}>
-      <MapView style={{ flex: 1, width: '100%', height: '100%' }} region={region} />
-      <LocationsMenu />
+    <Container style={styles.container}>
+      <LocationsMenu style={styles.locationsMenu} setRegion={setRegion} isKeyboardVisible={isKeyboardVisible} />
+      {!isKeyboardVisible && (
+        <MapView style={styles.mapView} region={region} />
+      )}
     </Container>
   );
 };
 
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+        // flex: 1,
+        // height: '100%',
+    },
+    locationsMenu:{
+        flex: 1,
+        width: '100%',
+        // height: '30%',
+    },
+    mapView : {
+        flex: 2,
+        width: '100%', 
+        // height: '70%' 
+    }
+});
 
 
 

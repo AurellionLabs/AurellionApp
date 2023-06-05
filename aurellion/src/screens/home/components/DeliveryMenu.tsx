@@ -17,6 +17,7 @@ import {
 
 import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
+import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 
 const Menu = () => {
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
@@ -102,7 +103,7 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <RedButton onPress={() => console.log('ran')}>
+          <RedButton onPress={ async () => await jobCreation()}>
             <RedButtonText>Begin</RedButtonText>
           </RedButton>
         </AnimatedBox>

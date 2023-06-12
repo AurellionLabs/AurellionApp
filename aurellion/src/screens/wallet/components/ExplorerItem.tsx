@@ -9,6 +9,7 @@ import {
 import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 import {WalletInfo} from '../../../types/api';
 import {navigateDeepLink} from '../../../utils/ExplorerUtils';
+ import { useMainContext } from '../../main.provider';
 
 interface ExplorerItemProps {
   currentWCURI: string;
@@ -19,8 +20,12 @@ export const ITEM_HEIGHT = 80;
 
 function ExplorerItem({currentWCURI, walletInfo}: ExplorerItemProps) {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const {setUniversalLink, setDeepLink, setWcURI} = useMainContext()
   const onPress = () => {
+    setUniversalLink(walletInfo.mobile.universal)
+    setDeepLink(walletInfo.mobile.native)
+    setWcURI(currentWCURI)
+
     navigateDeepLink(
       walletInfo.mobile.universal,
       walletInfo.mobile.native,

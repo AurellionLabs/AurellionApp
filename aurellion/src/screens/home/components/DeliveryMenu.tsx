@@ -18,8 +18,10 @@ import {
 import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
 import { jobCreation } from '../../../dapp-connectors/dapp-controller';
-
+import { useMainContext } from '../../main.provider';
+import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 const Menu = () => {
+  const {universalLink, deepLink, wcURI}= useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
   const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
@@ -71,6 +73,11 @@ const Menu = () => {
     }
   }
 
+  const createJob = async () => {
+    navigateDeepLink(universalLink, deepLink, wcURI)
+    await jobCreation()
+  }
+
   return (
 
     <AnimatedRoot height={rootPosition}>
@@ -103,7 +110,7 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <RedButton onPress={ async () => await jobCreation()}>
+          <RedButton onPress={createJob}>
             <RedButtonText>Begin</RedButtonText>
           </RedButton>
         </AnimatedBox>

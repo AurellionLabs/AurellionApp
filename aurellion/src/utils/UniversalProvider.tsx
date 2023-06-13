@@ -37,7 +37,7 @@ export function clearSession() {
   web3Provider = undefined;
 }
 
-export async function createUniversalProviderSession(callbacks?: {
+ export async function createUniversalProviderSession(callbacks?: {
   onSuccess?: () => void;
   onFailure?: (error: any) => void;
 }) {
@@ -52,7 +52,7 @@ export async function createUniversalProviderSession(callbacks?: {
             'personal_sign',
             'eth_signTypedData',
           ],
-          chains: ['eip155:1'],
+          chains: ['eip155:5'],
           events: ['chainChanged', 'accountsChanged'],
           rpcMap: {},
         },

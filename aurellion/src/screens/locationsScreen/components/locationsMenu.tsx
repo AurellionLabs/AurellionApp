@@ -89,9 +89,9 @@ const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) 
         // !isKeyboardVisible ? styles.container : styles.containerKeyboardOpen}
         style}
         >
-        <ScrollView contentContainerStyle={{backgroundColor: 'white',}}>
-          <Text>Current Address: {currentAddress}</Text>
-          <Text>Specify Sending Address:</Text>
+        <ScrollView contentContainerStyle={{backgroundColor: 'white', paddingHorizontal:15}}>
+          <Text style={{paddingBottom:10, borderRadius:5}}>Current Address: {currentAddress}</Text>
+          {/* <Text>Specify Sending Address:</Text> */}
           <GooglePlacesAutocomplete
             placeholder="Enter sending address"
             onPress={(data, details = null) => {
@@ -106,7 +106,7 @@ const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) 
             currentLocation={false}
             styles={textInputStyles}
           />
-          <Text>Specify Recipient Address:</Text>
+          {/* <Text>Specify Recipient Address:</Text> */}
           <GooglePlacesAutocomplete
             placeholder="Enter recipient address"
             onPress={(data, details = null) => {

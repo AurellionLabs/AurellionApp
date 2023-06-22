@@ -7,6 +7,7 @@ export type HomeStackNavigatorParamList = {
     Signature: {
         heading: string
     }
+    UserSelection: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -22,6 +23,11 @@ export type WalletScreenNavigationProp = StackNavigationProp<
 export type SignatureScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
     'Signature'
+>;
+
+export type UserSelectionScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'UserSelection'
 >;
 
 export type SignatureScreenRouteProp = RouteProp<HomeStackNavigatorParamList, 'Signature'>;

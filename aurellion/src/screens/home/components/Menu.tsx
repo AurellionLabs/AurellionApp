@@ -25,7 +25,7 @@ import { SignatureScreenNavigationProp } from '../../../navigation/types';
 
 const Menu = () => {
   const navigation = useNavigation<SignatureScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI } = useMainContext();
+  const { universalLink, deepLink, wcURI, userType } = useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70 / 100 * SCREEN_HEIGHT
   const [rootPosition, setRootPosition] = useState<number>(defaultHeight)
@@ -80,7 +80,7 @@ const Menu = () => {
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
     await jobCreation()
-    navigation.navigate('Signature', { heading: 'Sign to confirm package hand off to driver' })
+    navigation.navigate('Signature', { heading: userType === 'customer' ? 'Sign to confirm package hand off to driver' : 'Sign to confirm pacakge received from customer' })
   }
 
   return (

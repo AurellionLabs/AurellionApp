@@ -1,5 +1,5 @@
-import React, { useState} from 'react';
-import { Gesture, GestureDetector  } from 'react-native-gesture-handler';
+import React, { useState } from 'react';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
   Dimensions,
   Text,
@@ -13,22 +13,26 @@ import {
   BoxHeadingText,
   AnimatedBox,
   AnimatedRoot
-} from '../components/StyledComponents';
+} from './StyledComponents';
 
 import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
 import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
+import { useNavigation } from '@react-navigation/native';
+import { SignatureScreenNavigationProp } from '../../../navigation/types';
+
 const Menu = () => {
-  const {universalLink, deepLink, wcURI}= useMainContext();
+  const navigation = useNavigation<SignatureScreenNavigationProp>();
+  const { universalLink, deepLink, wcURI } = useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
-  const defaultHeight = 70/100 * SCREEN_HEIGHT
-  const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
-  const [boxState,setBoxState] = useState<boolean>(true)
-  const [selectedBox,setSelectedBox] = useState<boolean>(true)
-  const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
-  const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
+  const defaultHeight = 70 / 100 * SCREEN_HEIGHT
+  const [rootPosition, setRootPosition] = useState<number>(defaultHeight)
+  const [boxState, setBoxState] = useState<boolean>(true)
+  const [selectedBox, setSelectedBox] = useState<boolean>(true)
+  const [selectedBox2, setSelectedBox2] = useState<boolean>(false)
+  const [selectedBox3, setSelectedBox3] = useState<boolean>(false)
 
   const translateY = useSharedValue(0)
   const setJSHeight = (selectedheight: number) => {
@@ -41,10 +45,10 @@ const Menu = () => {
       runOnJS(setBoxState)(false)
 
     }
-    if (event.translationY <= 0 && rootPosition == 25/100 * SCREEN_HEIGHT) {
-     const newHeight = 70/100 * SCREEN_HEIGHT
-     runOnJS(setJSHeight)(newHeight)
-     runOnJS(setBoxState)(true)
+    if (event.translationY <= 0 && rootPosition == 25 / 100 * SCREEN_HEIGHT) {
+      const newHeight = 70 / 100 * SCREEN_HEIGHT
+      runOnJS(setJSHeight)(newHeight)
+      runOnJS(setBoxState)(true)
 
 
     }
@@ -55,7 +59,7 @@ const Menu = () => {
       transform: [{ translateY: translateY.value }]
     }
   })
-  const selector = (box:number) =>{
+  const selector = (box: number) => {
     if (box == 1) {
       setSelectedBox(true)
       setSelectedBox2(false)
@@ -76,6 +80,7 @@ const Menu = () => {
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
     await jobCreation()
+    navigation.navigate('Signature', { heading: 'Sign to confirm package hand off to driver' })
   }
 
   return (
@@ -93,12 +98,12 @@ const Menu = () => {
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
           <SelectedBox boxState={boxState} boxSelected={selectedBox2} onPress={() => selector(2)}>
-              <View>
-                  <Image source={require('../../../common/assets/images/running.png')} style={{ height: 20, width: 20 }} />
-                  <Text style={{ color: LightTheme.foreground2, fontWeight: '700', textAlign: 'left' }}>Medium</Text>
-                  <Text>Next Day</Text>
-                  <Text>Edit...</Text>
-              </View>            
+            <View>
+              <Image source={require('../../../common/assets/images/running.png')} style={{ height: 20, width: 20 }} />
+              <Text style={{ color: LightTheme.foreground2, fontWeight: '700', textAlign: 'left' }}>Medium</Text>
+              <Text>Next Day</Text>
+              <Text>Edit...</Text>
+            </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
           <SelectedBox boxState={boxState} boxSelected={selectedBox3} onPress={() => selector(3)}>

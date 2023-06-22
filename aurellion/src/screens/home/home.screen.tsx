@@ -5,7 +5,7 @@ import {
 import {
   Container,
 } from '../../common/components/StyledComponents';
-import Menu from './components/DeliveryMenu'
+import Menu from './components/Menu'
 import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import MapView, { Marker, Region } from 'react-native-maps';
 

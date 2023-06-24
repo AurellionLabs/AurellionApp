@@ -5,14 +5,16 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Region } from 'react-native-maps';
 import {RedButton, RedButtonText} from '../../../common/components/StyledComponents';
 
+
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA'; 
 interface LocationMenuProps {
     setRegion: React.Dispatch<React.SetStateAction<Region>>,
     isKeyboardVisible: boolean,
     style: any,
 }
+
 const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) => {
-  const [currentAddress, setCurrentAddress] = useState('');
+  const [currentAddress, setCurrentAddress] = useState<string>('');
   const [sendingAddress, setSendingAddress] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
 
@@ -74,11 +76,76 @@ const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) 
     setRecipientAddress(text);
   };
 
-  const handleSubmit = () => {
-    // Perform submission logic here
-    console.log('Sending Address:', sendingAddress);
-    console.log('Recipient Address:', recipientAddress);
+//   const handleSubmit = () => {
+//     // Perform submission logic here
+//     console.log('Sending Address:', sendingAddress);
+//     console.log('Recipient Address:', recipientAddress);
+//   };
+
+const geocodeAddress = (address: string): Promise<{ latitude: number; longitude: number }> => {
+    const apiKey = GMAPS_API_KEY;
+    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      address
+    )}&key=${apiKey}`;
+  
+    return fetch(geocodeUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'OK') {
+          const result = data.results[0];
+          const { lat, lng } = result.geometry.location;
+          return {
+            latitude: lat,
+            longitude: lng,
+          };
+        } else {
+          throw new Error('Geocoding request failed');
+        }
+      })
+      .catch((error) => {
+        console.error('Error geocoding address:', error);
+        throw error;
+      });
   };
+
+
+   const handleSubmit = () => {
+    console.log('in submit');
+    console.log('Sending Address - in submit:', sendingAddress);
+    console.log('Recipient Address - in submit:', recipientAddress);
+    if (sendingAddress && recipientAddress) {
+      // Get latitude and longitude for sendingAddress and recipientAddress
+      const geocodePromises = [
+        geocodeAddress(sendingAddress),
+        geocodeAddress(recipientAddress),
+      ];
+  
+      Promise.all(geocodePromises)
+        .then(([sendingLocation, recipientLocation]) => {
+          // Extract latitude and longitude
+          const sendingLatitude = sendingLocation.latitude;
+          const sendingLongitude = sendingLocation.longitude;
+          const recipientLatitude = recipientLocation.latitude;
+          const recipientLongitude = recipientLocation.longitude;
+  
+        //   Navigate to the new screen passing the latitude and longitude as parameters
+          // navigation.navigate('NewScreen', {
+          //   sendingLatitude,
+          //   sendingLongitude,
+          //   recipientLatitude,
+          //   recipientLongitude,
+          // });
+
+        console.log('Sending Location:', sendingLocation );
+        console.log('Recipient Location:', recipientLocation);
+        })
+        .catch((error) => {
+          console.error('Error geocoding addresses:', error);
+        });
+    }
+  };
+
+
 
   useEffect(() => {
     console.log('\n\nisKeyboardVisible: ', isKeyboardVisible);

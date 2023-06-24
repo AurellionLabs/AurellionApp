@@ -4,7 +4,9 @@ import Geolocation from '@react-native-community/geolocation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Region } from 'react-native-maps';
 import {RedButton, RedButtonText} from '../../../common/components/StyledComponents';
-
+import { useNavigation } from '@react-navigation/native';
+import { useMainContext } from '../../main.provider';
+import { LocationsScreenNavigationProp } from '../../../navigation/types';
 
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA'; 
 interface LocationMenuProps {
@@ -13,7 +15,14 @@ interface LocationMenuProps {
     style: any,
 }
 
+interface GeoLocationCoords {
+    lat: number;
+    lng: number;
+} 
+
 const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) => {
+  const navigation = useNavigation<LocationsScreenNavigationProp>();
+  const {setPackageDeliveryData} = useMainContext();
   const [currentAddress, setCurrentAddress] = useState<string>('');
   const [sendingAddress, setSendingAddress] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -93,7 +102,7 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
       .then((data) => {
         if (data.status === 'OK') {
           const result = data.results[0];
-          const { lat, lng } = result.geometry.location;
+          const { lat, lng }:GeoLocationCoords = result.geometry.location;
           return {
             latitude: lat,
             longitude: lng,
@@ -129,12 +138,15 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
           const recipientLongitude = recipientLocation.longitude;
   
         //   Navigate to the new screen passing the latitude and longitude as parameters
-          // navigation.navigate('NewScreen', {
-          //   sendingLatitude,
-          //   sendingLongitude,
-          //   recipientLatitude,
-          //   recipientLongitude,
-          // });
+        const packageDeliveryData = {
+          sendingLatitude: sendingLatitude,
+          sendingLongitude: sendingLongitude,
+          recipientLatitude: recipientLatitude,
+          recipientLongitude: recipientLongitude,
+        };
+        setPackageDeliveryData(packageDeliveryData);
+
+        navigation.navigate('Home');
 
         console.log('Sending Location:', sendingLocation );
         console.log('Recipient Location:', recipientLocation);

@@ -16,3 +16,9 @@ export type WalletScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
     'Home'
 >;
+
+
+export type LocationsScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'Locations'
+>;

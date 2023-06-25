@@ -4,6 +4,7 @@ import WalletScreen from '../screens/wallet/wallet.screen'
 import HomeScreen from '../screens/home/home.screen';
 import SignatureScreen from '../screens/signature/signature.screen';
 import { HomeStackNavigatorParamList } from './types';
+import JobScreen from '../screens/jobs/jobs.screen';
 const HomeStack = createStackNavigator<HomeStackNavigatorParamList>();
 
 const HomeStackNavigator = () => {
@@ -12,6 +13,7 @@ const HomeStackNavigator = () => {
             <HomeStack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
             <HomeStack.Screen name="Wallet" component={WalletScreen} />
             <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />
+            <HomeStack.Screen options={{ headerShown: false }} name="Jobs" component={JobScreen} />
         </HomeStack.Navigator>
     )
 }

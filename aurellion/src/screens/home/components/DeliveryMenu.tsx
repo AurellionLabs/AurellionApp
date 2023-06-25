@@ -20,7 +20,11 @@ import { RedButton, RedButtonText } from '../../../common/components/StyledCompo
 import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
+import { useNavigation } from '@react-navigation/native';
+import HomeScreen from '../home.screen';
+import { JobScreenNavigationProp } from '../../../navigation/types';
 const Menu = () => {
+  const navigation = useNavigation<JobScreenNavigationProp>()
   const {universalLink, deepLink, wcURI}= useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
@@ -76,6 +80,8 @@ const Menu = () => {
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
     await jobCreation()
+    navigation.navigate('Jobs') 
+    
   }
 
   return (

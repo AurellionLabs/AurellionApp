@@ -4,6 +4,7 @@ export type HomeStackNavigatorParamList = {
     Home: undefined;
     Wallet: undefined;
     Signature: undefined;
+    Jobs: undefined;
 };
 
 export type HomeScreenNavigationProp = StackNavigationProp<
@@ -14,4 +15,9 @@ export type HomeScreenNavigationProp = StackNavigationProp<
 export type WalletScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
     'Home'
+>;
+
+export type JobScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'Jobs'
 >;

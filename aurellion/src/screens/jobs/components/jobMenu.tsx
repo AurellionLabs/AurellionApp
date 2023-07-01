@@ -34,11 +34,18 @@ const Menu = () => {
   const [selectedBox,setSelectedBox] = useState<boolean>(true)
   const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
   const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
-
+  const [jobs,setJobs] = useState<any[]>([])
   const selector = (box:number) =>{
   }
   useEffect(() => {
-    createJob()
+    const returnCustomerJobs = async () =>{
+    console.log("jobs setting")
+    setJobs(await fetchCustomersJobs())
+    console.log("jobs set")
+    if (jobs != undefined)
+    {jobs.map((job, index) => console.log("job id",job));}
+    }
+     returnCustomerJobs()
     }, []);
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
@@ -46,19 +53,13 @@ const Menu = () => {
     navigation.navigate('Jobs') 
     
   }
+  var exampleJobs:undefined | any[] = [1,2,3,4,5,6,7,8,8]
   
-  var joblist:undefined | number[] = [];
-  const returnCustomerJobs = async () =>{
-
-    joblist = await fetchCustomersJobs()
-  }
   return (
           <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}style={{width:"100%"}}>
           {
-            joblist.map((job, index) => {
-            return(
-            <MenuBox selected={selectedBox} jobID={job}/>)})
-            }
+            jobs.map((job, index) => (
+            <MenuBox key={job} selected={selectedBox} jobID={job}/>))}
           </ScrollView>       
         );
 };

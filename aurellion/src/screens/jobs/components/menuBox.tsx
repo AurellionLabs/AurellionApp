@@ -14,7 +14,7 @@ import {
   } from 'react-native';
 type BoxProps = {
   selected: boolean;
-  jobID: number;
+  jobID: any;
 };
 
 const MenuBox: React.FC<BoxProps> = ({ selected, jobID }) => {

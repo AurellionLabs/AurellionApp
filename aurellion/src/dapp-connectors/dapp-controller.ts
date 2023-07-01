@@ -1,8 +1,9 @@
 import { ethers } from "ethers";
 import { getSigner } from "./wallet-utils"
 import { REACT_APP_AUSYS_CONTRACT_ADDRESS } from "@env"
+// console.log("process env", process.env)
 const contractABI = require("./aurellion-abi.json")
-console.log(REACT_APP_AUSYS_CONTRACT_ADDRESS)
+console.log("from env", REACT_APP_AUSYS_CONTRACT_ADDRESS)
 const parcelData = {
   startLocation: { lat: 1, lng: 2 },
   endLocation: { lat: 1, lng: 2 },

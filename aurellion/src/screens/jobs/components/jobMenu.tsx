@@ -53,10 +53,10 @@ const Menu = () => {
     navigation.navigate('Jobs') 
     
   }
-  var exampleJobs:undefined | any[] = [1,2,3,4,5,6,7,8,8]
+  var exampleJobs:undefined | any[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
   
   return (
-          <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}style={{width:"100%"}}>
+          <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center' }}style={{width:"100%"}}>
           {
             jobs.map((job, index) => (
             <MenuBox key={job} selected={selectedBox} jobID={job}/>))}

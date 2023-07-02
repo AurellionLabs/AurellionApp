@@ -18,9 +18,10 @@ export const SelectedBox = styled.TouchableOpacity<Props>`
   margin: 3%;
   flex-direction: row;
   width: 100%;
-  height: 10%;
-  border-top-width: 1px;
-  border-top-color: rgba(0, 0, 0, 0.2);
+  flex: 1;
+  max-height: 5%;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
   justify-content: space-between;
   display: flex; 
 `;

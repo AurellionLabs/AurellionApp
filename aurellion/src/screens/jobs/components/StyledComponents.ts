@@ -19,7 +19,7 @@ export const SelectedBox = styled.TouchableOpacity<Props>`
   flex-direction: row;
   width: 100%;
   flex: 1;
-  max-height: 5%;
+  max-height: 10%;
   border-bottom-width: 1px;
   border-bottom-color: rgba(0, 0, 0, 0.2);
   justify-content: space-between;

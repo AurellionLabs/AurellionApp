@@ -1,7 +1,7 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react'
 
-export type UserType = undefined |'customer' | 'driver';
+export type UserType = 'customer' | 'driver';
 
 interface IMainContext {
     wallet: JsonRpcSigner | undefined,
@@ -29,7 +29,7 @@ export const MainContext = React.createContext<IMainContext>({
     setDeepLink: () => { },
     wcURI: '',
     setWcURI: () => { },
-    userType: undefined,
+    userType: 'customer',
     setUserType: () => { }
 })
 
@@ -43,7 +43,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
     const [universalLink, setUniversalLink] = useState<string>('')
     const [deepLink, setDeepLink] = useState<string>('')
     const [wcURI, setWcURI] = useState<string>('')
-    const [userType, setUserType] = useState<UserType>(undefined)
+    const [userType, setUserType] = useState<UserType>('customer')
 
     return (
         <MainContext.Provider value={{

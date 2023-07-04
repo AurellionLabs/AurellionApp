@@ -17,7 +17,7 @@ import {
 
 import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
-import { jobCreation } from '../../../dapp-connectors/dapp-controller';
+import { fetchCustomerJobIds, jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
@@ -49,8 +49,6 @@ const Menu = () => {
       const newHeight = 70 / 100 * SCREEN_HEIGHT
       runOnJS(setJSHeight)(newHeight)
       runOnJS(setBoxState)(true)
-
-
     }
 
   })
@@ -80,7 +78,11 @@ const Menu = () => {
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
     await jobCreation()
-    navigation.navigate('Signature', { heading: userType === 'customer' ? 'Sign to confirm package hand off to driver' : 'Sign to confirm pacakge received from customer' })
+    // For testing of signature screen
+    const customerJobIds = await fetchCustomerJobIds();
+    console.log(customerJobIds)
+    const jobId = customerJobIds[0];
+    navigation.navigate('Signature', { heading: userType === 'customer' ? 'Sign to confirm package hand off to driver' : 'Sign to confirm pacakge received from customer', jobID: jobId })
   }
 
   return (

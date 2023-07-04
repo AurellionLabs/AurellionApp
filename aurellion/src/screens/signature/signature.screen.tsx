@@ -5,14 +5,24 @@ import { LightTheme } from '../../common/constants/Colors';
 import LottieView from "lottie-react-native";
 import { useRoute } from '@react-navigation/native';
 import { SignatureScreenRouteProp } from '../../navigation/types';
+import { useMainContext } from '../main.provider';
+import { customerPackageSign, driverPackageSign } from '../../dapp-connectors/dapp-controller';
+import { navigateDeepLink } from '../../utils/ExplorerUtils';
 
 const SignatureScreen = () => {
+    const { universalLink, deepLink, wcURI, userType } = useMainContext();
     const route = useRoute<SignatureScreenRouteProp>();
-    const { heading } = route.params;
+    const { heading, jobID } = route.params;
     const isDarkMode = useColorScheme() === 'dark';
     const [isSigned, setIsSigned] = useState(false);
 
-    const onPress = () => {
+    const onPress = async () => {
+        navigateDeepLink(universalLink, deepLink, wcURI)
+        if(userType === 'customer'){
+            await customerPackageSign(jobID);
+        } else if (userType === 'driver'){
+            await driverPackageSign(jobID);
+        }
         setIsSigned(true);
     }
 

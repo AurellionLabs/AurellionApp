@@ -6,6 +6,7 @@ export type HomeStackNavigatorParamList = {
     Wallet: undefined;
     Signature: {
         heading: string
+        jobID: string
     }
     UserSelection: undefined;
 };

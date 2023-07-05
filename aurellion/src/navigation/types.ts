@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type HomeStackNavigatorParamList = {
-    Home: undefined;
+    DeliveryOptions: undefined;
     Wallet: undefined;
     Signature: undefined;
     Locations: undefined;
@@ -14,7 +14,7 @@ export type HomeScreenNavigationProp = StackNavigationProp<
 
 export type WalletScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
-    'Home'
+    'DeliveryOptions'
 >;
 
 

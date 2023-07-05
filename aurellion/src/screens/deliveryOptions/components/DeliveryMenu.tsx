@@ -13,7 +13,7 @@ import {
   BoxHeadingText,
   AnimatedBox,
   AnimatedRoot
-} from '../components/StyledComponents';
+} from './StyledComponents';
 
 import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';

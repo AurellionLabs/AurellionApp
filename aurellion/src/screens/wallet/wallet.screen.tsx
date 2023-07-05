@@ -141,7 +141,7 @@ function WalletScreen(): JSX.Element {
                 styles.disconnectButton,
                 isDarkMode && styles.blueButtonDark,
               ]}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => navigation.navigate('DeliveryOptions')}>
               <Text style={styles.blueButtonText}>Home Screen</Text>
             </TouchableOpacity>
           </View>

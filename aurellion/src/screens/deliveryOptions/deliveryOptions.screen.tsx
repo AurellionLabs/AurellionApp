@@ -10,7 +10,7 @@ import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import MapView, { Marker, Region } from 'react-native-maps';
 
 
-const HomeScreen = () => {
+const DeliveryOptionsScreen = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
@@ -33,4 +33,4 @@ const HomeScreen = () => {
 
 
 
-export default HomeScreen;
+export default DeliveryOptionsScreen;

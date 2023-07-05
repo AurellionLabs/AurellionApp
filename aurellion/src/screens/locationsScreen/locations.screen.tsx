@@ -52,14 +52,19 @@ const LocationsScreen = () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, []);
+  }, [isKeyboardVisible]);
 
   
   return (
     <Container style={styles.container}>
-      <LocationsMenu style={styles.locationsMenu} setRegion={setRegion} isKeyboardVisible={isKeyboardVisible} />
+      <LocationsMenu style={styles.locationsMenu} region={region} setRegion={setRegion} isKeyboardVisible={isKeyboardVisible} />
       {!isKeyboardVisible && (
-        <MapView style={styles.mapView} region={region} />
+        <MapView 
+        style={styles.mapView} 
+        showsUserLocation
+        region={region} 
+        showsCompass
+        />
       )}
     </Container>
   );
@@ -68,11 +73,15 @@ const LocationsScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
+        // backgroundColor: 
+        // backgroundColor: 'blue',
     },
     locationsMenu:{
         // flex: 1,
         width: '100%',
+        borderRadius: 30,
+        backgroundColor: 'black',
         // height: '30%',
     },
     mapView : {

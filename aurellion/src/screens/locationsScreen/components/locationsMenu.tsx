@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, PermissionsAndroid, ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, TextInput, Button, PermissionsAndroid, KeyboardAvoidingView, ScrollView, SafeAreaView, StyleSheet ,TouchableOpacity } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Region } from 'react-native-maps';
@@ -10,6 +10,7 @@ import { LocationsScreenNavigationProp } from '../../../navigation/types';
 
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA'; 
 interface LocationMenuProps {
+    region: Region,
     setRegion: React.Dispatch<React.SetStateAction<Region>>,
     isKeyboardVisible: boolean,
     style: any,
@@ -18,14 +19,21 @@ interface LocationMenuProps {
 interface GeoLocationCoords {
     lat: number;
     lng: number;
-} 
+}
 
-const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) => {
+interface Geometry {
+  location:GeoLocationCoords;
+}
+
+const LocationsMenu = ({region, setRegion, isKeyboardVisible, style}:LocationMenuProps) => {
+
   const navigation = useNavigation<LocationsScreenNavigationProp>();
   const {setPackageDeliveryData} = useMainContext();
   const [currentAddress, setCurrentAddress] = useState<string>('');
-  const [sendingAddress, setSendingAddress] = useState('');
-  const [recipientAddress, setRecipientAddress] = useState('');
+  const [sendingAddress, setSendingAddress] = useState('Enter sending address');
+  const [recipientAddress, setRecipientAddress] = useState('Enter recipient address');
+  const [currentLocationCoords, setCurrentLocationCoords] = useState<Geometry>({location:{lat:0, lng:0}});
+  navigator.geolocation = require('@react-native-community/geolocation');
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -56,6 +64,7 @@ const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) 
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
+        setCurrentLocationCoords({location:{lat:latitude, lng:longitude}});
         console.log('latitude: ', latitude);
         console.log('longitude: ', longitude);
         setRegion({latitude: latitude, longitude:longitude, latitudeDelta: 0.01, longitudeDelta: 0.01});
@@ -65,7 +74,7 @@ const LocationsMenu = ({setRegion, isKeyboardVisible, style}:LocationMenuProps) 
           .then((data) => {
             const address = data.results[0].formatted_address;
             setCurrentAddress(address);
-            setSendingAddress(address);
+            // setSendingAddress(address);
             console.log('address: ', address);
           })
           .catch((error) => console.error(error));
@@ -146,7 +155,7 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
         };
         setPackageDeliveryData(packageDeliveryData);
 
-        navigation.navigate('Home');
+        navigation.navigate('DeliveryOptions');
 
         console.log('Sending Location:', sendingLocation );
         console.log('Recipient Location:', recipientLocation);
@@ -161,52 +170,130 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
 
   useEffect(() => {
     console.log('\n\nisKeyboardVisible: ', isKeyboardVisible);
-    }, []);
+    console.log('\nsendingAutocomplete: ', sendingAutocomplete);
+    console.log('\nrecipientAutocomplete: ', recipientAutocomplete);
+    console.log('\n\n sending Address coords: ', currentLocationCoords);
+    console.log('\nsending Address: ', sendingAddress);
+    console.log('\nrecipient Address: ', recipientAddress);
+
+    if(!isKeyboardVisible){
+      setSendingAutocomplete(false);
+      setRecipientAutocomplete(false);
+    }
+    }, [isKeyboardVisible]);
+
+
+  const [sendingAutocomplete, setSendingAutocomplete] = useState(false);
+  const [recipientAutocomplete, setRecipientAutocomplete] = useState(false);
+
+  
+   function getTextStyle(touched:any, other:any) {
+    if(touched) {
+      return {
+        height: "100%", backgroundColor: 'white', paddingHorizontal:15
+      }
+    } 
+    else if(touched == false && other == false){
+      return {
+        height: 15, backgroundColor: 'black', paddingHorizontal:15, paddingBottom:"13%"
+    }
+    }
+    else {
+      return {
+          height: 15, backgroundColor: 'white', paddingHorizontal:15, paddingBottom:"13%"
+      }
+    }
+  }
+
+  const currentLocationGeo = {
+    description:currentAddress,
+    address: currentAddress,
+    geometry: currentLocationCoords,
+  };
+
+  const placesAutocompleteRef:any = useRef();
+
 
   return (
     <View style={
         // !isKeyboardVisible ? styles.container : styles.containerKeyboardOpen}
         style}
         >
-        <ScrollView contentContainerStyle={{backgroundColor: 'white', paddingHorizontal:15}}>
-          <Text style={{paddingBottom:10, borderRadius:5}}>Current Address: {currentAddress}</Text>
-          {/* <Text>Specify Sending Address:</Text> */}
-          <GooglePlacesAutocomplete
-            placeholder="Enter sending address"
-            onPress={(data, details = null) => {
-              const address = details?.formatted_address || '';
-              setSendingAddress(address);
-            }}
-            fetchDetails={true}
-            query={{
-              key: GMAPS_API_KEY,
-              language: 'en',
-            }}
-            currentLocation={false}
-            styles={textInputStyles}
-          />
-          {/* <Text>Specify Recipient Address:</Text> */}
-          <GooglePlacesAutocomplete
-            placeholder="Enter recipient address"
-            onPress={(data, details = null) => {
-              const address = details?.formatted_address || '';
-              setRecipientAddress(address);
-            }}
-            fetchDetails={true}
-            query={{
-              key: GMAPS_API_KEY,
-              language: 'en',
-            }}
-            currentLocation={false}
-            styles={textInputStyles}
-          />
+          {/* <Text style={{paddingBottom:10, borderRadius:5, paddingHorizontal:15, color:'white'}}>Current Address: {currentAddress}</Text> */}
+
+          {
+          // recipientAutocomplete == false && 
+          <SafeAreaView style={[{paddingTop: "7%"},getTextStyle(sendingAutocomplete, recipientAutocomplete)]}>
+                <GooglePlacesAutocomplete
+                  ref={placesAutocompleteRef}
+                  placeholder={sendingAddress}
+                  
+                  onPress={(data, details = null) => {
+                    let address = details?.formatted_address || '';
+                    console.log('\n\n\n\n\nGOOGLE Autoplaces details');
+                    console.log(details);
+                    // console.log('details_desc ',details.description);
+                    // console.log('details_add ', details.address);
+                    if(details?.description ==currentAddress){
+                      address = currentAddress;
+                      console.log('\n\n\n Autocompleted Addy', address);
+                    }
+                    setSendingAddress(address);
+                  }}
+                  fetchDetails={true}
+                  query={{
+                    key: GMAPS_API_KEY,
+                    language: 'en',
+                  }}
+                  currentLocation={true}
+                  styles={textInputStyles}
+                  textInputProps={{
+                    onFocus: () => {setSendingAutocomplete(true);},
+                  }}
+                  predefinedPlaces={[currentLocationGeo]}
+                />
+          </SafeAreaView> 
+          }
+
+          {
+          // sendingAutocomplete == false &&
+            <SafeAreaView style={getTextStyle(recipientAutocomplete, sendingAutocomplete)}
+            >
+              <GooglePlacesAutocomplete
+                placeholder={recipientAddress}
+                onPress={(data, details = null) => {
+                  let address = details?.formatted_address || '';
+                  console.log('\n\n\n\n\nGOOGLE Autoplaces details');
+                  console.log(details);
+                  // console.log('details_desc ',details.description);
+                  // console.log('details_add ', details.address);
+                  if(details?.description ==currentAddress){
+                    address = currentAddress;
+                    console.log('\n\n\n Autocompleted Addy', address);
+                  }
+                  setRecipientAddress(address);
+                }}
+                fetchDetails={true}
+                query={{
+                  key: GMAPS_API_KEY,
+                  language: 'en',
+                }}
+                // currentLocation={true}
+                styles={textInputStyles}
+                textInputProps={{
+                  onFocus: () => {setRecipientAutocomplete(true);},
+                }}
+                predefinedPlaces={[currentLocationGeo]}
+              />
+            </SafeAreaView>
+          }
+        {!isKeyboardVisible &&
           <View style={{ borderRadius: 50, alignSelf: 'center', marginBottom: 5,}}>
             <RedButton onPress={handleSubmit} styles={{width: '100px', height: '40px'}}>
                 <RedButtonText>Submit</RedButtonText>
             </RedButton>
             {/* <Button title="Submit" onPress={handleSubmit} /> */}
-          </View>
-        </ScrollView>
+          </View>}
         </View>
   );
 };

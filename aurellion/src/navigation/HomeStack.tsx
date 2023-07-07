@@ -5,6 +5,8 @@ import DeliveryOptions from '../screens/deliveryOptions/deliveryOptions.screen';
 import SignatureScreen from '../screens/signature/signature.screen';
 import LocationsScreen from '../screens/locationsScreen/locations.screen';
 import { HomeStackNavigatorParamList } from './types';
+import JobScreen from '../screens/jobs/jobs.screen';
+
 const HomeStack = createStackNavigator<HomeStackNavigatorParamList>();
 
 const HomeStackNavigator = () => {
@@ -13,6 +15,7 @@ const HomeStackNavigator = () => {
             <HomeStack.Screen options={{ headerShown: false }} name="DeliveryOptions" component={DeliveryOptions} />
             <HomeStack.Screen name="Wallet" component={WalletScreen} />
             <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />
+            <HomeStack.Screen options={{ headerShown: false }} name="Jobs" component={JobScreen} />
             <HomeStack.Screen name="Locations" component={LocationsScreen} />
         </HomeStack.Navigator>
     )

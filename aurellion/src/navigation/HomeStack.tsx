@@ -11,7 +11,7 @@ const HomeStack = createStackNavigator<HomeStackNavigatorParamList>();
 
 const HomeStackNavigator = () => {
     return (
-        <HomeStack.Navigator initialRouteName="Locations">
+        <HomeStack.Navigator initialRouteName="Wallet">
             <HomeStack.Screen options={{ headerShown: false }} name="DeliveryOptions" component={DeliveryOptions} />
             <HomeStack.Screen name="Wallet" component={WalletScreen} />
             <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />

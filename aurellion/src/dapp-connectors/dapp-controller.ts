@@ -3,7 +3,7 @@ import { getSigner } from "./wallet-utils"
 import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env"
 import { toUtf8Bytes } from "ethers/lib/utils";
 import { Journey } from "../navigation/types";
-// console.log("process env", process.env)
+console.log("process env", REACT_APP_AUSYS_CONTRACT_ADDRESS)
 const contractABI = require("./aurellion-abi.json")
 const parcelData = {
   startLocation: { lat: 1, lng: 2 },

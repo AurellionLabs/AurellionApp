@@ -94,12 +94,6 @@ const LocationsMenu = ({region, setRegion, isKeyboardVisible, style}:LocationMen
     setRecipientAddress(text);
   };
 
-//   const handleSubmit = () => {
-//     // Perform submission logic here
-//     console.log('Sending Address:', sendingAddress);
-//     console.log('Recipient Address:', recipientAddress);
-//   };
-
 const geocodeAddress = (address: string): Promise<{ latitude: number; longitude: number }> => {
     const apiKey = GMAPS_API_KEY;
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -230,10 +224,8 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                   
                   onPress={(data, details = null) => {
                     let address = details?.formatted_address || '';
-                    console.log('\n\n\n\n\nGOOGLE Autoplaces details');
-                    console.log(details);
-                    // console.log('details_desc ',details.description);
-                    // console.log('details_add ', details.address);
+                    // console.log('\n\n\n\n\nGOOGLE Autoplaces details');
+                    // console.log(details);
                     setSendingAddress(address);
                   }}
                   fetchDetails={true}
@@ -259,10 +251,8 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                 placeholder={recipientAddress}
                 onPress={(data, details = null) => {
                   let address = details?.formatted_address || '';
-                  console.log('\n\n\n\n\nGOOGLE Autoplaces details');
-                  console.log(details);
-                  // console.log('details_desc ',details.description);
-                  // console.log('details_add ', details.address);
+                  // console.log('\n\n\n\n\nGOOGLE Autoplaces details');
+                  // console.log(details);
                   setRecipientAddress(address);
                 }}
                 fetchDetails={true}

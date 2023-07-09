@@ -65,8 +65,6 @@ const LocationsMenu = ({region, setRegion, isKeyboardVisible, style}:LocationMen
       (position) => {
         const { latitude, longitude } = position.coords;
         setCurrentLocationCoords({location:{lat:latitude, lng:longitude}});
-        console.log('latitude: ', latitude);
-        console.log('longitude: ', longitude);
         setRegion({latitude: latitude, longitude:longitude, latitudeDelta: 0.01, longitudeDelta: 0.01});
 
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GMAPS_API_KEY}`)
@@ -74,8 +72,6 @@ const LocationsMenu = ({region, setRegion, isKeyboardVisible, style}:LocationMen
           .then((data) => {
             const address = data.results[0].formatted_address;
             setCurrentAddress(address);
-            // setSendingAddress(address);
-            console.log('address: ', address);
           })
           .catch((error) => console.error(error));
       },
@@ -93,7 +89,6 @@ const LocationsMenu = ({region, setRegion, isKeyboardVisible, style}:LocationMen
   const handleRecipientAddressChange = (text: string) => {
     setRecipientAddress(text);
   };
-
 
 const geocodeAddress = (address: string): Promise<{ latitude: number; longitude: number }> => {
     const apiKey = GMAPS_API_KEY;
@@ -123,9 +118,6 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
 
 
    const handleSubmit = () => {
-    console.log('in submit');
-    console.log('Sending Address - in submit:', sendingAddress);
-    console.log('Recipient Address - in submit:', recipientAddress);
     if (sendingAddress && recipientAddress) {
       // Get latitude and longitude for sendingAddress and recipientAddress
       const geocodePromises = [
@@ -156,10 +148,12 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
         };
         setPackageDeliveryData(packageDeliveryData);
 
+        console.log("in Submit");
+        console.log("packageDeliveryData");
+        console.log(packageDeliveryData);
+
         navigation.navigate('DeliveryOptions');
 
-        console.log('Sending Location:', sendingLocation );
-        console.log('Recipient Location:', recipientLocation);
         })
         .catch((error) => {
           console.error('Error geocoding addresses:', error);
@@ -170,13 +164,6 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
 
 
   useEffect(() => {
-    console.log('\n\nisKeyboardVisible: ', isKeyboardVisible);
-    console.log('\nsendingAutocomplete: ', sendingAutocomplete);
-    console.log('\nrecipientAutocomplete: ', recipientAutocomplete);
-    console.log('\n\n sending Address coords: ', currentLocationCoords);
-    console.log('\nsending Address: ', sendingAddress);
-    console.log('\nrecipient Address: ', recipientAddress);
-
     if(!isKeyboardVisible){
       setSendingAutocomplete(false);
       setRecipientAutocomplete(false);
@@ -208,7 +195,7 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
 
   const currentLocationGeo = {
     description:currentAddress,
-    address: currentAddress,
+    formatted_address: currentAddress,
     geometry: currentLocationCoords,
   };
 
@@ -231,14 +218,6 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                   
                   onPress={(data, details = null) => {
                     let address = details?.formatted_address || '';
-                    console.log('\n\n\n\n\nGOOGLE Autoplaces details');
-                    console.log(details);
-                    // console.log('details_desc ',details.description);
-                    // console.log('details_add ', details.address);
-                    if(details?.description ==currentAddress){
-                      address = currentAddress;
-                      console.log('\n\n\n Autocompleted Addy', address);
-                    }
                     setSendingAddress(address);
                   }}
                   fetchDetails={true}
@@ -264,14 +243,6 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                 placeholder={recipientAddress}
                 onPress={(data, details = null) => {
                   let address = details?.formatted_address || '';
-                  console.log('\n\n\n\n\nGOOGLE Autoplaces details');
-                  console.log(details);
-                  // console.log('details_desc ',details.description);
-                  // console.log('details_add ', details.address);
-                  if(details?.description ==currentAddress){
-                    address = currentAddress;
-                    console.log('\n\n\n Autocompleted Addy', address);
-                  }
                   setRecipientAddress(address);
                 }}
                 fetchDetails={true}

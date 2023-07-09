@@ -39,7 +39,6 @@ const LocationsScreen = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    console.log('\n\nkeyboard visible or not: ', isKeyboardVisible);
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
     });

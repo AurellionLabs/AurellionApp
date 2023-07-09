@@ -2,7 +2,8 @@ import { ethers } from "ethers";
 import { getSigner } from "./wallet-utils"
 import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env"
 import { toUtf8Bytes } from "ethers/lib/utils";
-import { Journey } from "../navigation/types";
+import { useMainContext } from "../screens/main.provider";
+import { PackageDeliveryData, Journey } from "../common/types/types";
 console.log("process env", REACT_APP_AUSYS_CONTRACT_ADDRESS)
 const contractABI = require("./aurellion-abi.json")
 const parcelData = {
@@ -11,7 +12,9 @@ const parcelData = {
   name: "TestLocation",
 };
 
-export const jobCreation = async () => {
+
+export const jobCreation = async (locationData:PackageDeliveryData ) => {
+
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -19,7 +22,8 @@ export const jobCreation = async () => {
     }
     const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
     const walletAddress = await signer.getAddress();
-    const jobTx = await contract.jobCreation(walletAddress, walletAddress, parcelData, 1, 10);
+    console.log(locationData)
+    const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
     const receipt = await jobTx.wait()
     console.log("Transaction Hash:", receipt.transactionHash);
     console.log("Block Number:", receipt.blockNumber);

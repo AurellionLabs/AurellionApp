@@ -22,7 +22,8 @@ import { fetchCustomersJobs, jobCreation, fetchCustomersJobsObj } from '../../..
 import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
-import { JobScreenNavigationProp, Journey } from '../../../navigation/types';
+import { JobScreenNavigationProp } from '../../../navigation/types';
+import { Journey } from '../../../common/types/types';
 import MenuBox from './menuBox';
 const Menu = () => {
   const navigation = useNavigation<JobScreenNavigationProp>()

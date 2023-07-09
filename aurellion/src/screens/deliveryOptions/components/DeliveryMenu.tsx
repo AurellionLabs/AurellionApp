@@ -21,7 +21,6 @@ import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
-import HomeScreen from '../home.screen';
 import { JobScreenNavigationProp } from '../../../navigation/types';
 const Menu = () => {
   const navigation = useNavigation<JobScreenNavigationProp>()
@@ -33,6 +32,8 @@ const Menu = () => {
   const [selectedBox,setSelectedBox] = useState<boolean>(true)
   const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
   const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
+  const {packageDeliveryData,} = useMainContext();
+
 
   const translateY = useSharedValue(0)
   const setJSHeight = (selectedheight: number) => {
@@ -79,7 +80,7 @@ const Menu = () => {
 
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
-    await jobCreation()
+    await jobCreation(packageDeliveryData)
     navigation.navigate('Jobs') 
     
   }

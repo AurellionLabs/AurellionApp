@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { DarkTheme, LightTheme } from '../constants/Colors';
-import { View, ViewStyle } from 'react-native';
+import { Touchable, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -20,7 +20,11 @@ export const Shadow = styled.View`
   align-items: center;
   shadow-radius: 20;
 `;
-export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
+
+interface RedButtonProps {
+  styles: ViewStyle
+}
+export const RedButton = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +40,7 @@ export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
     background-color: ${DarkTheme.accent};
     border-color: ${DarkTheme.overlayThin};
   `}
+  ${({ styles }: RedButtonProps) => styles};
 `;
 export const RedButtonText = styled.Text`
   color: white;

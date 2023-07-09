@@ -2,6 +2,12 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react'
 
 export type UserType = 'customer' | 'driver';
+type PackageDeliveryData = {
+    sendingLatitude : number;
+    sendingLongitude : number;
+    recipientLatitude : number;
+    recipientLongitude : number;
+}
 
 interface IMainContext {
     wallet: JsonRpcSigner | undefined,
@@ -16,6 +22,8 @@ interface IMainContext {
     setWcURI: Dispatch<SetStateAction<string>>
     userType: UserType
     setUserType: Dispatch<SetStateAction<UserType>>
+    packageDeliveryData: PackageDeliveryData | undefined
+    setPackageDeliveryData: Dispatch<SetStateAction<PackageDeliveryData | undefined>>
 }
 
 export const MainContext = React.createContext<IMainContext>({
@@ -30,7 +38,9 @@ export const MainContext = React.createContext<IMainContext>({
     wcURI: '',
     setWcURI: () => { },
     userType: 'customer',
-    setUserType: () => { }
+    setUserType: () => { },
+    packageDeliveryData: undefined,
+    setPackageDeliveryData: () => { },
 })
 
 interface MainProviderProps {
@@ -44,7 +54,8 @@ const MainProvider = ({ children }: MainProviderProps) => {
     const [deepLink, setDeepLink] = useState<string>('')
     const [wcURI, setWcURI] = useState<string>('')
     const [userType, setUserType] = useState<UserType>('customer')
-
+    const [packageDeliveryData, setPackageDeliveryData] = useState<PackageDeliveryData | undefined>(undefined)
+    
     return (
         <MainContext.Provider value={{
             wallet,
@@ -59,6 +70,8 @@ const MainProvider = ({ children }: MainProviderProps) => {
             setWcURI,
             userType,
             setUserType,
+            packageDeliveryData,
+            setPackageDeliveryData
         }}>
             {children}
         </MainContext.Provider>

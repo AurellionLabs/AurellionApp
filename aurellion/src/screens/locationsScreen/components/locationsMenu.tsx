@@ -207,7 +207,7 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
 
   const currentLocationGeo = {
     description:currentAddress,
-    address: currentAddress,
+    formatted_address: currentAddress,
     geometry: currentLocationCoords,
   };
 
@@ -234,10 +234,6 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                     console.log(details);
                     // console.log('details_desc ',details.description);
                     // console.log('details_add ', details.address);
-                    if(details?.description ==currentAddress){
-                      address = currentAddress;
-                      console.log('\n\n\n Autocompleted Addy', address);
-                    }
                     setSendingAddress(address);
                   }}
                   fetchDetails={true}
@@ -267,10 +263,6 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                   console.log(details);
                   // console.log('details_desc ',details.description);
                   // console.log('details_add ', details.address);
-                  if(details?.description ==currentAddress){
-                    address = currentAddress;
-                    console.log('\n\n\n Autocompleted Addy', address);
-                  }
                   setRecipientAddress(address);
                 }}
                 fetchDetails={true}

@@ -11,6 +11,9 @@ export type HomeStackNavigatorParamList = {
     UserSelection: undefined;
     Jobs: undefined;
     Locations: undefined;
+    AssignDriver: {
+        jobID: string
+    }
 };
 
 export type DeliveryOptionsScreenNavigationProp = StackNavigationProp<
@@ -41,7 +44,14 @@ export type LocationsScreenNavigationProp = StackNavigationProp<
     'Locations'
 >;
 
-export type JobScreenNavigationProp = StackNavigationProp<
+export type AssignDriverScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'AssignDriver'
+>;
+
+export type AssignDriverScreenRouteProp = RouteProp<HomeStackNavigatorParamList, 'AssignDriver'>;
+
+export type JobsScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
     'Jobs'
 >;

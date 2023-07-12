@@ -37,7 +37,7 @@ export const MainContext = React.createContext<IMainContext>({
     setDeepLink: () => { },
     wcURI: '',
     setWcURI: () => { },
-    userType: 'driver',
+    userType: 'customer',
     setUserType: () => { },
     packageDeliveryData: undefined,
     setPackageDeliveryData: () => { },
@@ -53,7 +53,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
     const [universalLink, setUniversalLink] = useState<string>('')
     const [deepLink, setDeepLink] = useState<string>('')
     const [wcURI, setWcURI] = useState<string>('')
-    const [userType, setUserType] = useState<UserType>('driver')
+    const [userType, setUserType] = useState<UserType>('customer')
     const [packageDeliveryData, setPackageDeliveryData] = useState<PackageDeliveryData | undefined>(undefined)
     
     return (

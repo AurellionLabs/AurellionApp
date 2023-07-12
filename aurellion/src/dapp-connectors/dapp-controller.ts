@@ -1,9 +1,12 @@
 import { ethers } from "ethers";
-import { getSigner } from "./wallet-utils"
-import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env"
+import { getSigner } from "./wallet-utils";
+import {
+  REACT_APP_AUSYS_CONTRACT_ADDRESS,
+  REACT_APP_AURA_CONTRACT_ADDRESS,
+} from "@env";
 import { Journey } from "../navigation/types";
-console.log("process env", REACT_APP_AUSYS_CONTRACT_ADDRESS)
-const contractABI = require("./aurellion-abi.json")
+
+const contractABI = require("./aurellion-abi.json");
 const parcelData = {
   startLocation: { lat: 1, lng: 2 },
   endLocation: { lat: 1, lng: 2 },
@@ -16,13 +19,22 @@ export const jobCreation = async () => {
     if (!signer) {
       throw new Error("Signer is undefined");
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
     const walletAddress = await signer.getAddress();
-    const jobTx = await contract.jobCreation(walletAddress, walletAddress, parcelData, 1, 10);
-    const receipt = await jobTx.wait()
+    const jobTx = await contract.jobCreation(
+      walletAddress,
+      walletAddress,
+      parcelData,
+      1,
+      10
+    );
+    const receipt = await jobTx.wait();
     console.log(receipt);
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error in jobCreation:", error);
   }
 };
@@ -33,17 +45,24 @@ export const customerPackageSign = async (jobID: string) => {
     if (!signer) {
       throw new Error("Signer is undefined");
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
     const customerAddress = await signer.getAddress();
-    const journey = await contract.jobIdToJourney(jobID)
-    const customerPackageSignTx = await contract.packageSign(journey.driver, customerAddress, jobID);
-    const receipt = await customerPackageSignTx.wait()
+    const journey = await contract.jobIdToJourney(jobID);
+    const customerPackageSignTx = await contract.packageSign(
+      journey.driver,
+      customerAddress,
+      jobID
+    );
+    const receipt = await customerPackageSignTx.wait();
     console.log(receipt);
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error in customerPackageSign:", error);
   }
-}
+};
 
 export const driverPackageSign = async (jobID: string) => {
   try {
@@ -51,17 +70,24 @@ export const driverPackageSign = async (jobID: string) => {
     if (!signer) {
       throw new Error("Signer is undefined");
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
     const driverAddress = await signer.getAddress();
-    const journey = await contract.jobIdToJourney(jobID)
-    const driverPackageSignTx = await contract.packageSign(driverAddress, journey.customer, jobID);
-    const receipt = await driverPackageSignTx.wait()
+    const journey = await contract.jobIdToJourney(jobID);
+    const driverPackageSignTx = await contract.packageSign(
+      driverAddress,
+      journey.customer,
+      jobID
+    );
+    const receipt = await driverPackageSignTx.wait();
     console.log(receipt);
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error in driverPackageSign:", error);
   }
-}
+};
 
 export const fetchCustomerJobIds = async () => {
   try {
@@ -108,26 +134,69 @@ export const fetchCustomersJobsObj = async () => {
 
     const jobNumber = await contract.numberOfJobsCreated(walletAddress);
     const jobs = [];
-    const jobsObjList:Journey[] = [];
+    const jobsObjList: Journey[] = [];
 
     for (let i = 0; i < jobNumber; i++) {
       try {
         const job = await contract.customerToJobId(walletAddress, i);
         jobs.push(job);
       } catch (err) {
-        console.log("job doesn't exist",err);
+        console.log("job doesn't exist", err);
       }
     }
-    for (var jobID of jobs){
+    for (var jobID of jobs) {
       try {
         const jobsObj = await contract.jobIdToJourney(jobID);
         jobsObjList.push(jobsObj);
       } catch (err) {
-        console.log("job doesn't exist",err);
-      }}
+        console.log("job doesn't exist", err);
+      }
+    }
     return jobsObjList;
   } catch (error) {
     console.error("Error in fetchCustomersJobsObjs:", error);
     throw error; // Re-throw the error to propagate it
+  }
+};
+
+export const checkIfDriverAssignedToJobId = async (jobID: string) => {
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      throw new Error("Signer is undefined");
+    }
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+    const journey = await contract.jobIdToJourney(jobID);
+    const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
+    return isAssigned;
+  } catch (error) {
+    console.error("Error in checkIfDriverAssignedToJobId:", error);
+  }
+};
+
+export const assignDriverToJobId = async (jobID: string) => {
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      throw new Error("Signer is undefined");
+    }
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+    const driverAddress = await signer.getAddress();
+    const assignDriverToJobIdTx = await contract.assignDriverToJobId(
+      driverAddress,
+      jobID
+    );
+    const receipt = await assignDriverToJobIdTx.wait();
+    console.log(receipt);
+  } catch (error) {
+    console.error("Error in assignDriverToJobId:", error);
   }
 };

@@ -4,16 +4,12 @@ import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
   REACT_APP_AURA_CONTRACT_ADDRESS,
 } from "@env";
-import { Journey } from "../navigation/types";
+import { PackageDeliveryData,Journey } from "../common/types/types";
 
 const contractABI = require("./aurellion-abi.json");
-const parcelData = {
-  startLocation: { lat: 1, lng: 2 },
-  endLocation: { lat: 1, lng: 2 },
-  name: "TestLocation",
-};
 
-export const jobCreation = async () => {
+export const jobCreation = async (locationData:PackageDeliveryData ) => {
+
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -24,17 +20,15 @@ export const jobCreation = async () => {
       contractABI,
       signer
     );
-    const walletAddress = await signer.getAddress();
-    const jobTx = await contract.jobCreation(
-      walletAddress,
-      walletAddress,
-      parcelData,
-      1,
-      10
-    );
-    const receipt = await jobTx.wait();
-    console.log(receipt);
-  } catch (error) {
+    const walletAddress = await signer.getAddress();    
+    const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
+    const receipt = await jobTx.wait()
+    console.log("Transaction Hash:", receipt.transactionHash);
+    console.log("Block Number:", receipt.blockNumber);
+    console.log("Gas Used:", receipt.gasUsed.toString());
+    console.log("success");
+  }
+  catch (error) {
     console.error("Error in jobCreation:", error);
   }
 };

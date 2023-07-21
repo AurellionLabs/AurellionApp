@@ -1,13 +1,7 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { PackageDeliveryData, UserType } from '../common/types/types'
 
-export type UserType = 'customer' | 'driver';
-type PackageDeliveryData = {
-    sendingLatitude : number;
-    sendingLongitude : number;
-    recipientLatitude : number;
-    recipientLongitude : number;
-}
 
 interface IMainContext {
     wallet: JsonRpcSigner | undefined,

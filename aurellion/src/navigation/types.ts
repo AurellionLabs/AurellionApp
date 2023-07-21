@@ -56,26 +56,3 @@ export type JobsScreenNavigationProp = StackNavigationProp<
     'Jobs'
 >;
 
-export type Location = {
-    lat:number;
-    lng:number;
-}
-
-export type ParcelData = {
-    startLocation: Location;
-    endLocatio: Location;
-    name: string;
-} 
-
-export type Journey = {
-    parcelData: ParcelData;
-    jobId: string;
-    Status: string;
-    customer: string;
-    reciever: string;
-    driver: string;
-    journeyStart:number;
-    journeyEnd : number;
-    bounty: number;
-    ETA: number;
-}

@@ -7,7 +7,7 @@ import {RedButton, RedButtonText} from '../../../common/components/StyledCompone
 import { useNavigation } from '@react-navigation/native';
 import { useMainContext } from '../../main.provider';
 import { LocationsScreenNavigationProp } from '../../../navigation/types';
-
+import { PackageDeliveryData } from '../../../common/types/types';
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA'; 
 interface LocationMenuProps {
     region: Region,
@@ -128,17 +128,23 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
       Promise.all(geocodePromises)
         .then(([sendingLocation, recipientLocation]) => {
           // Extract latitude and longitude
-          const sendingLatitude = sendingLocation.latitude;
-          const sendingLongitude = sendingLocation.longitude;
-          const recipientLatitude = recipientLocation.latitude;
-          const recipientLongitude = recipientLocation.longitude;
+          const sendingLatitude = sendingLocation.latitude.toString();
+          const sendingLongitude = sendingLocation.longitude.toString();
+          const recipientLatitude = recipientLocation.latitude.toString();
+          const recipientLongitude = recipientLocation.longitude.toString();
   
         //   Navigate to the new screen passing the latitude and longitude as parameters
-        const packageDeliveryData = {
-          sendingLatitude: sendingLatitude,
-          sendingLongitude: sendingLongitude,
-          recipientLatitude: recipientLatitude,
-          recipientLongitude: recipientLongitude,
+        const packageDeliveryData:PackageDeliveryData = {
+          startLocation : {
+            lat:sendingLatitude,
+            lng:sendingLongitude
+          },
+          endLocation : {
+            lat:recipientLatitude,
+            lng:recipientLongitude
+          },
+          startName: sendingAddress,
+          endName: recipientAddress
         };
         setPackageDeliveryData(packageDeliveryData);
 

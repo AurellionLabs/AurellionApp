@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from "react";
 import SwitchSelector from "react-native-switch-selector";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import {
-  Dimensions,
-  Text,
-  useColorScheme,
-  View,
-  Image,
   ScrollView,
 } from "react-native";
-import {
-  SelectedBox,
-  BoxHeadingText,
-  AnimatedRoot,
-  Box,
-} from "./StyledComponents";
-
 import { LightTheme } from "../../../common/constants/Colors";
 import { fetchCustomersJobsObj } from "../../../dapp-connectors/dapp-controller";
-import { UserType, useMainContext } from "../../main.provider";
-import { Journey } from "../../../navigation/types";
+import { useMainContext } from "../../main.provider";
+import { Journey } from '../../../common/types/types';
 import MenuBox from "./menuBox";
 import { Container } from "../../../common/components/StyledComponents";
+import { UserType } from "../../../common/types/types";
 
 const Menu = () => {
   const { setUserType } = useMainContext();
-  const [selectedBox, setSelectedBox] = useState<boolean>(true);
-  const [selectedBox2, setSelectedBox2] = useState<boolean>(false);
-  const [selectedBox3, setSelectedBox3] = useState<boolean>(false);
   const [jobIDs, setJobIDs] = useState<string[]>([]);
   const [jobsObjs, setJobsObjs] = useState<Journey[]>([]);
 
@@ -74,7 +59,7 @@ const Menu = () => {
         style={{ width: "100%" }}
       >
         {jobIDs.map((job) => (
-          <MenuBox key={job} selected={selectedBox} jobID={job} />
+          <MenuBox key={job} selected={true} jobID={job} />
         ))}
       </ScrollView>
     </Container>

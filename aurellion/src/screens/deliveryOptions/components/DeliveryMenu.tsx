@@ -21,10 +21,9 @@ import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
-import HomeScreen from '../home.screen';
-import { JobScreenNavigationProp } from '../../../navigation/types';
-const Menu = () => {
-  const navigation = useNavigation<JobScreenNavigationProp>()
+import { JobsScreenNavigationProp } from '../../../navigation/types';
+const DeliveryMenu = () => {
+  const navigation = useNavigation<JobsScreenNavigationProp>()
   const {universalLink, deepLink, wcURI}= useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
@@ -128,4 +127,4 @@ const Menu = () => {
 
 
 
-export default Menu;
+export default DeliveryMenu;

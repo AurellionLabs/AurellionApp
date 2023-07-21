@@ -5,7 +5,7 @@ import {
 import {
   Container,
 } from '../../common/components/StyledComponents';
-import Menu from './components/DeliveryMenu';
+import DeliveryMenu from './components/DeliveryMenu';
 import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import MapView, { Marker, Region } from 'react-native-maps';
 
@@ -25,7 +25,7 @@ const DeliveryOptionsScreen = () => {
   return (
     <Container style={{ backgroundColor }}>
       <MapView style={{ flex: 1, width: '100%', height: '100%' }} region={region} />
-      <Menu />
+      <DeliveryMenu />
     </Container>
   );
 };

@@ -10,53 +10,59 @@ import { LightTheme } from "../../common/constants/Colors";
 import LottieView from "lottie-react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  JobsScreenNavigationProp,
+  AssignDriverScreenNavigationProp,
   SignatureScreenRouteProp,
 } from "../../navigation/types";
 import { useMainContext } from "../main.provider";
 import {
-  customerPackageSign,
-  driverPackageSign,
+  assignDriverToJobId,
+  checkIfDriverAssignedToJobId,
 } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
 
-const SignatureScreen = () => {
-  const navigation = useNavigation<JobsScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI, userType } = useMainContext();
+const AssignDriverScreen = () => {
+  const navigation = useNavigation<AssignDriverScreenNavigationProp>();
+  const { universalLink, deepLink, wcURI } = useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
-  const { heading, jobID } = route.params;
+  const { jobID } = route.params;
   const isDarkMode = useColorScheme() === "dark";
-  const [isSigned, setIsSigned] = useState(false);
+  const [isAssigned, setIsAssigned] = useState(false);
 
-  const onPress = async () => {
-    navigateDeepLink(universalLink, deepLink, wcURI);
-    if (userType === "customer") {
-      await customerPackageSign(jobID);
-    } else if (userType === "driver") {
-      await driverPackageSign(jobID);
+  const acceptJob = async () => {
+    const isDriverAssigned = await checkIfDriverAssignedToJobId(jobID);
+    if (!isDriverAssigned) {
+      navigateDeepLink(universalLink, deepLink, wcURI);
+      await assignDriverToJobId(jobID);
+      setIsAssigned(true);
+    } else {
+      console.error("Driver already assigned to job");
     }
-    setIsSigned(true);
   };
 
   return (
     <Container styles={{ justifyContent: "center" }}>
-      {isSigned ? (
+      {isAssigned ? (
         <LottieView
           source={require("../../common/assets/animations/success.json")}
           autoPlay
           loop={false}
-          onAnimationFinish={() => navigation.navigate("Jobs")}
+          onAnimationFinish={() =>
+            navigation.navigate("Signature", {
+              heading: "Sign to confirm pacakge received from customer",
+              jobID: jobID,
+            })
+          }
         />
       ) : (
         <>
-          <BoldText>{heading}</BoldText>
+          <BoldText>Do you want to accept this job?</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
               isDarkMode={isDarkMode}
               backgroundColor={LightTheme.accent}
-              onPress={onPress}
+              onPress={acceptJob}
             >
-              <ButtonText>Sign</ButtonText>
+              <ButtonText>Accept Job</ButtonText>
             </Button>
           </View>
         </>
@@ -65,4 +71,4 @@ const SignatureScreen = () => {
   );
 };
 
-export default SignatureScreen;
+export default AssignDriverScreen;

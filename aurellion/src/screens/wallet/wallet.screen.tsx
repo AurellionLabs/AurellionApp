@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -8,26 +8,26 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-  Image
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+  Image,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-import '@walletconnect/react-native-compat';
-import useInitialization from '../../common/hooks/useInitialization';
+import "@walletconnect/react-native-compat";
+import useInitialization from "../../common/hooks/useInitialization";
 import {
   universalProviderSession,
   universalProvider,
   web3Provider,
   clearSession,
   createUniversalProviderSession,
-} from '../../utils/UniversalProvider';
-import ExplorerModal from './components/ExplorerModal';
-import { DarkTheme, LightTheme } from '../../common/constants/Colors';
-import { WalletScreenNavigationProp } from '../../navigation/types';
+} from "../../utils/UniversalProvider";
+import ExplorerModal from "./components/ExplorerModal";
+import { DarkTheme, LightTheme } from "../../common/constants/Colors";
+import { WalletScreenNavigationProp } from "../../navigation/types";
 
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
     : LightTheme.background2;
@@ -49,7 +49,7 @@ function WalletScreen(): JSX.Element {
         setCurrentAccount(currentAddress);
       }
     } catch (err: unknown) {
-      Alert.alert('Error', 'Error getting the Address');
+      Alert.alert("Error", "Error getting the Address");
     }
   }, []);
 
@@ -72,7 +72,7 @@ function WalletScreen(): JSX.Element {
         setCurrentWCURI(undefined);
       }
     },
-    [setCurrentAccount],
+    [setCurrentAccount]
   );
 
   const onConnect = useCallback(async () => {
@@ -90,33 +90,33 @@ function WalletScreen(): JSX.Element {
       setCurrentAccount(undefined);
       setCurrentWCURI(undefined);
     } catch (err: unknown) {
-      Alert.alert('Error', 'Error disconnecting');
+      Alert.alert("Error", "Error disconnecting");
     }
   }, []);
 
   const subscribeToEvents = useCallback(async () => {
     if (universalProvider) {
-      universalProvider.on('display_uri', (uri: string) => {
+      universalProvider.on("display_uri", (uri: string) => {
         setCurrentWCURI(uri);
       });
 
       // Subscribe to session ping
-      universalProvider.on('session_ping', ({ id, topic }) => {
-        console.log('session_ping', id, topic);
+      universalProvider.on("session_ping", ({ id, topic }) => {
+        console.log("session_ping", id, topic);
       });
 
       // Subscribe to session event
-      universalProvider.on('session_event', ({ event, chainId }) => {
-        console.log('session_event', event, chainId);
+      universalProvider.on("session_event", ({ event, chainId }) => {
+        console.log("session_event", event, chainId);
       });
 
       // Subscribe to session update
-      universalProvider.on('session_update', ({ topic, params }) => {
-        console.log('session_update', topic, params);
+      universalProvider.on("session_update", ({ topic, params }) => {
+        console.log("session_update", topic, params);
       });
 
       // Subscribe to session delete
-      universalProvider.on('session_delete', onSessionDelete);
+      universalProvider.on("session_delete", onSessionDelete);
     }
   }, [onSessionDelete]);
 
@@ -129,7 +129,10 @@ function WalletScreen(): JSX.Element {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <View style={[styles.container, { backgroundColor }]}>
-        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo} />
+        <Image
+          source={require("../../common/assets/images/logo.png")}
+          style={styles.logo}
+        />
         {currentAccount ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>
@@ -141,7 +144,8 @@ function WalletScreen(): JSX.Element {
                 styles.disconnectButton,
                 isDarkMode && styles.blueButtonDark,
               ]}
-              onPress={() => navigation.navigate('Locations')}>
+              onPress={() => navigation.navigate("Locations")}
+            >
               <Text style={styles.blueButtonText}>Home Screen</Text>
             </TouchableOpacity>
           </View>
@@ -149,7 +153,8 @@ function WalletScreen(): JSX.Element {
           <TouchableOpacity
             onPress={onConnect}
             style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
-            disabled={!initialized}>
+            disabled={!initialized}
+          >
             {initialized ? (
               <Text style={styles.blueButtonText}>Connect Wallet</Text>
             ) : (
@@ -175,20 +180,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 8,
   },
   text: {
-    fontWeight: '700',
+    fontWeight: "700",
   },
   whiteText: {
-    color: 'white',
+    color: "white",
   },
   blueButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: LightTheme.accent,
     borderRadius: 20,
     width: 150,
@@ -197,9 +202,9 @@ const styles = StyleSheet.create({
     borderColor: LightTheme.overlayThin,
   },
   redButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: LightTheme.accent,
     borderRadius: 20,
     width: 150,
@@ -212,14 +217,14 @@ const styles = StyleSheet.create({
     borderColor: DarkTheme.overlayThin,
   },
   blueButtonText: {
-    color: 'white',
-    fontWeight: '700',
+    color: "white",
+    fontWeight: "700",
   },
   disconnectButton: {
     marginTop: 20,
   },
   logo: {
     width: 250,
-    height: 250
-  }
+    height: 250,
+  },
 });

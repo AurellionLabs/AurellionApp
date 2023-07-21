@@ -80,7 +80,6 @@ const DeliveryMenu = () => {
 
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
-    console.log("here",packageDeliveryData)
     if (packageDeliveryData != undefined){
     await jobCreation(packageDeliveryData)}
     navigation.navigate('Jobs') 

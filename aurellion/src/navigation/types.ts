@@ -1,23 +1,42 @@
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type HomeStackNavigatorParamList = {
     DeliveryOptions: undefined;
     Wallet: undefined;
-    Signature: undefined;
+    Signature: {
+        heading: string
+        jobID: string
+    }
+    UserSelection: undefined;
     Jobs: undefined;
     Locations: undefined;
+    AssignDriver: {
+        jobID: string
+    }
 };
 
-export type HomeScreenNavigationProp = StackNavigationProp<
+export type DeliveryOptionsScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
-    'Signature'
+    'DeliveryOptions'
 >;
 
 export type WalletScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
-    'DeliveryOptions'
-
+    'Wallet'
 >;
+
+export type SignatureScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'Signature'
+>;
+
+export type UserSelectionScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'UserSelection'
+>;
+
+export type SignatureScreenRouteProp = RouteProp<HomeStackNavigatorParamList, 'Signature'>;
 
 
 export type LocationsScreenNavigationProp = StackNavigationProp<
@@ -25,7 +44,14 @@ export type LocationsScreenNavigationProp = StackNavigationProp<
     'Locations'
 >;
 
-export type JobScreenNavigationProp = StackNavigationProp<
+export type AssignDriverScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'AssignDriver'
+>;
+
+export type AssignDriverScreenRouteProp = RouteProp<HomeStackNavigatorParamList, 'AssignDriver'>;
+
+export type JobsScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
     'Jobs'
 >;

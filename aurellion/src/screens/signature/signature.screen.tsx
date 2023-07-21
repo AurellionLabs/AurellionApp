@@ -36,7 +36,6 @@ const SignatureScreen = () => {
       await driverPackageSign(jobID);
     }
     setIsSigned(true);
-    navigation.navigate("Jobs");
   };
 
   return (
@@ -46,6 +45,7 @@ const SignatureScreen = () => {
           source={require("../../common/assets/animations/success.json")}
           autoPlay
           loop={false}
+          onAnimationFinish={() => navigation.navigate("Jobs")}
         />
       ) : (
         <>

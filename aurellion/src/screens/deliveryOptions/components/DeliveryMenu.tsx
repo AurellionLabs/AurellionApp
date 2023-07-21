@@ -32,7 +32,7 @@ const Menu = () => {
   const [selectedBox,setSelectedBox] = useState<boolean>(true)
   const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
   const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
-  const {packageDeliveryData,} = useMainContext();
+  const {packageDeliveryData} = useMainContext();
 
 
   const translateY = useSharedValue(0)
@@ -80,7 +80,9 @@ const Menu = () => {
 
   const createJob = async () => {
     navigateDeepLink(universalLink, deepLink, wcURI)
-    await jobCreation(packageDeliveryData)
+    console.log("here",packageDeliveryData)
+    if (packageDeliveryData != undefined){
+    await jobCreation(packageDeliveryData)}
     navigation.navigate('Jobs') 
     
   }

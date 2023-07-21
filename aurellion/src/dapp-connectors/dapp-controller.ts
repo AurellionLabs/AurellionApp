@@ -10,6 +10,7 @@ const parcelData = {
   startLocation: { lat: 1, lng: 2 },
   endLocation: { lat: 1, lng: 2 },
   name: "TestLocation",
+  namename: "TestLocation2"
 };
 
 
@@ -22,7 +23,8 @@ export const jobCreation = async (locationData:PackageDeliveryData ) => {
     }
     const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
     const walletAddress = await signer.getAddress();
-    console.log(locationData)
+    console.log("here2",locationData)
+    
     const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
     const receipt = await jobTx.wait()
     console.log("Transaction Hash:", receipt.transactionHash);

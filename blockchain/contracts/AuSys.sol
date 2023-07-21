@@ -12,7 +12,9 @@ contract locationContract {
     struct ParcelData {
         Location startLocation;
         Location endLocation;
-        string name;
+        string startName;
+        string endName;
+
         //add customer?
         //add driver?
         //add box

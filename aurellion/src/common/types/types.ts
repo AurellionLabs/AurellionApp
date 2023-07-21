@@ -26,12 +26,12 @@ export type Journey = {
 }
 
 export type location = {
-    lat: number;
-    lng: number;
+    lat: string;
+    lng: string;
 }
 export type PackageDeliveryData = {
-    sendingLocation : location;
-    recipientLocation : Location;
-    sendingAddress: string;
-    recipientAddress:string;
+    startLocation: location;
+    endLocation: location;
+    startName: string;
+    endName: string;
 }

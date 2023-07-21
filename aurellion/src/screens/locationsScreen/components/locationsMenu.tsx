@@ -128,23 +128,23 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
       Promise.all(geocodePromises)
         .then(([sendingLocation, recipientLocation]) => {
           // Extract latitude and longitude
-          const sendingLatitude = sendingLocation.latitude;
-          const sendingLongitude = sendingLocation.longitude;
-          const recipientLatitude = recipientLocation.latitude;
-          const recipientLongitude = recipientLocation.longitude;
+          const sendingLatitude = sendingLocation.latitude.toString();
+          const sendingLongitude = sendingLocation.longitude.toString();
+          const recipientLatitude = recipientLocation.latitude.toString();
+          const recipientLongitude = recipientLocation.longitude.toString();
   
         //   Navigate to the new screen passing the latitude and longitude as parameters
         const packageDeliveryData:PackageDeliveryData = {
-          sendingLocation : {
+          startLocation : {
             lat:sendingLatitude,
             lng:sendingLongitude
           },
-          recipientLocation : {
+          endLocation : {
             lat:recipientLatitude,
             lng:recipientLongitude
           },
-          sendingAddress: sendingAddress,
-          recipientAddress: recipientAddress
+          startName: sendingAddress,
+          endName: recipientAddress
         };
         setPackageDeliveryData(packageDeliveryData);
 

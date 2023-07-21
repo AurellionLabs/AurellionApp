@@ -28,7 +28,7 @@ const AssignDriverScreen = () => {
   const isDarkMode = useColorScheme() === "dark";
   const [isAssigned, setIsAssigned] = useState(false);
 
-  const onPress = async () => {
+  const acceptJob = async () => {
     const isDriverAssigned = await checkIfDriverAssignedToJobId(jobID);
     if (!isDriverAssigned) {
       navigateDeepLink(universalLink, deepLink, wcURI);
@@ -60,7 +60,7 @@ const AssignDriverScreen = () => {
             <Button
               isDarkMode={isDarkMode}
               backgroundColor={LightTheme.accent}
-              onPress={onPress}
+              onPress={acceptJob}
             >
               <ButtonText>Accept Job</ButtonText>
             </Button>

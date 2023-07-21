@@ -4,16 +4,9 @@ import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
   REACT_APP_AURA_CONTRACT_ADDRESS,
 } from "@env";
-import { Journey } from "../navigation/types";
+import { PackageDeliveryData,Journey } from "../common/types/types";
 
 const contractABI = require("./aurellion-abi.json");
-const parcelData = {
-  startLocation: { lat: 1, lng: 2 },
-  endLocation: { lat: 1, lng: 2 },
-  name: "TestLocation",
-  namename: "TestLocation2"
-};
-
 
 export const jobCreation = async (locationData:PackageDeliveryData ) => {
 

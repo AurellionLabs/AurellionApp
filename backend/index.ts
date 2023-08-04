@@ -1,9 +1,11 @@
 import express, {Express, Request, Response} from "express"
 import ParcelsRouter from './src/routes/parcels.route.js'
 import fetch from 'node-fetch';
-
+import {ethers} from 'ethers'
+//import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env";
+import contractABI from "../aurellion/src/dapp-connectors/aurellion-abi.json" assert { type: "json" };
+import {getSigner} from "../aurellion/src/dapp-connectors/wallet-utils"
 const port = 8000;
-
 const app: Express = express();
 
 
@@ -98,6 +100,89 @@ app.get("/GetBoxes/:lat/:long", async (req: Request, res: Response) =>{
       // await getBoxLocations()
       // res.send(boxLocations)
 });
+
+
+
+
+
+const provider = new ethers.providers.JsonRpcProvider("https://ethereum-goerli.publicnode.com"); // Replace with your Ethereum node URL
+
+  // Create a contract instance
+const contract = new ethers.Contract("0x177623975B7A9E87520b6C6c46E8647Fb475fe39", contractABI, provider);
+
+
+// Define the eventObject with proper types
+type EventObject = {
+    id: string;
+    type: string;
+    value: any;
+    age: string;
+    killEvent: (id: string) => void;
+    catEvent: () => void;
+  };
+  
+  let eventObject: EventObject | null = {
+    id: "",
+    type: "",
+    value: undefined,
+    age: "",
+    killEvent: (id) => {
+      eventObject = null;
+    },
+    catEvent: () => {
+      if (eventObject) {
+        console.log(eventObject.id, eventObject.type, eventObject.value, eventObject.age);
+      }
+    },
+  };
+  
+  
+  // Listen for the 'emitSig' event
+  const sigEvents: EventObject[] = [];
+  try {
+    console.log("listening for sig events...")
+    contract.on("emitSig", (id: any, signed: any) => {
+    console.log("Event received:", id,signed);
+    const newEventObject: EventObject = {
+        id: id,
+        type: "SignatureEvent",
+        value: signed,
+        age: "new",
+        killEvent: (id) => {
+          eventObject = null;
+        },
+        catEvent: () => {
+          if (eventObject) {
+            console.log(eventObject)
+          }
+        }
+      }
+
+  
+    if (newEventObject.value != undefined && newEventObject.value === "Signed") {
+      sigEvents.push(newEventObject);
+      newEventObject.catEvent()
+      console.log("catted")
+    }
+    console.log("Listening..........................................");
+
+});} catch (err) {console.log(err)}
+  ;
+  
+  
+  // Utility functions
+  export const getAllEventsForType = (id: string, type: string): EventObject[] => {
+    return sigEvents.filter((event) => event.type === type && event.id === id);
+  };
+  
+  export const killOldEvents = () => {
+    const events = sigEvents.filter((event) => event.age === "old");
+    events.forEach((event) => {
+      event.killEvent(event.id);
+    });
+    console.log("killed Old Events", events);
+  };
+
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

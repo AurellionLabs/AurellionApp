@@ -465,7 +465,7 @@
 				"type": "address"
 			}
 		],
-		"name": "numberOfJobsCreated",
+		"name": "numberOfJobsCreatedForCustomer",
 		"outputs": [
 			{
 				"internalType": "uint256",

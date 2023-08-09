@@ -9,6 +9,7 @@ const app: Express = express();
 
 
 app.use('/parcels', ParcelsRouter);
+app.use('/events', ParcelsRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("AuSys Backend");
@@ -100,7 +101,7 @@ app.get("/GetBoxes/:lat/:long", async (req: Request, res: Response) => {
   // res.send(boxLocations)
 });
 const provider = new ethers.providers.JsonRpcProvider("https://ethereum-goerli.publicnode.com"); // Replace with your Ethereum node URL
-const contract = new ethers.Contract("0x177623975B7A9E87520b6C6c46E8647Fb475fe39", contractABI, provider);
+const contract = new ethers.Contract("0xa81E46089658DB326b6154c3151bFcc913FD8092", contractABI, provider);
 class EventObject {
   id: string;
   value: any;

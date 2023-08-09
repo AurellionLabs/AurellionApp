@@ -4,9 +4,10 @@ import fetch from 'node-fetch';
 import { ethers } from 'ethers'
 //import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env";
 import contractABI from "../aurellion/src/dapp-connectors/aurellion-abi.json" assert { type: "json" };
+import { Client } from "pg";
 const port = 8000;
 const app: Express = express();
-
+import client from "./db.js";
 
 app.use('/parcels', ParcelsRouter);
 app.use('/events', ParcelsRouter);
@@ -102,6 +103,12 @@ app.get("/GetBoxes/:lat/:long", async (req: Request, res: Response) => {
 });
 const provider = new ethers.providers.JsonRpcProvider("https://ethereum-goerli.publicnode.com"); // Replace with your Ethereum node URL
 const contract = new ethers.Contract("0xa81E46089658DB326b6154c3151bFcc913FD8092", contractABI, provider);
+try{
+    client.connect()
+}
+catch (err){
+    console.log("error connecting to db", err)
+}
 class EventObject {
   id: string;
   value: any;
@@ -117,30 +124,22 @@ class EventObject {
     this.age = age;
   }
 }
-const sigEvents: EventObject[] = [];
 try {
   console.log("listening for sig events...")
   contract.on("emitSig", (id: any, signed: any) => {
     console.log("Event received:", id, signed);
     let eventObj = new EventObject(id, signed, "signed", "new")
     if (eventObj.value === "Signed") {
-      sigEvents.push(eventObj);
-      eventObj.catEvent()
+     client.query(
+    `INSERT INTO events (ID, type, value, age) VALUES ($1, $2, $3, $4)`,
+    [eventObj.id, eventObj.type, eventObj.value, eventObj.age]
+); eventObj.catEvent()
     }
     console.log("Listening..........................................");
 
   });
 }
-catch (err) { console.log("Error in listening to signature events",err) }
-;
-export const getAllEventsForType = (id: string, type: string): EventObject[] => {
-  return sigEvents.filter((event) => event.type === type && event.id === id);
-};
-export const killOldEvents = () => {
-  const events = sigEvents.filter((event) => event.age === "old")
-  events.forEach((event) => { event.killEvent() });
-  console.log("killed Old Events", events);
-};
+catch (err) { console.log("Error in listening to signature events",err) };
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

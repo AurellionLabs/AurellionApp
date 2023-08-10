@@ -101,10 +101,24 @@ app.get("/GetBoxes/:lat/:long", async (req: Request, res: Response) => {
   // await getBoxLocations()
   // res.send(boxLocations)
 });
-const provider = new ethers.providers.JsonRpcProvider("https://ethereum-goerli.publicnode.com"); // Replace with your Ethereum node URL
-const contract = new ethers.Contract("0xa81E46089658DB326b6154c3151bFcc913FD8092", contractABI, provider);
+let provider;
 try{
-    client.connect()
+    provider = new ethers.providers.JsonRpcProvider("https://rpc.public.zkevm-test.net"); // Replace with your Ethereum node URL
+
+} catch(err){
+    console.log("error intialising provider")
+    throw err 
+    }
+let contract;
+try{
+    contract = new ethers.Contract("0x7aeA312A70bb992899DCc6DdC2520Ec4b7833547", contractABI, provider);
+} catch(err){
+    console.log("error intialising contract",err)
+    throw err
+}
+
+try{
+    await client.connect()
 }
 catch (err){
     console.log("error connecting to db", err)
@@ -125,20 +139,21 @@ class EventObject {
   }
 }
 try {
-  console.log("listening for sig events...")
-  contract.on("emitSig", (id: any, signed: any) => {
+    console.log("listening for sig events...")
+    contract.on("emitSig", (id: any, signed: any) => {
     console.log("Event received:", id, signed);
     let eventObj = new EventObject(id, signed, "signed", "new")
     if (eventObj.value === "Signed") {
      client.query(
     `INSERT INTO events (ID, type, value, age) VALUES ($1, $2, $3, $4)`,
     [eventObj.id, eventObj.type, eventObj.value, eventObj.age]
-); eventObj.catEvent()
-    }
+    ); 
+    eventObj.catEvent()
     console.log("Listening..........................................");
 
-  });
-}
+            };
+        })
+    }
 catch (err) { console.log("Error in listening to signature events",err) };
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

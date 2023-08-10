@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express"
-import ParcelsRouter from './src/routes/parcels.route.js'
+import ParcelsRouter from './src/routes/parcels.route'
+import EventsRouter from './src/routes/events.route';
 import fetch from 'node-fetch';
 import { ethers } from 'ethers'
 //import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env";
@@ -10,7 +11,7 @@ const app: Express = express();
 import client from "./db.js";
 
 app.use('/parcels', ParcelsRouter);
-app.use('/events', ParcelsRouter);
+app.use('/events', EventsRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("AuSys Backend");

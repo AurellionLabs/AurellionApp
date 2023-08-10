@@ -1,23 +1,28 @@
 
-import {Request, Response, NextFunction} from 'express'
+import { Request, Response, NextFunction } from 'express';
 import client from '../../db';
-//import { getBoxesAtLocationWithRadius , isBoxInOval } from '../helpers/parcels.helper';
-//import { Client } from 'pg';
+
 export const getAllEventsForType = async (req: Request, res: Response, next: NextFunction) => {
-   const events = await client.query(
-    `SELECT * FROM events WHERE id=$1 AND type=$2`,
-        [res.locals.id, res.locals.type]
-   );    
-   res.send(events);
+    try {
+        const events = await client.query(
+            `SELECT * FROM events WHERE id=$1 AND type=$2`,
+            [res.locals.id, res.locals.type]
+        );    
+        res.send(events.rows);
+    } catch (error) {
+        res.status(500).send({message: "Error retrieving events", Error: error});
+    }
 }
-// export const getAllEventsForType = (id: string, type: string): EventObject[] => {
-//     return sigEvents.filter((event) => event.type === type && event.id === id);
-//   };
-export const killOldEvents = async () => {
-    const events = await client.query(
-    `SELECT * FROM events WHERE type="old" `);
-    console.log("killed Old Events", events);
-  };
+
+export const killOldEvents = async (req: Request, res: Response) => {
+    try {
+        const result = await client.query(`DELETE FROM events WHERE age='old'`);
+        res.json({ message: "Old events deleted.", deletedCount: result.rowCount });
+    } catch (error) {
+        res.status(500).send({message: "Error deleting old events.", Error: error});
+    }
+}
+
 
   
 

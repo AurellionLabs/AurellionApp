@@ -4,12 +4,11 @@ import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
   REACT_APP_AURA_CONTRACT_ADDRESS,
 } from "@env";
-import { PackageDeliveryData,Journey } from "../common/types/types";
+import { PackageDeliveryData, Journey } from "../common/types/types";
 
 const contractABI = require("./aurellion-abi.json");
 
-export const jobCreation = async (locationData:PackageDeliveryData ) => {
-
+export const jobCreation = async (locationData: PackageDeliveryData) => {
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -20,15 +19,20 @@ export const jobCreation = async (locationData:PackageDeliveryData ) => {
       contractABI,
       signer
     );
-    const walletAddress = await signer.getAddress();    
-    const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
-    const receipt = await jobTx.wait()
+    const walletAddress = await signer.getAddress();
+    const jobTx = await contract.jobCreation(
+      walletAddress,
+      walletAddress,
+      locationData,
+      1,
+      10
+    );
+    const receipt = await jobTx.wait();
     console.log("Transaction Hash:", receipt.transactionHash);
     console.log("Block Number:", receipt.blockNumber);
     console.log("Gas Used:", receipt.gasUsed.toString());
     console.log("success");
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error in jobCreation:", error);
   }
 };
@@ -126,7 +130,9 @@ export const fetchCustomersJobsObj = async () => {
     );
     const walletAddress = await signer.getAddress();
 
-    const jobNumber = await contract.numberOfJobsCreated(walletAddress);
+    const jobNumber = await contract.numberOfJobsCreatedForCustomer(
+      walletAddress
+    );
     const jobs = [];
     const jobsObjList: Journey[] = [];
 
@@ -165,7 +171,8 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
       signer
     );
     const journey = await contract.jobIdToJourney(jobID);
-    const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
+    const isAssigned =
+      journey.driver === ethers.constants.AddressZero ? false : true;
     return isAssigned;
   } catch (error) {
     console.error("Error in checkIfDriverAssignedToJobId:", error);
@@ -192,5 +199,47 @@ export const assignDriverToJobId = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in assignDriverToJobId:", error);
+  }
+};
+
+export const fetchDriverUnassignedJourneys = async () => {
+  const jobIds = [];
+  const journeys: Journey[] = [];
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      throw new Error("Signer is undefined");
+    }
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+    const totalJobsCount = await contract.jobIdCounter();
+    // Index starts with 1 because smart contract jobIdCounter starts at 1
+    for (let i = 1; i <= totalJobsCount; i++) {
+      try {
+        const jobId = await contract.numberToJobID(i);
+        jobIds.push(jobId);
+      } catch (error) {
+        console.error("Error retrieving jobId", error);
+      }
+    }
+    for (let i = 0; i < jobIds.length; i++) {
+      try {
+        const journey = await contract.jobIdToJourney(jobIds[i]);
+        const isAssigned =
+          journey.driver === ethers.constants.AddressZero ? false : true;
+        if (!isAssigned) {
+          journeys.push(journey);
+        }
+      } catch (error) {
+        console.error("Error retrieving journey from jobId", error);
+      }
+    }
+    return journeys;
+  } catch (error) {
+    console.error("Error in fetchAllJobs:", error);
+    throw error; // Re-throw the error to propagate it
   }
 };

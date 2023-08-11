@@ -3,6 +3,7 @@ import ParcelsRouter from './src/routes/parcels.route'
 import EventsRouter from './src/routes/events.route';
 import fetch from 'node-fetch';
 import { ethers } from 'ethers'
+import 'dotenv/config'
 //import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env";
 import contractABI from "../aurellion/src/dapp-connectors/aurellion-abi.json" assert { type: "json" };
 import { Client } from "pg";
@@ -111,11 +112,14 @@ try{
     throw err 
     }
 let contract;
+if(process.env.AUSYS_ADDRESS)
 try{
-    contract = new ethers.Contract("0x7aeA312A70bb992899DCc6DdC2520Ec4b7833547", contractABI, provider);
+    contract = new ethers.Contract(process.env.AUSYS_ADDRESS, contractABI, provider);
 } catch(err){
-    console.log("error intialising contract",err)
+    console.log("error intialising contract")
     throw err
+}else{
+    throw new Error("failed to load env values");
 }
 
 try{
@@ -151,8 +155,7 @@ try {
     ); 
     eventObj.catEvent()
     console.log("Listening..........................................");
-
-            };
+           };
         })
     }
 catch (err) { console.log("Error in listening to signature events",err) };

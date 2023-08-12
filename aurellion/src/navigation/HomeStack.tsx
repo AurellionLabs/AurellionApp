@@ -8,6 +8,7 @@ import { HomeStackNavigatorParamList } from "./types";
 import LocationsScreen from "../screens/locationsScreen/locations.screen";
 import JobScreen from "../screens/jobs/jobs.screen";
 import AssignDriverScreen from "../screens/assignDriver/assignDriver.screen";
+import ConfirmationScreen from "../screens/confirmationScreen/confirmation.screen";
 
 const HomeStack = createStackNavigator<HomeStackNavigatorParamList>();
 
@@ -24,6 +25,7 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen options={{ headerShown: false }} name="AssignDriver" component={AssignDriverScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="Jobs" component={JobScreen} />
       <HomeStack.Screen name="Locations" component={LocationsScreen} />
+      <HomeStack.Screen name="Confirmation" component={ConfirmationScreen} />
       {/* <HomeStack.Screen options={{ headerShown: false }} name="UserSelection" component={UserSelectionScreen} /> */}
     </HomeStack.Navigator>
   );

@@ -24,6 +24,7 @@ import {
 import ExplorerModal from "./components/ExplorerModal";
 import { DarkTheme, LightTheme } from "../../common/constants/Colors";
 import { WalletScreenNavigationProp } from "../../navigation/types";
+import { useMainContext } from "../main.provider";
 
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
@@ -32,7 +33,7 @@ function WalletScreen(): JSX.Element {
     ? DarkTheme.background2
     : LightTheme.background2;
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState<string>();
+  const {walletAddress, setWalletAddress} = useMainContext();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
   // Initialize universal provider
   const initialized = useInitialization();
@@ -46,7 +47,7 @@ function WalletScreen(): JSX.Element {
       if (web3Provider) {
         const signer = web3Provider.getSigner();
         const currentAddress = await signer.getAddress();
-        setCurrentAccount(currentAddress);
+        setWalletAddress(currentAddress);
       }
     } catch (err: unknown) {
       Alert.alert("Error", "Error getting the Address");
@@ -68,11 +69,11 @@ function WalletScreen(): JSX.Element {
     async ({ topic }: { topic: string }) => {
       if (topic === universalProviderSession?.topic) {
         clearSession();
-        setCurrentAccount(undefined);
+        setWalletAddress(undefined);
         setCurrentWCURI(undefined);
       }
     },
-    [setCurrentAccount]
+    [setWalletAddress]
   );
 
   const onConnect = useCallback(async () => {
@@ -87,7 +88,7 @@ function WalletScreen(): JSX.Element {
     try {
       await universalProvider.disconnect();
       clearSession();
-      setCurrentAccount(undefined);
+      setWalletAddress(undefined);
       setCurrentWCURI(undefined);
     } catch (err: unknown) {
       Alert.alert("Error", "Error disconnecting");
@@ -133,10 +134,10 @@ function WalletScreen(): JSX.Element {
           source={require("../../common/assets/images/logo.png")}
           style={styles.logo}
         />
-        {currentAccount ? (
+        {walletAddress ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>
-              Address: {currentAccount}
+              Address: {walletAddress}
             </Text>
             <TouchableOpacity
               style={[

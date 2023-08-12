@@ -22,8 +22,10 @@ import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
 import { JobsScreenNavigationProp } from '../../../navigation/types';
+import { ConfirmationScreenNavigationProp } from '../../../navigation/types';
 const DeliveryMenu = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>()
+  const confirmationNavigation = useNavigation<ConfirmationScreenNavigationProp>()
   const {universalLink, deepLink, wcURI}= useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
@@ -86,6 +88,10 @@ const DeliveryMenu = () => {
     
   }
 
+  const submitSelection = () => {
+    confirmationNavigation.navigate('Confirmation') 
+  }
+
   return (
 
     <AnimatedRoot height={rootPosition}>
@@ -118,7 +124,7 @@ const DeliveryMenu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <RedButton onPress={createJob}>
+          <RedButton onPress={submitSelection}>
             <RedButtonText>Begin</RedButtonText>
           </RedButton>
         </AnimatedBox>

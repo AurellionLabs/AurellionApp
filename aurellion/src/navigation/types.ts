@@ -13,7 +13,9 @@ export type HomeStackNavigatorParamList = {
     Locations: undefined;
     AssignDriver: {
         jobID: string
-    }
+    };
+    Confirmation: undefined;
+
 };
 
 export type DeliveryOptionsScreenNavigationProp = StackNavigationProp<
@@ -56,3 +58,7 @@ export type JobsScreenNavigationProp = StackNavigationProp<
     'Jobs'
 >;
 
+export type ConfirmationScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'Confirmation'
+>;

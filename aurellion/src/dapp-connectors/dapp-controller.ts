@@ -222,7 +222,7 @@ export const fetchDriverUnassignedJourneys = async () => {
         const jobId = await contract.numberToJobID(i);
         jobIds.push(jobId);
       } catch (error) {
-        console.error("Error retrieving jobId", error);
+        console.error(`No jobId exists at index ${i}`, error)
       }
     }
     for (let i = 0; i < jobIds.length; i++) {
@@ -234,7 +234,7 @@ export const fetchDriverUnassignedJourneys = async () => {
           journeys.push(journey);
         }
       } catch (error) {
-        console.error("Error retrieving journey from jobId", error);
+        console.error(`Error retrieving journey from jobId ${jobIds[i]}`, error);
       }
     }
     return journeys;

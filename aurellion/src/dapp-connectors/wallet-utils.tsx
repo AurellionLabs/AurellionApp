@@ -6,7 +6,7 @@ import {
 export const getSigner = async () => {
     if (web3Provider) {
         const wallet =await web3Provider.getSigner();
-        console.log( await web3Provider.getNetwork())
+        console.log("Getting Signer", await web3Provider.getNetwork())
         return wallet
     }
 }

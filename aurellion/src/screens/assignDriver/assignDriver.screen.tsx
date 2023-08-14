@@ -19,7 +19,7 @@ import { navigateDeepLink } from "../../utils/ExplorerUtils";
 
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI } = useMainContext();
+  const { universalLink, deepLink, wcURI, setRefetchDataFromAPI } = useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
   const { jobID } = route.params;
   const isDarkMode = useColorScheme() === "dark";
@@ -29,6 +29,7 @@ const AssignDriverScreen = () => {
     navigateDeepLink(universalLink, deepLink, wcURI);
     await assignDriverToJobId(jobID);
     setIsAssigned(true);
+    setRefetchDataFromAPI(true)
   };
 
   return (

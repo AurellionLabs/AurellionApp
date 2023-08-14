@@ -16,7 +16,7 @@ import {
 import { UserType } from "../../../common/types/types";
 
 const Menu = () => {
-  const { userType, setUserType } = useMainContext();
+  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } = useMainContext();
   const [jobIDs, setJobIDs] = useState<string[]>([]);
   const [jobsObjs, setJobsObjs] = useState<Journey[]>([]);
 
@@ -40,8 +40,11 @@ const Menu = () => {
   }, [userType]);
 
   useEffect(() => {
-    fetchAndSetJourneys();
-  }, []);
+    if(refetchDataFromAPI){
+      fetchAndSetJourneys();
+      setRefetchDataFromAPI(false)
+    }
+  }, [refetchDataFromAPI]);
 
   useEffect(() => {
     const tempJobIDs = jobsObjs.map((job) => job.jobId);

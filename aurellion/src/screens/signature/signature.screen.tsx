@@ -19,6 +19,7 @@ import {
   driverPackageSign,
 } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
+import Wrapper from "../../common/wrapper";
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
@@ -27,15 +28,26 @@ const SignatureScreen = () => {
   const { heading, jobID } = route.params;
   const isDarkMode = useColorScheme() === "dark";
   const [isSigned, setIsSigned] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const onPress = async () => {
-    navigateDeepLink(universalLink, deepLink, wcURI);
-    if (userType === "customer") {
-      await customerPackageSign(jobID);
-    } else if (userType === "driver") {
-      await driverPackageSign(jobID);
+    setIsLoading(true);
+    try {
+      navigateDeepLink(universalLink, deepLink, wcURI);
+      if (userType === "customer") {
+        await customerPackageSign(jobID);
+      } else if (userType === "driver") {
+        await driverPackageSign(jobID);
+      }
+      setIsSigned(true);
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Error Signing off Package");
+    } finally {
+      setIsLoading(false);
     }
-    setIsSigned(true);
   };
 
   return (
@@ -48,7 +60,7 @@ const SignatureScreen = () => {
           onAnimationFinish={() => navigation.navigate("Jobs")}
         />
       ) : (
-        <>
+        <Wrapper isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage}>
           <BoldText>{heading}</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
@@ -59,7 +71,7 @@ const SignatureScreen = () => {
               <ButtonText>Sign</ButtonText>
             </Button>
           </View>
-        </>
+        </Wrapper>
       )}
     </Container>
   );

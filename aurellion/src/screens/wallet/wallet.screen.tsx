@@ -24,6 +24,7 @@ import {
 import ExplorerModal from "./components/ExplorerModal";
 import { DarkTheme, LightTheme } from "../../common/constants/Colors";
 import { WalletScreenNavigationProp } from "../../navigation/types";
+import Wrapper from "../../common/wrapper";
 
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
@@ -127,48 +128,50 @@ function WalletScreen(): JSX.Element {
   }, [initialized, subscribeToEvents]);
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
-      <View style={[styles.container, { backgroundColor }]}>
-        <Image
-          source={require("../../common/assets/images/logo.png")}
-          style={styles.logo}
-        />
-        {currentAccount ? (
-          <View style={styles.container}>
-            <Text style={[styles.text, isDarkMode && styles.whiteText]}>
-              Address: {currentAccount}
-            </Text>
+    <Wrapper>
+      <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
+        <View style={[styles.container, { backgroundColor }]}>
+          <Image
+            source={require("../../common/assets/images/logo.png")}
+            style={styles.logo}
+          />
+          {currentAccount ? (
+            <View style={styles.container}>
+              <Text style={[styles.text, isDarkMode && styles.whiteText]}>
+                Address: {currentAccount}
+              </Text>
+              <TouchableOpacity
+                style={[
+                  styles.blueButton,
+                  styles.disconnectButton,
+                  isDarkMode && styles.blueButtonDark,
+                ]}
+                onPress={() => navigation.navigate("Jobs")}
+              >
+                <Text style={styles.blueButtonText}>Home Screen</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
             <TouchableOpacity
-              style={[
-                styles.blueButton,
-                styles.disconnectButton,
-                isDarkMode && styles.blueButtonDark,
-              ]}
-              onPress={() => navigation.navigate("Locations")}
+              onPress={onConnect}
+              style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
+              disabled={!initialized}
             >
-              <Text style={styles.blueButtonText}>Home Screen</Text>
+              {initialized ? (
+                <Text style={styles.blueButtonText}>Connect Wallet</Text>
+              ) : (
+                <ActivityIndicator size="small" color="white" />
+              )}
             </TouchableOpacity>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={onConnect}
-            style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
-            disabled={!initialized}
-          >
-            {initialized ? (
-              <Text style={styles.blueButtonText}>Connect Wallet</Text>
-            ) : (
-              <ActivityIndicator size="small" color="white" />
-            )}
-          </TouchableOpacity>
-        )}
-        <ExplorerModal
-          modalVisible={modalVisible}
-          close={close}
-          currentWCURI={currentWCURI}
-        />
-      </View>
-    </SafeAreaView>
+          )}
+          <ExplorerModal
+            modalVisible={modalVisible}
+            close={close}
+            currentWCURI={currentWCURI}
+          />
+        </View>
+      </SafeAreaView>
+    </Wrapper>
   );
 }
 

@@ -4,12 +4,11 @@ import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
   REACT_APP_AURA_CONTRACT_ADDRESS,
 } from "@env";
-import { PackageDeliveryData,Journey } from "../common/types/types";
+import { PackageDeliveryData, Journey } from "../common/types/types";
 
 const contractABI = require("./aurellion-abi.json");
 
-export const jobCreation = async (locationData:PackageDeliveryData ) => {
-
+export const jobCreation = async (locationData: PackageDeliveryData) => {
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -20,15 +19,20 @@ export const jobCreation = async (locationData:PackageDeliveryData ) => {
       contractABI,
       signer
     );
-    const walletAddress = await signer.getAddress();    
-    const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
-    const receipt = await jobTx.wait()
+    const walletAddress = await signer.getAddress();
+    const jobTx = await contract.jobCreation(
+      walletAddress,
+      walletAddress,
+      locationData,
+      1,
+      10
+    );
+    const receipt = await jobTx.wait();
     console.log("Transaction Hash:", receipt.transactionHash);
     console.log("Block Number:", receipt.blockNumber);
     console.log("Gas Used:", receipt.gasUsed.toString());
     console.log("success");
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error in jobCreation:", error);
   }
 };
@@ -55,6 +59,7 @@ export const customerPackageSign = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in customerPackageSign:", error);
+    throw error;
   }
 };
 
@@ -80,6 +85,7 @@ export const driverPackageSign = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in driverPackageSign:", error);
+    throw error;
   }
 };
 
@@ -126,7 +132,9 @@ export const fetchCustomersJobsObj = async () => {
     );
     const walletAddress = await signer.getAddress();
 
-    const jobNumber = await contract.numberOfJobsCreated(walletAddress);
+    const jobNumber = await contract.numberOfJobsCreatedForCustomer(
+      walletAddress
+    );
     const jobs = [];
     const jobsObjList: Journey[] = [];
 
@@ -165,7 +173,8 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
       signer
     );
     const journey = await contract.jobIdToJourney(jobID);
-    const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
+    const isAssigned =
+      journey.driver === ethers.constants.AddressZero ? false : true;
     return isAssigned;
   } catch (error) {
     console.error("Error in checkIfDriverAssignedToJobId:", error);

@@ -1,9 +1,14 @@
-import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../constants/Colors';
-import { View, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import styled from "styled-components/native";
+import { DarkTheme, LightTheme } from "../constants/Colors";
+import {
+  Touchable,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+  ViewStyle,
+} from "react-native";
+import Animated from "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
@@ -20,7 +25,11 @@ export const Shadow = styled.View`
   align-items: center;
   shadow-radius: 20;
 `;
-export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
+
+interface RedButtonProps {
+  styles: ViewStyle;
+}
+export const RedButton = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +45,7 @@ export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
     background-color: ${DarkTheme.accent};
     border-color: ${DarkTheme.overlayThin};
   `}
+  ${({ styles }: RedButtonProps) => styles};
 `;
 export const RedButtonText = styled.Text`
   color: white;
@@ -57,19 +67,19 @@ export const Box = styled.View`
 `;
 
 export const ButtonBox = styled.View`
-padding: 8px;
-border-top-color:  rgba(0, 0, 0, 0.2);
-flex-direction: row;
-border-top-width: 1px;
-margin: 2%;
-width: 100%;
-height: 25%;
-justify-content: space-between;
+  padding: 8px;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  flex-direction: row;
+  border-top-width: 1px;
+  margin: 2%;
+  width: 100%;
+  height: 25%;
+  justify-content: space-between;
 `;
 
 interface ButtonProps {
-  isDarkMode: boolean,
-  backgroundColor: string,
+  isDarkMode: boolean;
+  backgroundColor: string;
 }
 
 export const Button = styled.TouchableOpacity`
@@ -101,7 +111,7 @@ export const BoldText = styled.Text`
 `;
 
 interface ContainerProps {
-  styles: ViewStyle
+  styles: ViewStyle;
 }
 
 export const Container = styled.View`

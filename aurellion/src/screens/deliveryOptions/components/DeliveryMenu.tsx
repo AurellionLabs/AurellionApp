@@ -3,7 +3,6 @@ import { Gesture, GestureDetector  } from 'react-native-gesture-handler';
 import {
   Dimensions,
   Text,
-  TouchableOpacity,
   useColorScheme,
   View,
   Image
@@ -11,24 +10,21 @@ import {
 import { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import {
   SelectedBox,
-  UnSelectedBox,
   BoxHeadingText,
   AnimatedBox,
   AnimatedRoot
-} from '../components/StyledComponents';
-import { useNavigation } from '@react-navigation/native';
+} from './StyledComponents';
 
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
-import { HomeScreenNavigationProp } from '../../../navigation/types';
-
-const Menu = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundColor = isDarkMode
-
-    ? DarkTheme.background2
-    : LightTheme.background2;
+import { jobCreation } from '../../../dapp-connectors/dapp-controller';
+import { useMainContext } from '../../main.provider';
+import { navigateDeepLink } from '../../../utils/ExplorerUtils';
+import { useNavigation } from '@react-navigation/native';
+import { JobsScreenNavigationProp } from '../../../navigation/types';
+const DeliveryMenu = () => {
+  const navigation = useNavigation<JobsScreenNavigationProp>()
+  const {universalLink, deepLink, wcURI}= useMainContext();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
   const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
@@ -36,6 +32,8 @@ const Menu = () => {
   const [selectedBox,setSelectedBox] = useState<boolean>(true)
   const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
   const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
+  const {packageDeliveryData} = useMainContext();
+
 
   const translateY = useSharedValue(0)
   const setJSHeight = (selectedheight: number) => {
@@ -55,7 +53,6 @@ const Menu = () => {
 
 
     }
-    console.log(boxState)      
 
   })
   const translateYStyle = useAnimatedStyle(() => {
@@ -80,6 +77,15 @@ const Menu = () => {
       setSelectedBox3(true)
     }
   }
+
+  const createJob = async () => {
+    navigateDeepLink(universalLink, deepLink, wcURI)
+    if (packageDeliveryData != undefined){
+    await jobCreation(packageDeliveryData)}
+    navigation.navigate('Jobs') 
+    
+  }
+
   return (
 
     <AnimatedRoot height={rootPosition}>
@@ -112,7 +118,7 @@ const Menu = () => {
             </View>
             <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <RedButton isDarkMode={isDarkMode} onPress={() => console.log('ran')}>
+          <RedButton onPress={createJob}>
             <RedButtonText>Begin</RedButtonText>
           </RedButton>
         </AnimatedBox>
@@ -124,4 +130,4 @@ const Menu = () => {
 
 
 
-export default Menu;
+export default DeliveryMenu;

@@ -12,7 +12,9 @@ contract locationContract {
     struct ParcelData {
         Location startLocation;
         Location endLocation;
-        string name;
+        string startName;
+        string endName;
+
         //add customer?
         //add driver?
         //add box
@@ -43,11 +45,14 @@ contract locationContract {
     mapping(bytes32 => uint256) subJourneyCount;
 
     // Map the drivers address to a Journey/SubJourney, need to add address => uint => bytes32
-    mapping(address => bytes32) public driverToJobId;
+    // need to map this to a list of bytes
+    mapping(address => bytes32[]) public driverToJobId;
     // maps a customer to a job
-    mapping(address => bytes32) public customerToJobId;
+    mapping(address => bytes32[]) public customerToJobId;
+    mapping (address => uint256) public numberOfJobsCreated;
+    mapping (address => uint256) public numberOfJobsAssigned;
     // Map Job ID to Journey
-    mapping(bytes32 => Journey) jobIdToJourney;
+    mapping(bytes32 => Journey) public  jobIdToJourney;
     
     // maps number to JOB id for the purpose of iterating through jobs 
     mapping(uint => bytes32) numberToJobID;
@@ -75,7 +80,7 @@ contract locationContract {
         _;
     }
     modifier DriversBoxVerify(address driver, uint box){
-        require(jobToBox[driverToJobId[driver]] == box);
+        //require(jobToBox[driverToJobId[driver]] == box);
         _;
     }
     modifier isInProgress(bytes32 id){
@@ -86,7 +91,7 @@ contract locationContract {
         require(jobIdToJourney[id].currentStatus == Status.Completed);
         _;
     }
-    function journeyKeyHashing(Journey memory journey) private returns (bytes32){
+    function journeyKeyHashing(Journey memory journey) private pure returns (bytes32){
         return keccak256(abi.encode(journey));
     }
 
@@ -95,8 +100,9 @@ contract locationContract {
     }
     //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all jobs then not showing up
     function assignDriverToJobId(address driver, bytes32 jobID) public {
-        driverToJobId[driver] = jobID;
-        jobIdToJourney[jobID].driver = driver; 
+        driverToJobId[driver].push(jobID);
+        jobIdToJourney[jobID].driver = driver;
+        numberOfJobsAssigned[driver] +=1; 
     }
     function packageSign(address driver, address customer, bytes32 id) customerDriverCheck(customer,driver,id) public {
         if(msg.sender == customer){
@@ -107,7 +113,7 @@ contract locationContract {
             driverHandOn[driver][id] = true;
         }
     }
-    function boxActivate(address driver, uint box) DriversBoxVerify(driver,box) public view returns(bool) {
+    function boxActivate(address driver, uint box) DriversBoxVerify(driver,box) public pure returns(bool) {
         //activation code here
         return true;
     }
@@ -135,8 +141,8 @@ contract locationContract {
     }
     function handOn(address driver, address customer,bytes32 id) customerDriverCheck(customer,driver,id) public returns (bool){
         if(customerHandOff[customer][id] == true && driverHandOn[driver][id] == true) {
-            jobIdToJourney[driverToJobId[driver]].currentStatus = Status.InProgress;
-            jobIdToJourney[driverToJobId[driver]].journeyStart = block.timestamp;
+            jobIdToJourney[id].currentStatus = Status.InProgress;
+            jobIdToJourney[id].journeyStart = block.timestamp;
             driverHandOn[driver][id] == false;
             customerHandOff[customer][id] == false;
             return true;
@@ -194,7 +200,8 @@ contract locationContract {
         });
         jobIdToJourney[journey.jobId] = journey;
         jobToBox[journey.jobId] = jobIdCounter;
-        customerToJobId[customer] = journey.jobId;
+        numberOfJobsCreated[customer]+=1;
+        customerToJobId[customer].push(journey.jobId);
     }
 
 }

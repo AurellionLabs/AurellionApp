@@ -104,7 +104,7 @@ app.get("/GetBoxes/:lat/:long", async (req: Request, res: Response) => {
 });
 let provider;
 try{
-    provider = new ethers.providers.JsonRpcProvider("https://rpc.public.zkevm-test.net"); // Replace with your Ethereum node URL
+    provider = new ethers.providers.JsonRpcProvider("https://goerli.blockpi.network/v1/rpc/public"); // Replace with your Ethereum node URL
 
 } catch(err){
     console.log("error intialising provider")

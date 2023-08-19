@@ -1,6 +1,8 @@
 
 import { Request, Response, NextFunction } from 'express';
-import client from '../../db';
+import { client } from '../../db';
+
+
 
 export const getAllEventsForType = async (req: Request, res: Response, next: NextFunction) => {
     try {

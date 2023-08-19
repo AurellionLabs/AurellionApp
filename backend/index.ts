@@ -8,7 +8,8 @@ import contractABI from "../aurellion/src/dapp-connectors/aurellion-abi.json" as
 import { Client } from "pg";
 const port = 8000;
 const app: Express = express();
-import client from "./db.js";
+import {client, createEventsTable} from "./db.js";
+import { EventObject } from "./classes";
 
 app.use('/parcels', ParcelsRouter);
 app.use('/events', EventsRouter);
@@ -107,57 +108,46 @@ try{
     provider = new ethers.providers.JsonRpcProvider("https://goerli.blockpi.network/v1/rpc/public"); // Replace with your Ethereum node URL
 
 } catch(err){
-    console.log("error intialising provider")
-    throw err 
+        console.log("error intialising provider")
+        throw err 
     }
-let contract;
-if(process.env.AUSYS_ADDRESS)
-try{
-    contract = new ethers.Contract(process.env.AUSYS_ADDRESS, contractABI, provider);
-} catch(err){
-    console.log("error intialising contract")
-    throw err
-}else{
-    throw new Error("failed to load env values");
-}
+    try {
 
-try{
-    await client.connect()
-}
-catch (err){
-    console.log("error connecting to db", err)
-}
-class EventObject {
-  id: string;
-  value: any;
-  type: string;
-  age: string;
-  killEvent(): void {  this.id = "", this.value = null, this.type = "" };
-  catEvent(): void { console.log(this) };
+    } catch (e) {
+        console.error(createEventsTable())}
+        let contract;
+        try {
+            await client.connect();
+        } catch (error) {
+            console.error("error while connecting DB",error)
+        }
+    if(process.env.AUSYS_ADDRESS)
+        try{
+            contract = new ethers.Contract(process.env.AUSYS_ADDRESS, contractABI, provider);
+        } catch(err){
+            console.log("error intialising contract")
+            throw err
+        }else{
+            throw new Error("failed to load env values");
+        }
 
-  constructor(id: string, value: any, type: string, age: string) {
-    this.id = id;
-    this.value = value;
-    this.type = type;
-    this.age = age;
-  }
-}
-try {
-    console.log("listening for sig events...")
-    contract.on("emitSig", (id: any, signed: any) => {
-    console.log("Event received:", id, signed);
-    let eventObj = new EventObject(id, signed, "signed", "new")
-    if (eventObj.value === "Signed") {
-     client.query(
-    `INSERT INTO events (ID, type, value, age) VALUES ($1, $2, $3, $4)`,
-    [eventObj.id, eventObj.type, eventObj.value, eventObj.age]
-    ); 
-    eventObj.catEvent()
-    console.log("Listening..........................................");
-           };
-        })
-    }
-catch (err) { console.log("Error in listening to signature events",err) };
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+
+        try {
+            console.log("listening for sig events...")
+                contract.on("emitSig", (id: any, signed: any) => {
+                    console.log("Event received:", id, signed);
+                    let eventObj = new EventObject(id, signed, "signed", "new")
+                    if (eventObj.value === "Signed") {
+                        client.query(
+                            `INSERT INTO events (ID, type, value, age) VALUES ($1, $2, $3, $4)`,
+                            [eventObj.id, eventObj.type, eventObj.value, eventObj.age]
+                        ); 
+                        eventObj.catEvent()
+                        console.log("Listening..........................................");
+                    };
+                })
+        }
+        catch (err) { console.log("Error in listening to signature events",err) };
+        app.listen(port, () => {
+            console.log(`Listening on port ${port}`);
+        });

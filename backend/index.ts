@@ -4,7 +4,6 @@ import EventsRouter from './src/routes/events.route';
 import fetch from 'node-fetch';
 import { ethers } from 'ethers'
 import 'dotenv/config'
-//import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from "@env";
 import contractABI from "../aurellion/src/dapp-connectors/aurellion-abi.json" assert { type: "json" };
 import { Client } from "pg";
 const port = 8000;

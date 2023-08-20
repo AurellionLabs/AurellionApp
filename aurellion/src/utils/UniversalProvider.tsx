@@ -52,7 +52,7 @@ export function clearSession() {
             'personal_sign',
             'eth_signTypedData',
           ],
-          chains: ['eip155:5'],
+          chains: ['eip155:1442'],
           events: ['chainChanged', 'accountsChanged'],
           rpcMap: {},
         },

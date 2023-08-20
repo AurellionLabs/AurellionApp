@@ -5,8 +5,8 @@ import "./Aura.sol" as AuraContract;
 contract locationContract {
     enum Status {Pending, InProgress, Completed, Canceled}
     struct Location {
-        int lat;
-        int lng;
+        string lat;
+        string lng;
     }
 
     struct ParcelData {
@@ -49,13 +49,13 @@ contract locationContract {
     mapping(address => bytes32[]) public driverToJobId;
     // maps a customer to a job
     mapping(address => bytes32[]) public customerToJobId;
-    mapping (address => uint256) public numberOfJobsCreated;
+    mapping (address => uint256) public numberOfJobsCreatedForCustomer;
     mapping (address => uint256) public numberOfJobsAssigned;
     // Map Job ID to Journey
     mapping(bytes32 => Journey) public  jobIdToJourney;
     
     // maps number to JOB id for the purpose of iterating through jobs 
-    mapping(uint => bytes32) numberToJobID;
+    mapping(uint => bytes32) public numberToJobID;
     // a bool that checks if the customer has handed off the package (need to change this to address => journey or job id => bool 
     mapping(address => mapping(bytes32 => bool)) customerHandOff;
     mapping(address => mapping(bytes32 => bool)) driverHandOn;
@@ -66,7 +66,7 @@ contract locationContract {
 
     mapping(address => bool) recieverHandOff;
     Journey[] public subJourneys;
-    uint jobIdCounter = 0;
+    uint public jobIdCounter = 0;
     AuraContract.Aura auraToken;
 
     constructor(AuraContract.Aura _aura){
@@ -84,11 +84,11 @@ contract locationContract {
         _;
     }
     modifier isInProgress(bytes32 id){
-        require(jobIdToJourney[id].currentStatus == Status.InProgress);
+        require(jobIdToJourney[id].currentStatus == Status.InProgress , "Job is not in Progress");
         _;
     }
     modifier isCompleted(bytes32 id){
-        require(jobIdToJourney[id].currentStatus == Status.Completed);
+        require(jobIdToJourney[id].currentStatus == Status.Completed, "Job is Incomplete");
         _;
     }
     function journeyKeyHashing(Journey memory journey) private pure returns (bytes32){
@@ -98,6 +98,7 @@ contract locationContract {
     function getHashedJobId() private returns(bytes32) {
         return keccak256(abi.encode(jobIdCounter+=1));
     }
+    event emitSig(bytes32 id,string signed);
     //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all jobs then not showing up
     function assignDriverToJobId(address driver, bytes32 jobID) public {
         driverToJobId[driver].push(jobID);
@@ -107,11 +108,17 @@ contract locationContract {
     function packageSign(address driver, address customer, bytes32 id) customerDriverCheck(customer,driver,id) public {
         if(msg.sender == customer){
             customerHandOff[customer][id] = true;
+            emit emitSig(id,"Signed");
         }
 
         if(msg.sender == driver){
             driverHandOn[driver][id] = true;
+            emit emitSig(id,"Signed");
         }
+
+        if(customerHandOff[customer][id] == true && driverHandOn[driver][id] == true){
+            emit emitSig(id,"Signed");
+        } 
     }
     function boxActivate(address driver, uint box) DriversBoxVerify(driver,box) public pure returns(bool) {
         //activation code here
@@ -131,7 +138,6 @@ contract locationContract {
         // transfer reward here
         auraToken.transfer(driver, reward);
         customerToTokenAmount[jobIdToJourney[id].customer] -= jobIdToJourney[id].bounty;
-
     }
 
     event printUint(uint256 value); 
@@ -155,9 +161,8 @@ contract locationContract {
         if(customerHandOff[reciever][id] == true && driverHandOn[driver][id] == true) {
             jobIdToJourney[id].currentStatus = Status.Completed;
             jobIdToJourney[id].journeyEnd = block.timestamp;
-
-            generateReward(id,driver);
             
+            generateReward(id,driver);
             return true;
         
         }
@@ -200,8 +205,11 @@ contract locationContract {
         });
         jobIdToJourney[journey.jobId] = journey;
         jobToBox[journey.jobId] = jobIdCounter;
-        numberOfJobsCreated[customer]+=1;
+        numberOfJobsCreatedForCustomer[customer]+=1;
         customerToJobId[customer].push(journey.jobId);
+        // add jobId to global mapping of jobs
+        numberToJobID[jobIdCounter] = journey.jobId;
+        jobIdCounter++;
     }
 
 }

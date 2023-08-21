@@ -1,6 +1,15 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useColorScheme,
+} from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
+import { Button, ButtonText } from "../../common/components/StyledComponents";
+import { LightTheme } from "../../common/constants/Colors";
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -18,6 +27,8 @@ const Wrapper = ({
   setIsError,
   errorText,
 }: WrapperProps) => {
+  const isDarkMode = useColorScheme() === "dark";
+
   return (
     <View style={styles.container}>
       <Spinner
@@ -36,12 +47,13 @@ const Wrapper = ({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{errorText}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
+            <Button
+              isDarkMode={isDarkMode}
+              backgroundColor={LightTheme.accent}
               onPress={() => setIsError && setIsError(false)}
             >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
+              <ButtonText>Close</ButtonText>
+            </Button>
           </View>
         </View>
       </Modal>

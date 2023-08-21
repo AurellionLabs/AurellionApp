@@ -60,7 +60,12 @@ const SignatureScreen = () => {
           onAnimationFinish={() => navigation.navigate("Jobs")}
         />
       ) : (
-        <Wrapper isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage}>
+        <Wrapper
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        >
           <BoldText>{heading}</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button

@@ -34,6 +34,7 @@ export const jobCreation = async (locationData: PackageDeliveryData) => {
     console.log("success");
   } catch (error) {
     console.error("Error in jobCreation:", error);
+    throw error
   }
 };
 
@@ -178,6 +179,7 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
     return isAssigned;
   } catch (error) {
     console.error("Error in checkIfDriverAssignedToJobId:", error);
+    throw error
   }
 };
 
@@ -201,5 +203,6 @@ export const assignDriverToJobId = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in assignDriverToJobId:", error);
+    throw error
   }
 };

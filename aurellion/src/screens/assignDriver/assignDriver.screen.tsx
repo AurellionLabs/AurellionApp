@@ -19,6 +19,7 @@ import {
   checkIfDriverAssignedToJobId,
 } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
+import Wrapper from "../../common/wrapper";
 
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();
@@ -27,15 +28,27 @@ const AssignDriverScreen = () => {
   const { jobID } = route.params;
   const isDarkMode = useColorScheme() === "dark";
   const [isAssigned, setIsAssigned] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const acceptJob = async () => {
-    const isDriverAssigned = await checkIfDriverAssignedToJobId(jobID);
-    if (!isDriverAssigned) {
-      navigateDeepLink(universalLink, deepLink, wcURI);
-      await assignDriverToJobId(jobID);
-      setIsAssigned(true);
-    } else {
-      console.error("Driver already assigned to job");
+    setIsLoading(true);
+    try {
+      const isDriverAssigned = await checkIfDriverAssignedToJobId(jobID);
+      if (!isDriverAssigned) {
+        navigateDeepLink(universalLink, deepLink, wcURI);
+        await assignDriverToJobId(jobID);
+        console.log("Reached")
+        setIsAssigned(true);
+      } else {
+        console.error("Driver already assigned to job");
+      }
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Error assigning driver to job");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,7 +67,12 @@ const AssignDriverScreen = () => {
           }
         />
       ) : (
-        <>
+        <Wrapper
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        >
           <BoldText>Do you want to accept this job?</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
@@ -65,7 +83,7 @@ const AssignDriverScreen = () => {
               <ButtonText>Accept Job</ButtonText>
             </Button>
           </View>
-        </>
+        </Wrapper>
       )}
     </Container>
   );

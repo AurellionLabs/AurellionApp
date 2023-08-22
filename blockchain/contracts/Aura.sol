@@ -1,16 +1,16 @@
 pragma solidity ^0.8.17;
 
 
-import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
+//import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 // import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/extensions/extensions/IERC20Metadata.sol";
-import "../node_modules/openzeppelin-solidity/contracts/utils/Context.sol";
+//import "../node_modules/openzeppelin-solidity/contracts/utils/Context.sol";
 
-import "../node_modules/openzeppelin-solidity/contracts/utils/Context.sol";
+//import "../node_modules/openzeppelin-solidity/contracts/utils/Context.sol";
 
 
-// import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-// import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-// import "@openzeppelin/contracts/utils/Context.sol";
+ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+ import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+ import "@openzeppelin/contracts/utils/Context.sol";
 
 
 contract Aura is Context, IERC20 {
@@ -46,15 +46,15 @@ contract Aura is Context, IERC20 {
         _treasuryAddress = treasuryAddress;
     }
 
-    function name() public view virtual override returns (string memory) {
+    function name() public view virtual  returns (string memory) {
         return _name;
     }
 
-    function symbol() public view virtual override returns (string memory) {
+    function symbol() public view virtual  returns (string memory) {
         return _symbol;
     }
 
-    function decimals() public view virtual override returns (uint8) {
+    function decimals() public view virtual  returns (uint8) {
         return 18;
     }
 

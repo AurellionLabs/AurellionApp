@@ -1,221 +1,6 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "jobID",
-				"type": "bytes32"
-			}
-		],
-		"name": "assignDriverToJobId",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "job",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint256",
-				"name": "box",
-				"type": "uint256"
-			}
-		],
-		"name": "assignJobToBox",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-			}
-		],
-		"name": "generateReward",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "reciever",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			}
-		],
-		"name": "handOff",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "customer",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			}
-		],
-		"name": "handOn",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "customer",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "reciever",
-				"type": "address"
-			},
-			{
-				"components": [
-					{
-						"components": [
-							{
-								"internalType": "int256",
-								"name": "lat",
-								"type": "int256"
-							},
-							{
-								"internalType": "int256",
-								"name": "lng",
-								"type": "int256"
-							}
-						],
-						"internalType": "struct locationContract.Location",
-						"name": "startLocation",
-						"type": "tuple"
-					},
-					{
-						"components": [
-							{
-								"internalType": "int256",
-								"name": "lat",
-								"type": "int256"
-							},
-							{
-								"internalType": "int256",
-								"name": "lng",
-								"type": "int256"
-							}
-						],
-						"internalType": "struct locationContract.Location",
-						"name": "endLocation",
-						"type": "tuple"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
-				"internalType": "struct locationContract.ParcelData",
-				"name": "_data",
-				"type": "tuple"
-			},
-			{
-				"internalType": "uint256",
-				"name": "bounty",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "ETA",
-				"type": "uint256"
-			}
-		],
-		"name": "jobCreation",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "customer",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			}
-		],
-		"name": "packageSign",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "contract Aura",
-				"name": "_aura",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -223,29 +8,41 @@
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
 				"indexed": false,
 				"internalType": "uint256",
 				"name": "value",
 				"type": "uint256"
 			}
 		],
-		"name": "printUint",
+		"name": "Approval",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "driver",
+				"name": "spender",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "box",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"name": "boxActivate",
+		"name": "approve",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -253,6 +50,165 @@
 				"type": "bool"
 			}
 		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "subtractedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "decreaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "addedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "increaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "mintTokenToTreasury",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "treasuryAddress",
+				"type": "address"
+			}
+		],
+		"name": "setTreasuryAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "_deployer",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
 		"stateMutability": "view",
 		"type": "function"
 	},
@@ -260,139 +216,117 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "owner",
 				"type": "address"
-			}
-		],
-		"name": "customerToJobId",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
+			},
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "spender",
 				"type": "address"
 			}
 		],
-		"name": "driverToJobId",
+		"name": "allowance",
 		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "subJourneys",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
 		"outputs": [
 			{
-				"components": [
-					{
-						"components": [
-							{
-								"internalType": "int256",
-								"name": "lat",
-								"type": "int256"
-							},
-							{
-								"internalType": "int256",
-								"name": "lng",
-								"type": "int256"
-							}
-						],
-						"internalType": "struct locationContract.Location",
-						"name": "startLocation",
-						"type": "tuple"
-					},
-					{
-						"components": [
-							{
-								"internalType": "int256",
-								"name": "lat",
-								"type": "int256"
-							},
-							{
-								"internalType": "int256",
-								"name": "lng",
-								"type": "int256"
-							}
-						],
-						"internalType": "struct locationContract.Location",
-						"name": "endLocation",
-						"type": "tuple"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
-				"internalType": "struct locationContract.ParcelData",
-				"name": "parcelData",
-				"type": "tuple"
-			},
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
 			{
-				"internalType": "bytes32",
-				"name": "jobId",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "enum locationContract.Status",
-				"name": "currentStatus",
+				"internalType": "uint8",
+				"name": "",
 				"type": "uint8"
-			},
-			{
-				"internalType": "address",
-				"name": "customer",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "reciever",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-			},
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "minAura",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "journeyStart",
+				"name": "",
 				"type": "uint256"
-			},
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "mintAmount",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "journeyEnd",
+				"name": "",
 				"type": "uint256"
-			},
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "bounty",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "ETA",
+				"name": "",
 				"type": "uint256"
 			}
 		],

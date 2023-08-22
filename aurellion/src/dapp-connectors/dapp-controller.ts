@@ -1,15 +1,14 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { getSigner } from "./wallet-utils";
 import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
   REACT_APP_AURA_CONTRACT_ADDRESS,
 } from "@env";
-import { PackageDeliveryData,Journey } from "../common/types/types";
+import { PackageDeliveryData, Journey } from "../common/types/types";
 
 const contractABI = require("./aurellion-abi.json");
 
-export const jobCreation = async (locationData:PackageDeliveryData ) => {
-
+export const jobCreation = async (locationData: PackageDeliveryData) => {
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -20,15 +19,20 @@ export const jobCreation = async (locationData:PackageDeliveryData ) => {
       contractABI,
       signer
     );
-    const walletAddress = await signer.getAddress();    
-    const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
-    const receipt = await jobTx.wait()
+    const walletAddress = await signer.getAddress();
+    const jobTx = await contract.jobCreation(
+      walletAddress,
+      walletAddress,
+      locationData,
+      1,
+      10
+    );
+    const receipt = await jobTx.wait();
     console.log("Transaction Hash:", receipt.transactionHash);
     console.log("Block Number:", receipt.blockNumber);
     console.log("Gas Used:", receipt.gasUsed.toString());
     console.log("success");
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error in jobCreation:", error);
   }
 };
@@ -126,7 +130,9 @@ export const fetchCustomersJobsObj = async () => {
     );
     const walletAddress = await signer.getAddress();
 
-    const jobNumber = await contract.numberOfJobsCreated(walletAddress);
+    const jobNumber = await contract.numberOfJobsCreatedForCustomer(
+      walletAddress
+    );
     const jobs = [];
     const jobsObjList: Journey[] = [];
 
@@ -165,7 +171,8 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
       signer
     );
     const journey = await contract.jobIdToJourney(jobID);
-    const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
+    const isAssigned =
+      journey.driver === ethers.constants.AddressZero ? false : true;
     return isAssigned;
   } catch (error) {
     console.error("Error in checkIfDriverAssignedToJobId:", error);
@@ -193,4 +200,62 @@ export const assignDriverToJobId = async (jobID: string) => {
   } catch (error) {
     console.error("Error in assignDriverToJobId:", error);
   }
+};
+
+export const fetchDriverUnassignedJourneys = async () => {
+  const jobIds: string[] = [];
+  const journeys: Journey[] = [];
+  let signer: ethers.providers.JsonRpcSigner | undefined;
+  let contract;
+  let totalJobsCount;
+  let jobId: string | null = null;
+  let journey: Journey | null = null;
+  try {
+    signer = await getSigner();
+  } catch (error) {
+    console.error("Could not get signer object");
+    throw error;
+  }
+  try {
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+  } catch (error) {
+    console.error("Could not create Contract object");
+    throw error;
+  }
+  try {
+    totalJobsCount = await contract.jobIdCounter();
+  } catch (error) {
+    console.error("Could not get total jobs count from blockchain");
+    throw error;
+  }
+  // Index starts with 1 because smart contract jobIdCounter starts at 1
+  for (let i = 1; i <= totalJobsCount; i++) {
+    try {
+      jobId = await contract.numberToJobID(i);
+    } catch (error) {
+      console.error(`No jobId exists at index ${i}`);
+    }
+    if (jobId) {
+      jobIds.push(jobId);
+    }
+  }
+  for (let i = 0; i < jobIds.length; i++) {
+    try {
+      journey = await contract.jobIdToJourney(jobIds[i]);
+    } catch (error) {
+      console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
+    }
+    if (journey) {
+      const isAssigned =
+        journey.driver === ethers.constants.AddressZero ? false : true;
+      if (!isAssigned) {
+        journeys.push(journey);
+      }
+    }
+  }
+  return journeys;
 };

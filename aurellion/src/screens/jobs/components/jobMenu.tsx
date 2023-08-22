@@ -17,9 +17,9 @@ import { UserType } from "../../../common/types/types";
 import Wrapper from "../../../common/wrapper";
 
 const Menu = () => {
-  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } = useMainContext();
+  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } =
+    useMainContext();
   const [jobIDs, setJobIDs] = useState<string[]>([]);
-  const [jobsObjs, setJobsObjs] = useState<Journey[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -30,12 +30,21 @@ const Menu = () => {
 
   const fetchAndSetJourneys = async () => {
     let journeys: Journey[] = [];
-    if (userType === "customer") {
-      journeys = await fetchCustomersJobsObj();
-    } else if (userType === "driver") {
-      journeys = await fetchDriverUnassignedJourneys();
+    setIsLoading(true);
+    try {
+      if (userType === "customer") {
+        journeys = await fetchCustomersJobsObj();
+      } else if (userType === "driver") {
+        journeys = await fetchDriverUnassignedJourneys();
+      }
+      const tempJobIDs = journeys.map((job) => job.jobId);
+      setJobIDs(tempJobIDs);
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Error Fetching Jobs");
+    } finally {
+      setIsLoading(false);
     }
-    setJobsObjs(journeys);
   };
 
   useEffect(() => {
@@ -43,16 +52,11 @@ const Menu = () => {
   }, [userType]);
 
   useEffect(() => {
-    if(refetchDataFromAPI){
+    if (refetchDataFromAPI) {
       fetchAndSetJourneys();
-      setRefetchDataFromAPI(false)
+      setRefetchDataFromAPI(false);
     }
   }, [refetchDataFromAPI]);
-
-  useEffect(() => {
-    const tempJobIDs = jobsObjs.map((job) => job.jobId);
-    setJobIDs(tempJobIDs);
-  }, [jobsObjs]);
 
   return (
     <Wrapper
@@ -76,11 +80,9 @@ const Menu = () => {
         contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
         style={{ width: "100%" }}
       >
-        {jobIDs.length > 0 ? (
-          jobIDs.map((job) => <MenuBox key={job} selected={true} jobID={job} />)
-        ) : (
-          <BoldText>No Jobs Available</BoldText>
-        )}
+        {jobIDs.map((job) => (
+          <MenuBox key={job} selected={true} jobID={job} />
+        ))}
       </ScrollView>
     </Wrapper>
   );

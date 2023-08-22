@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { getSigner } from "./wallet-utils";
 import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
@@ -205,4 +205,62 @@ export const assignDriverToJobId = async (jobID: string) => {
     console.error("Error in assignDriverToJobId:", error);
     throw error
   }
+};
+
+export const fetchDriverUnassignedJourneys = async () => {
+  const jobIds: string[] = [];
+  const journeys: Journey[] = [];
+  let signer: ethers.providers.JsonRpcSigner | undefined;
+  let contract;
+  let totalJobsCount;
+  let jobId: string | null = null;
+  let journey: Journey | null = null;
+  try {
+    signer = await getSigner();
+  } catch (error) {
+    console.error("Could not get signer object");
+    throw error;
+  }
+  try {
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+  } catch (error) {
+    console.error("Could not create Contract object");
+    throw error;
+  }
+  try {
+    totalJobsCount = await contract.jobIdCounter();
+  } catch (error) {
+    console.error("Could not get total jobs count from blockchain");
+    throw error;
+  }
+  // Index starts with 1 because smart contract jobIdCounter starts at 1
+  for (let i = 1; i <= totalJobsCount; i++) {
+    try {
+      jobId = await contract.numberToJobID(i);
+    } catch (error) {
+      console.error(`No jobId exists at index ${i}`);
+    }
+    if (jobId) {
+      jobIds.push(jobId);
+    }
+  }
+  for (let i = 0; i < jobIds.length; i++) {
+    try {
+      journey = await contract.jobIdToJourney(jobIds[i]);
+    } catch (error) {
+      console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
+    }
+    if (journey) {
+      const isAssigned =
+        journey.driver === ethers.constants.AddressZero ? false : true;
+      if (!isAssigned) {
+        journeys.push(journey);
+      }
+    }
+  }
+  return journeys;
 };

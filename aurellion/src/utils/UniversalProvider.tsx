@@ -49,27 +49,28 @@ export function clearSession() {
 }
 
 export async function createUniversalProviderSession(callbacks?: {
-        onSuccess?: () => void;
-        onFailure?: (error: any) => void;
-        }) {
-    try {
-        universalProviderSession = await universalProvider.connect({
-namespaces: {
-eip155: {
-methods: [
-'eth_sendTransaction',
-'eth_signTransaction',
-'eth_sign',
-'personal_sign',
-'eth_signTypedData',
-],
-chains: ['eip155:5'],
-events: ['chainChanged', 'accountsChanged'],
-rpcMap: {},
-},
-},
-});
+  onSuccess?: () => void;
+  onFailure?: (error: any) => void;
+}) {
+  try {
+    universalProviderSession = await universalProvider.connect({
+      namespaces: {
+        eip155: {
+          methods: [
+            'eth_sendTransaction',
+            'eth_signTransaction',
+            'eth_sign',
+            'personal_sign',
+            'eth_signTypedData',
+          ],
+          chains: ['eip155:5'],
+          events: ['chainChanged', 'accountsChanged'],
+          rpcMap: {},
+        },
+      },
+    });
     await AsyncStorage.setItem('universalProviderSession', JSON.stringify(universalProviderSession));
+
     web3Provider = new ethers.providers.Web3Provider(universalProvider);
     callbacks?.onSuccess?.();
     } catch (error) {

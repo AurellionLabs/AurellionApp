@@ -24,10 +24,8 @@ function ExplorerItem({currentWCURI, walletInfo}: ExplorerItemProps) {
   const {setUniversalLink, setDeepLink, setWcURI} = useMainContext()
   const onPress = async () => {
     setUniversalLink(walletInfo.mobile.universal)
-    console.log(walletInfo.mobile.universal)
     await AsyncStorage.setItem('universalLink', walletInfo.mobile.universal);
     setDeepLink(walletInfo.mobile.native)
-    console.log(walletInfo.mobile.native)
     await AsyncStorage.setItem('deepLink', walletInfo.mobile.native);
     setWcURI(currentWCURI)
     await AsyncStorage.setItem('currentWCURI', currentWCURI);

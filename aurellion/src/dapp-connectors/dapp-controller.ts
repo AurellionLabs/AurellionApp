@@ -83,64 +83,75 @@ export const driverPackageSign = async (jobID: string) => {
   }
 };
 
-export const fetchCustomersJobsObj = async () => {
-  const jobs = [];
-  const jobsObjList: Journey[] = [];
-  let contract;
+export const fetchCustomerJobIds = async () => {
   try {
     const signer = await getSigner();
     if (!signer) {
       throw new Error("Signer is undefined");
     }
-    try {
-        contract = new ethers.Contract(
-            REACT_APP_AUSYS_CONTRACT_ADDRESS,
-            contractABI,
-            signer) 
-    }catch(error) {
-         console.error(`failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`)
-         throw error
-    };
-
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
     const walletAddress = await signer.getAddress();
-    if (!walletAddress) {
-      throw new Error("Failed to get wallet address");
-    }
+    const customerJobCount = await contract.numberOfJobsCreated(walletAddress);
+    const customerJobIds = [];
 
-    let jobNumber;
-    try {
-      jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
-    } catch (error) {
-      console.log(walletAddress)
-      console.error("Error fetching number of jobs created with walletAddress",walletAddress,"Error:" , error);
-      throw error;
+    for (let i = 0; i < customerJobCount; i++) {
+      try {
+        const job = await contract.customerToJobId(walletAddress, i);
+        customerJobIds.push(job);
+      } catch (error) {
+        console.error("JobID doesn't exist for customer wallet address", error);
+      }
     }
+    return customerJobIds;
+  } catch (error) {
+    console.error("Error in fetchCustomerJobIDs:", error);
+    throw error; // Re-throw the error to propagate it
+  }
+};
+
+export const fetchCustomersJobsObj = async () => {
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      throw new Error("Signer is undefined");
+    }
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+    const walletAddress = await signer.getAddress();
+
+    const jobNumber = await contract.numberOfJobsCreated(walletAddress);
+    const jobs = [];
+    const jobsObjList: Journey[] = [];
 
     for (let i = 0; i < jobNumber; i++) {
       try {
         const job = await contract.customerToJobId(walletAddress, i);
         jobs.push(job);
       } catch (err) {
-        console.error(`Error fetching job with index ${i}:`, err);
+        console.log("job doesn't exist", err);
       }
     }
-
-    for (const jobID of jobs) {
+    for (var jobID of jobs) {
       try {
         const jobsObj = await contract.jobIdToJourney(jobID);
         jobsObjList.push(jobsObj);
       } catch (err) {
-        console.error(`Error fetching job object with ID ${jobID}:`, err);
+        console.log("job doesn't exist", err);
       }
     }
-
     return jobsObjList;
   } catch (error) {
-    console.error("General error in fetchCustomersJobsObj:", error);
-    return []; // Return an empty array in case of an error
+    console.error("Error in fetchCustomersJobsObjs:", error);
+    throw error; // Re-throw the error to propagate it
   }
 };
-
 
 export const checkIfDriverAssignedToJobId = async (jobID: string) => {
   try {

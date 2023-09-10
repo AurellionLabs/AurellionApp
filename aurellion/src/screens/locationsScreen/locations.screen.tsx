@@ -20,7 +20,6 @@ import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import LocationsMenu from './components/locationsMenu';
-import Navbar from '../../common/components/NavBar';
 
 
 const LocationsScreen = () => {
@@ -66,7 +65,6 @@ const LocationsScreen = () => {
         showsCompass
         />
       )}
-      <Navbar/>
     </Container>
   );
 };

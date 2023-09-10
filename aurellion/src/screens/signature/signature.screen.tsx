@@ -22,7 +22,7 @@ import { navigateDeepLink } from "../../utils/ExplorerUtils";
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI, userType } = useMainContext();
+  const { universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI } = useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
   const { heading, jobID } = route.params;
   const isDarkMode = useColorScheme() === "dark";
@@ -36,6 +36,7 @@ const SignatureScreen = () => {
       await driverPackageSign(jobID);
     }
     setIsSigned(true);
+    setRefetchDataFromAPI(true)
   };
 
   return (

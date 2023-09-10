@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { BigNumber } from "ethers";
 import { expect } from "chai";
-import { PackageDeliveryData } from "../AurellionApp/aurellion/src/common/types/types";
+import { PackageDeliveryData } from "./TestTypes";
 
 describe("Ausys", function () {
     let customer, receiver, driver, ausys, aura, balanceBefore;

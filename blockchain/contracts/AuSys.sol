@@ -96,7 +96,7 @@ contract locationContract {
     }
 
     function getHashedJobId() private returns(bytes32) {
-        return keccak256(abi.encode(jobIdCounter+=1));
+        return keccak256(abi.encode(jobIdCounter));
     }
     event emitSig(bytes32 id,string signed);
     //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all jobs then not showing up

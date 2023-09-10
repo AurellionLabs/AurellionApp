@@ -20,11 +20,15 @@ import {
   web3Provider,
   clearSession,
   createUniversalProviderSession,
+  web3ProviderInit,
+  retrieveOldSession,
 } from "../../utils/UniversalProvider";
 import ExplorerModal from "./components/ExplorerModal";
 import { DarkTheme, LightTheme } from "../../common/constants/Colors";
 import { WalletScreenNavigationProp } from "../../navigation/types";
-import Wrapper from "../../common/wrapper";
+import { UniversalProvider } from "@walletconnect/universal-provider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useMainContext } from "../main.provider";
 
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
@@ -38,6 +42,14 @@ function WalletScreen(): JSX.Element {
   // Initialize universal provider
   const initialized = useInitialization();
 
+  const {
+    setUniversalLink,
+    setDeepLink,
+    setWcURI,
+    universalLink,
+    wcURI,
+    deepLink,
+  } = useMainContext();
   const close = () => {
     setModalVisible(false);
   };
@@ -57,6 +69,7 @@ function WalletScreen(): JSX.Element {
   const onSessionCreated = useCallback(async () => {
     getAddress();
     setModalVisible(false);
+    console.log(await getAddress());
   }, [getAddress]);
 
   const onSessionError = useCallback(async () => {
@@ -77,11 +90,37 @@ function WalletScreen(): JSX.Element {
   );
 
   const onConnect = useCallback(async () => {
-    createUniversalProviderSession({
-      onSuccess: onSessionCreated,
-      onFailure: onSessionError,
-    });
-    setModalVisible(true);
+    await retrieveOldSession();
+    let universalLinkFromStorage = null;
+    let wcURIFromStorage = null;
+    let deepLinkFromStorage = null;
+    try {
+      universalLinkFromStorage = String(
+        await AsyncStorage.getItem("universalLink")
+      );
+      deepLinkFromStorage = String(await AsyncStorage.getItem("deepLink"));
+      wcURIFromStorage = String(await AsyncStorage.getItem("currentWcURI"));
+      setUniversalLink(universalLinkFromStorage);
+      setDeepLink(deepLinkFromStorage);
+      setWcURI(wcURIFromStorage);
+    } catch (e) {
+      console.error("Error while setting wallet links", e);
+    }
+    if (
+      universalProviderSession !== undefined &&
+      universalProviderSession !== null &&
+      universalLinkFromStorage != null &&
+      universalProvider
+    ) {
+      web3ProviderInit(universalProvider);
+      getAddress();
+    } else {
+      createUniversalProviderSession({
+        onSuccess: onSessionCreated,
+        onFailure: onSessionError,
+      });
+      setModalVisible(true);
+    }
   }, [onSessionCreated, onSessionError]);
 
   const onDisconnect = useCallback(async () => {
@@ -94,6 +133,13 @@ function WalletScreen(): JSX.Element {
       Alert.alert("Error", "Error disconnecting");
     }
   }, []);
+  const changeStoredWallet = useCallback(async () => {
+    createUniversalProviderSession({
+      onSuccess: onSessionCreated,
+      onFailure: onSessionError,
+    });
+    setModalVisible(true);
+  }, [onSessionCreated, onSessionError]);
 
   const subscribeToEvents = useCallback(async () => {
     if (universalProvider) {
@@ -107,12 +153,12 @@ function WalletScreen(): JSX.Element {
       });
 
       // Subscribe to session event
-      universalProvider.on("session_event", ({ event, chainId }) => {
+      universalProvider.on("session_event", async ({ event, chainId }) => {
         console.log("session_event", event, chainId);
       });
 
       // Subscribe to session update
-      universalProvider.on("session_update", ({ topic, params }) => {
+      universalProvider.on("session_update", async ({ topic, params }) => {
         console.log("session_update", topic, params);
       });
 
@@ -120,7 +166,17 @@ function WalletScreen(): JSX.Element {
       universalProvider.on("session_delete", onSessionDelete);
     }
   }, [onSessionDelete]);
+  useEffect(() => {
+    console.log("Universal Link Updated:", universalLink);
+  }, [universalLink]);
 
+  useEffect(() => {
+    console.log("Deep Link Updated:", deepLink);
+  }, [deepLink]);
+
+  useEffect(() => {
+    console.log("WCURI Updated:", wcURI);
+  }, [wcURI]);
   useEffect(() => {
     if (initialized) {
       subscribeToEvents();
@@ -128,50 +184,58 @@ function WalletScreen(): JSX.Element {
   }, [initialized, subscribeToEvents]);
 
   return (
-    <Wrapper>
-      <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
-        <View style={[styles.container, { backgroundColor }]}>
-          <Image
-            source={require("../../common/assets/images/logo.png")}
-            style={styles.logo}
-          />
-          {currentAccount ? (
-            <View style={styles.container}>
-              <Text style={[styles.text, isDarkMode && styles.whiteText]}>
-                Address: {currentAccount}
-              </Text>
-              <TouchableOpacity
-                style={[
-                  styles.blueButton,
-                  styles.disconnectButton,
-                  isDarkMode && styles.blueButtonDark,
-                ]}
-                onPress={() => navigation.navigate("Jobs")}
-              >
-                <Text style={styles.blueButtonText}>Home Screen</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
+    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
+      <View style={[styles.container, { backgroundColor }]}>
+        <Image
+          source={require("../../common/assets/images/logo.png")}
+          style={styles.logo}
+        />
+        {currentAccount ? (
+          <View style={styles.container}>
+            <Text style={[styles.text, isDarkMode && styles.whiteText]}>
+              Address: {currentAccount}
+            </Text>
             <TouchableOpacity
-              onPress={onConnect}
-              style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
-              disabled={!initialized}
+              style={[
+                styles.blueButton,
+                styles.disconnectButton,
+                isDarkMode && styles.blueButtonDark,
+              ]}
+              onPress={() => navigation.navigate("Jobs")}
             >
-              {initialized ? (
-                <Text style={styles.blueButtonText}>Connect Wallet</Text>
-              ) : (
-                <ActivityIndicator size="small" color="white" />
-              )}
+              <Text style={styles.blueButtonText}>Home Screen</Text>
             </TouchableOpacity>
-          )}
-          <ExplorerModal
-            modalVisible={modalVisible}
-            close={close}
-            currentWCURI={currentWCURI}
-          />
-        </View>
-      </SafeAreaView>
-    </Wrapper>
+            <TouchableOpacity
+              style={[
+                styles.blueButton,
+                styles.disconnectButton,
+                isDarkMode && styles.blueButtonDark,
+              ]}
+              onPress={() => changeStoredWallet()}
+            >
+              <Text style={styles.blueButtonText}>Change Wallet</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={onConnect}
+            style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
+            disabled={!initialized}
+          >
+            {initialized ? (
+              <Text style={styles.blueButtonText}>Connect Wallet</Text>
+            ) : (
+              <ActivityIndicator size="small" color="white" />
+            )}
+          </TouchableOpacity>
+        )}
+        <ExplorerModal
+          modalVisible={modalVisible}
+          close={close}
+          currentWCURI={currentWCURI}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {
   Image,
@@ -21,15 +22,17 @@ export const ITEM_HEIGHT = 80;
 function ExplorerItem({currentWCURI, walletInfo}: ExplorerItemProps) {
   const isDarkMode = useColorScheme() === 'dark';
   const {setUniversalLink, setDeepLink, setWcURI} = useMainContext()
-  const onPress = () => {
+  const onPress = async () => {
     setUniversalLink(walletInfo.mobile.universal)
+    await AsyncStorage.setItem('universalLink', walletInfo.mobile.universal);
     setDeepLink(walletInfo.mobile.native)
+    await AsyncStorage.setItem('deepLink', walletInfo.mobile.native);
     setWcURI(currentWCURI)
-
+    await AsyncStorage.setItem('currentWCURI', currentWCURI);
     navigateDeepLink(
       walletInfo.mobile.universal,
       walletInfo.mobile.native,
-      currentWCURI,
+      currentWCURI, 
     );
   };
 

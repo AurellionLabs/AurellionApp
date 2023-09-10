@@ -56,6 +56,36 @@
 	{
 		"inputs": [
 			{
+				"internalType": "contract Aura",
+				"name": "_aura",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "signed",
+				"type": "string"
+			}
+		],
+		"name": "emitSig",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "driver",
 				"type": "address"
@@ -128,14 +158,14 @@
 					{
 						"components": [
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lat",
-								"type": "int256"
+								"type": "string"
 							},
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lng",
-								"type": "int256"
+								"type": "string"
 							}
 						],
 						"internalType": "struct locationContract.Location",
@@ -145,14 +175,14 @@
 					{
 						"components": [
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lat",
-								"type": "int256"
+								"type": "string"
 							},
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lng",
-								"type": "int256"
+								"type": "string"
 							}
 						],
 						"internalType": "struct locationContract.Location",
@@ -161,7 +191,12 @@
 					},
 					{
 						"internalType": "string",
-						"name": "name",
+						"name": "startName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "endName",
 						"type": "string"
 					}
 				],
@@ -209,17 +244,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "contract Aura",
-				"name": "_aura",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -253,7 +277,7 @@
 				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
+		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
@@ -262,6 +286,11 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"name": "customerToJobId",
@@ -281,9 +310,194 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"name": "driverToJobId",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "jobIdCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "jobIdToJourney",
+		"outputs": [
+			{
+				"components": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "lat",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "lng",
+								"type": "string"
+							}
+						],
+						"internalType": "struct locationContract.Location",
+						"name": "startLocation",
+						"type": "tuple"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "lat",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "lng",
+								"type": "string"
+							}
+						],
+						"internalType": "struct locationContract.Location",
+						"name": "endLocation",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "startName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "endName",
+						"type": "string"
+					}
+				],
+				"internalType": "struct locationContract.ParcelData",
+				"name": "parcelData",
+				"type": "tuple"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "jobId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "enum locationContract.Status",
+				"name": "currentStatus",
+				"type": "uint8"
+			},
+			{
+				"internalType": "address",
+				"name": "customer",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "reciever",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "driver",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "journeyStart",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "journeyEnd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bounty",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ETA",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "numberOfJobsAssigned",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "numberOfJobsCreatedForCustomer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "numberToJobID",
 		"outputs": [
 			{
 				"internalType": "bytes32",
@@ -309,14 +523,14 @@
 					{
 						"components": [
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lat",
-								"type": "int256"
+								"type": "string"
 							},
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lng",
-								"type": "int256"
+								"type": "string"
 							}
 						],
 						"internalType": "struct locationContract.Location",
@@ -326,14 +540,14 @@
 					{
 						"components": [
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lat",
-								"type": "int256"
+								"type": "string"
 							},
 							{
-								"internalType": "int256",
+								"internalType": "string",
 								"name": "lng",
-								"type": "int256"
+								"type": "string"
 							}
 						],
 						"internalType": "struct locationContract.Location",
@@ -342,7 +556,12 @@
 					},
 					{
 						"internalType": "string",
-						"name": "name",
+						"name": "startName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "endName",
 						"type": "string"
 					}
 				],

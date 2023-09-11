@@ -81,7 +81,7 @@ const DeliveryMenu = () => {
 
   const createJob = async () => {
     setIsLoading(true);
-    try{
+    try {
       navigateDeepLink(universalLink, deepLink, wcURI);
       if (packageDeliveryData) {
         await jobCreation(packageDeliveryData);
@@ -96,92 +96,96 @@ const DeliveryMenu = () => {
   };
 
   return (
-    <Wrapper
-      isLoading={isLoading}
-      isError={isError}
-      setIsError={setIsError}
-      errorText={errorMessage}
-    >
-      <AnimatedRoot height={rootPosition}>
-        <GestureDetector gesture={gesture}>
-          <AnimatedBox style={translateYStyle}>
-            <SelectedBox
-              boxState={boxState}
-              boxSelected={selectedBox}
-              onPress={() => selector(1)}
-            >
-              <View>
-                <Image
-                  source={require("../../../common/assets/images/hare.png")}
-                  style={{ height: 20, width: 20 }}
-                />
-                <Text
-                  style={{
-                    color: "green",
-                    fontWeight: "700",
-                    textAlign: "left",
-                  }}
-                >
-                  Fast
+    <>
+      {isLoading || isError ? (
+        <Wrapper
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        />
+      ) : (
+        <AnimatedRoot height={rootPosition}>
+          <GestureDetector gesture={gesture}>
+            <AnimatedBox style={translateYStyle}>
+              <SelectedBox
+                boxState={boxState}
+                boxSelected={selectedBox}
+                onPress={() => selector(1)}
+              >
+                <View>
+                  <Image
+                    source={require("../../../common/assets/images/hare.png")}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <Text
+                    style={{
+                      color: "green",
+                      fontWeight: "700",
+                      textAlign: "left",
+                    }}
+                  >
+                    Fast
+                  </Text>
+                  <Text>Same Day</Text>
+                  <Text>Edit...</Text>
+                </View>
+                <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
+                  100 AURA
                 </Text>
-                <Text>Same Day</Text>
-                <Text>Edit...</Text>
-              </View>
-              <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
-                100 AURA
-              </Text>
-            </SelectedBox>
-            <SelectedBox
-              boxState={boxState}
-              boxSelected={selectedBox2}
-              onPress={() => selector(2)}
-            >
-              <View>
-                <Image
-                  source={require("../../../common/assets/images/running.png")}
-                  style={{ height: 20, width: 20 }}
-                />
-                <Text
-                  style={{
-                    color: LightTheme.foreground2,
-                    fontWeight: "700",
-                    textAlign: "left",
-                  }}
-                >
-                  Medium
+              </SelectedBox>
+              <SelectedBox
+                boxState={boxState}
+                boxSelected={selectedBox2}
+                onPress={() => selector(2)}
+              >
+                <View>
+                  <Image
+                    source={require("../../../common/assets/images/running.png")}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <Text
+                    style={{
+                      color: LightTheme.foreground2,
+                      fontWeight: "700",
+                      textAlign: "left",
+                    }}
+                  >
+                    Medium
+                  </Text>
+                  <Text>Next Day</Text>
+                  <Text>Edit...</Text>
+                </View>
+                <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
+                  100 AURA
                 </Text>
-                <Text>Next Day</Text>
-                <Text>Edit...</Text>
-              </View>
-              <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
-                100 AURA
-              </Text>
-            </SelectedBox>
-            <SelectedBox
-              boxState={boxState}
-              boxSelected={selectedBox3}
-              onPress={() => selector(3)}
-            >
-              <View>
-                <Image
-                  source={require("../../../common/assets/images/turtle.png")}
-                  style={{ height: 20, width: 20 }}
-                />
-                <BoxHeadingText>Slow</BoxHeadingText>
-                <Text>Next 3 Days</Text>
-                <Text>Edit...</Text>
-              </View>
-              <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
-                100 AURA
-              </Text>
-            </SelectedBox>
-            <RedButton onPress={createJob}>
-              <RedButtonText>Begin</RedButtonText>
-            </RedButton>
-          </AnimatedBox>
-        </GestureDetector>
-      </AnimatedRoot>
-    </Wrapper>
+              </SelectedBox>
+              <SelectedBox
+                boxState={boxState}
+                boxSelected={selectedBox3}
+                onPress={() => selector(3)}
+              >
+                <View>
+                  <Image
+                    source={require("../../../common/assets/images/turtle.png")}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <BoxHeadingText>Slow</BoxHeadingText>
+                  <Text>Next 3 Days</Text>
+                  <Text>Edit...</Text>
+                </View>
+                <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
+                  100 AURA
+                </Text>
+              </SelectedBox>
+              <RedButton onPress={createJob}>
+                <RedButtonText>Begin</RedButtonText>
+              </RedButton>
+            </AnimatedBox>
+          </GestureDetector>
+        </AnimatedRoot>
+      )}
+    </>
   );
 };
 

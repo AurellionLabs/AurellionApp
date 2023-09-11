@@ -59,13 +59,15 @@ const AssignDriverScreen = () => {
             })
           }
         />
-      ) : (
+      ) : isLoading ? (
         <Wrapper
           isLoading={isLoading}
           isError={isError}
           setIsError={setIsError}
           errorText={errorMessage}
-        >
+        />
+      ) : (
+        <>
           <BoldText>Do you want to accept this job?</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
@@ -76,7 +78,7 @@ const AssignDriverScreen = () => {
               <ButtonText>Accept Job</ButtonText>
             </Button>
           </View>
-        </Wrapper>
+        </>
       )}
     </Container>
   );

@@ -61,13 +61,15 @@ const SignatureScreen = () => {
           loop={false}
           onAnimationFinish={() => navigation.navigate("Jobs")}
         />
-      ) : (
+      ) : isLoading ? (
         <Wrapper
           isLoading={isLoading}
           isError={isError}
           setIsError={setIsError}
           errorText={errorMessage}
-        >
+        />
+      ) : (
+        <>
           <BoldText>{heading}</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
@@ -78,7 +80,7 @@ const SignatureScreen = () => {
               <ButtonText>Sign</ButtonText>
             </Button>
           </View>
-        </Wrapper>
+        </>
       )}
     </Container>
   );

@@ -19,6 +19,7 @@ import Wrapper from "../../../common/wrapper";
 const Menu = () => {
   const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } =
     useMainContext();
+  const [switchOption, setSwitchOption] = useState(0);
   const [jobIDs, setJobIDs] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -33,8 +34,10 @@ const Menu = () => {
     setIsLoading(true);
     try {
       if (userType === "customer") {
+        setSwitchOption(0);
         journeys = await fetchCustomersJobsObj();
       } else if (userType === "driver") {
+        setSwitchOption(1);
         journeys = await fetchDriverUnassignedJourneys();
       }
       const tempJobIDs = journeys.map((job) => job.jobId);
@@ -47,44 +50,67 @@ const Menu = () => {
     }
   };
 
+  const refetchAndSetJourneys = async () => {
+    let journeys: Journey[] = [];
+    try {
+      if (userType === "customer") {
+        setSwitchOption(0);
+        journeys = await fetchCustomersJobsObj();
+      } else if (userType === "driver") {
+        setSwitchOption(1);
+        journeys = await fetchDriverUnassignedJourneys();
+      }
+      const tempJobIDs = journeys.map((job) => job.jobId);
+      setJobIDs(tempJobIDs);
+    } catch (error) {
+      console.log("Error Fetching Jobs");
+    }
+  };
+
   useEffect(() => {
     fetchAndSetJourneys();
   }, [userType]);
 
   useEffect(() => {
     if (refetchDataFromAPI) {
-      fetchAndSetJourneys();
+      refetchAndSetJourneys();
       setRefetchDataFromAPI(false);
     }
   }, [refetchDataFromAPI]);
 
   return (
-    <Wrapper
-      isLoading={isLoading}
-      isError={isError}
-      setIsError={setIsError}
-      errorText={errorMessage}
-    >
-      <SwitchSelector
-        initial={0}
-        onPress={(value: UserType) => setUserType(value)}
-        textColor={LightTheme.foreground1}
-        selectedColor={LightTheme.accent}
-        buttonColor={LightTheme.background2}
-        borderColor={LightTheme.accent}
-        hasPadding
-        options={options}
-        accessibilityLabel="user-type-switch-selector"
-      />
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
-        style={{ width: "100%" }}
-      >
-        {jobIDs.map((job) => (
-          <MenuBox key={job} selected={true} jobID={job} />
-        ))}
-      </ScrollView>
-    </Wrapper>
+    <Container>
+      {isError || isLoading ? (
+        <Wrapper
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        />
+      ) : (
+        <>
+          <SwitchSelector
+            initial={switchOption}
+            onPress={(value: UserType) => setUserType(value)}
+            textColor={LightTheme.foreground1}
+            selectedColor={LightTheme.accent}
+            buttonColor={LightTheme.background2}
+            borderColor={LightTheme.accent}
+            hasPadding
+            options={options}
+            accessibilityLabel="user-type-switch-selector"
+          />
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
+            style={{ width: "100%" }}
+          >
+            {jobIDs.map((job) => (
+              <MenuBox key={job} selected={true} jobID={job} />
+            ))}
+          </ScrollView>
+        </>
+      )}
+    </Container>
   );
 };
 

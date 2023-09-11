@@ -12,7 +12,6 @@ import { Button, ButtonText } from "../../common/components/StyledComponents";
 import { LightTheme } from "../../common/constants/Colors";
 
 interface WrapperProps {
-  children: React.ReactNode;
   isLoading?: boolean;
   spinnerText?: string;
   isError?: boolean;
@@ -20,7 +19,6 @@ interface WrapperProps {
   errorText?: string;
 }
 const Wrapper = ({
-  children,
   isLoading,
   spinnerText,
   isError,
@@ -30,7 +28,7 @@ const Wrapper = ({
   const isDarkMode = useColorScheme() === "dark";
 
   return (
-    <View style={styles.container}>
+    <>
       <Spinner
         visible={isLoading ?? false}
         textContent={spinnerText ?? "Loading..."}
@@ -57,19 +55,13 @@ const Wrapper = ({
           </View>
         </View>
       </Modal>
-      {children}
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: "#FFF",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   welcome: {
     fontSize: 20,

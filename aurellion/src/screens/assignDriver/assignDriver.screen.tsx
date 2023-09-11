@@ -16,7 +16,7 @@ import {
 import { useMainContext } from "../main.provider";
 import { assignDriverToJobId } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
-import Wrapper from "../../common/wrapper";
+import Loader from "../../common/loader";
 
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();
@@ -60,7 +60,7 @@ const AssignDriverScreen = () => {
           }
         />
       ) : isLoading ? (
-        <Wrapper
+        <Loader
           isLoading={isLoading}
           isError={isError}
           setIsError={setIsError}

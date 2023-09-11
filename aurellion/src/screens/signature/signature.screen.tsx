@@ -19,7 +19,7 @@ import {
   driverPackageSign,
 } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
-import Wrapper from "../../common/wrapper";
+import Loader from "../../common/loader";
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
@@ -62,7 +62,7 @@ const SignatureScreen = () => {
           onAnimationFinish={() => navigation.navigate("Jobs")}
         />
       ) : isLoading ? (
-        <Wrapper
+        <Loader
           isLoading={isLoading}
           isError={isError}
           setIsError={setIsError}

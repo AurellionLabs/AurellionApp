@@ -23,7 +23,7 @@ import { useMainContext } from "../../main.provider";
 import { navigateDeepLink } from "../../../utils/ExplorerUtils";
 import { useNavigation } from "@react-navigation/native";
 import { JobsScreenNavigationProp } from "../../../navigation/types";
-import Wrapper from "../../../common/wrapper";
+import Loader from "../../../common/loader";
 const DeliveryMenu = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI } = useMainContext();
@@ -98,7 +98,7 @@ const DeliveryMenu = () => {
   return (
     <>
       {isLoading || isError ? (
-        <Wrapper
+        <Loader
           isLoading={isLoading}
           isError={isError}
           setIsError={setIsError}

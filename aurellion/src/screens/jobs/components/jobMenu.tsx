@@ -14,7 +14,7 @@ import {
   Container,
 } from "../../../common/components/StyledComponents";
 import { UserType } from "../../../common/types/types";
-import Wrapper from "../../../common/wrapper";
+import Loader from "../../../common/loader";
 
 const Menu = () => {
   const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } =
@@ -81,7 +81,7 @@ const Menu = () => {
   return (
     <Container>
       {isError || isLoading ? (
-        <Wrapper
+        <Loader
           isLoading={isLoading}
           isError={isError}
           setIsError={setIsError}

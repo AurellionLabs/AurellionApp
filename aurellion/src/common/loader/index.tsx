@@ -8,23 +8,23 @@ import {
   useColorScheme,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
-import { Button, ButtonText } from "../../common/components/StyledComponents";
-import { LightTheme } from "../../common/constants/Colors";
+import { Button, ButtonText } from "../components/StyledComponents";
+import { LightTheme } from "../constants/Colors";
 
-interface WrapperProps {
+interface LoaderProps {
   isLoading?: boolean;
   spinnerText?: string;
   isError?: boolean;
   setIsError?: Dispatch<SetStateAction<boolean>>;
   errorText?: string;
 }
-const Wrapper = ({
+const Loader = ({
   isLoading,
   spinnerText,
   isError,
   setIsError,
   errorText,
-}: WrapperProps) => {
+}: LoaderProps) => {
   const isDarkMode = useColorScheme() === "dark";
 
   return (
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wrapper;
+export default Loader;

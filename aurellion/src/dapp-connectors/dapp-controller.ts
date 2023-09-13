@@ -119,14 +119,13 @@ export const fetchCustomersJobsObj = async () => {
       console.error("Error fetching number of jobs created with walletAddress",walletAddress,"Error:" , error);
       throw error;
     }
-    const contract = new ethers.Contract(
+    contract = new ethers.Contract(
       REACT_APP_AUSYS_CONTRACT_ADDRESS,
       contractABI,
       signer
     );
-    const walletAddress = await signer.getAddress();
 
-    const jobNumber = await contract.numberOfJobsCreatedForCustomer(
+      jobNumber = await contract.numberOfJobsCreatedForCustomer(
       walletAddress
     );
     const jobs = [];

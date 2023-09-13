@@ -16,7 +16,7 @@ function TypingText({ text, speed }) {
     }
   }, [index, text, speed]);
 
-  return <RedButtonText style={{color:"#fca503"}}>{displayedText}</RedButtonText>;
+  return <RedButtonText style={{color:"#fca503",fontFamily:"Inter-Bold",fontWeight:"300", fontSize:70, paddingBottom:"10%"}}>{displayedText}</RedButtonText>;
 }
 
 export default TypingText;

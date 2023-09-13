@@ -179,6 +179,7 @@ try {
           source={require("../../common/assets/images/logo.png")}
           style={styles.logo}
         />
+        <TypingText text="Aurellion" speed={30}/>
         {currentAccount ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>
@@ -193,7 +194,7 @@ try {
         ) : (
           <RedButton
             onPress={onConnect} 
-             style={{marginBottom: "40%"}}>
+             style={{marginBottom: "70%"}}>
             {initialized ? (
               <RedButtonText>Connect Wallet</RedButtonText>
             ) : (
@@ -206,7 +207,6 @@ try {
           close={close}
           currentWCURI={currentWCURI}
         />
-        <TypingText text="Aurellion" speed={20}/>
       </View>
     </SafeAreaView>
   );
@@ -266,6 +266,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 250,
     height: 250,
-    marginBottom: "20%"
+    marginBottom: "5%"
   },
 });

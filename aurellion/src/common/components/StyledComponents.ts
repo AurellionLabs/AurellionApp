@@ -48,8 +48,9 @@ export const RedButton = styled.TouchableOpacity`
   ${({ styles }: RedButtonProps) => styles};
 `;
 export const RedButtonText = styled.Text`
-  color: white;
-  font-weight: 700;
+  color: white;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
+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
+  font-family: Inter-Regular;
 `;
 export const Box = styled.View`
   position: absolute;
@@ -107,7 +108,7 @@ export const ButtonText = styled.Text`
 
 export const BoldText = styled.Text`
   color: #000;
-  font-weight: 700;
+  font-family: Inter-Bold;
 `;
 
 interface ContainerProps {

@@ -24,6 +24,8 @@ import {
 import ExplorerModal from "./components/ExplorerModal";
 import { DarkTheme, LightTheme } from "../../common/constants/Colors";
 import { WalletScreenNavigationProp } from "../../navigation/types";
+import { RedButton, RedButtonText } from "../../common/components/StyledComponents";
+import TypingText from "../../common/components/TypingText";
 
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
@@ -129,6 +131,11 @@ function WalletScreen(): JSX.Element {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <View style={[styles.container, { backgroundColor }]}>
+        
+        <Image
+          source={require("../../common/assets/images/eclipse-alt.png")}
+          style={{height: "4%", width: "8%"}}
+        />
         <Image
           source={require("../../common/assets/images/logo.png")}
           style={styles.logo}
@@ -138,35 +145,29 @@ function WalletScreen(): JSX.Element {
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>
               Address: {currentAccount}
             </Text>
-            <TouchableOpacity
-              style={[
-                styles.blueButton,
-                styles.disconnectButton,
-                isDarkMode && styles.blueButtonDark,
-              ]}
+            <RedButton
               onPress={() => navigation.navigate("Locations")}
             >
-              <Text style={styles.blueButtonText}>Home Screen</Text>
-            </TouchableOpacity>
+              <RedButtonText>Home Screen</RedButtonText>
+            </RedButton>
           </View>
         ) : (
-          <TouchableOpacity
-            onPress={onConnect}
-            style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
-            disabled={!initialized}
-          >
+          <RedButton
+            onPress={onConnect} 
+             style={{marginBottom: "40%"}}>
             {initialized ? (
-              <Text style={styles.blueButtonText}>Connect Wallet</Text>
+              <RedButtonText>Connect Wallet</RedButtonText>
             ) : (
               <ActivityIndicator size="small" color="white" />
             )}
-          </TouchableOpacity>
+          </RedButton>
         )}
         <ExplorerModal
           modalVisible={modalVisible}
           close={close}
           currentWCURI={currentWCURI}
         />
+        <TypingText text="Aurellion" speed={20}/>
       </View>
     </SafeAreaView>
   );
@@ -226,5 +227,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 250,
     height: 250,
+    marginBottom: "20%"
   },
 });

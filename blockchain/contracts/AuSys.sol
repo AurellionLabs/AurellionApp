@@ -96,7 +96,7 @@ contract locationContract {
     }
 
     function getHashedJobId() private returns(bytes32) {
-        return keccak256(abi.encode(jobIdCounter));
+        return keccak256(abi.encode(jobIdCounter+=1));
     }
     event emitSig(bytes32 id,string signed);
     //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all jobs then not showing up
@@ -209,7 +209,5 @@ contract locationContract {
         customerToJobId[customer].push(journey.jobId);
         // add jobId to global mapping of jobs
         numberToJobID[jobIdCounter] = journey.jobId;
-        jobIdCounter++;
     }
-
 }

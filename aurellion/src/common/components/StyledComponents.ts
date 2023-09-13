@@ -48,8 +48,7 @@ export const RedButton = styled.TouchableOpacity`
   ${({ styles }: RedButtonProps) => styles};
 `;
 export const RedButtonText = styled.Text`
-  color: white;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
-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
+  color: white;
   font-family: Inter-Regular;
 `;
 export const Box = styled.View`

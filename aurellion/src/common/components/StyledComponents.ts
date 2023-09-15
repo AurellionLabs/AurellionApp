@@ -29,6 +29,10 @@ export const Shadow = styled.View`
 interface RedButtonProps {
   styles: ViewStyle;
 }
+
+interface props {
+    isDarkMode: boolean;
+}
 export const RedButton = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
@@ -63,9 +67,12 @@ export const Box = styled.View`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: white;
+  background-color: ${(props: props) => props.isDarkMode ? DarkTheme.background2 : LightTheme.background2 };
 `;
-
+export const StyledText = styled.Text<props>`
+    color: ${(props: props) => props.isDarkMode ? "white" : "black" };
+    font-family: Inter-Regular;
+`
 export const ButtonBox = styled.View`
   padding: 8px;
   border-top-color: rgba(0, 0, 0, 0.2);

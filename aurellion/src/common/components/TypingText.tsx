@@ -1,5 +1,7 @@
+import { DarkTheme } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
+import { LightTheme } from '../constants/Colors';
 import { RedButtonText } from './StyledComponents';
 
 function TypingText({ text, speed }) {
@@ -16,7 +18,7 @@ function TypingText({ text, speed }) {
     }
   }, [index, text, speed]);
 
-  return <RedButtonText style={{color:"#fca503",fontFamily:"Inter-Bold",fontWeight:"300", fontSize:70, paddingBottom:"10%"}}>{displayedText}</RedButtonText>;
+  return <RedButtonText style={{color:LightTheme.accent,fontFamily:"Inter-Bold",fontWeight:"300", fontSize:70, paddingBottom:"10%"}}>{displayedText}</RedButtonText>;
 }
 
 export default TypingText;

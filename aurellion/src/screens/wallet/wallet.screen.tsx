@@ -9,6 +9,7 @@ import {
         useColorScheme,
         View,
         Image,
+        ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -35,21 +36,20 @@ import { useMainContext } from "../main.provider";
 
 function WalletScreen(): JSX.Element {
     const navigation = useNavigation<WalletScreenNavigationProp>();
-    const isDarkMode = useColorScheme() === "dark";
-    const backgroundColor = isDarkMode
-        ? DarkTheme.background2
-        : LightTheme.background2;
+    
     const [modalVisible, setModalVisible] = useState(false);
     const [currentAccount, setCurrentAccount] = useState<string>();
     const [currentWCURI, setCurrentWCURI] = useState<string>();
     // Initialize universal provider
     const initialized = useInitialization();
 
-    const {setUniversalLink, setDeepLink, setWcURI, universalLink, wcURI, deepLink} = useMainContext()
+    const {setIsDarkMode,isDarkMode,setUniversalLink, setDeepLink, setWcURI, universalLink, wcURI, deepLink} = useMainContext()
         const close = () => {
             setModalVisible(false);
         };
-
+    const backgroundColor = isDarkMode
+        ? DarkTheme.background2
+        : LightTheme.background2;
     const getAddress = useCallback(async () => {
             try {
             if (web3Provider) {
@@ -167,14 +167,21 @@ try {
             subscribeToEvents();
             }
             }, [initialized, subscribeToEvents]);
+    const changeColourScheme = () =>{
+    if (isDarkMode)
+        setIsDarkMode(false)
+    else setIsDarkMode(true)
+    } 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <View style={[styles.container, { backgroundColor }]}>
-        
-        <Image
+       <TouchableOpacity style={{height:"4%", width:"8%",right:"40%"}} onPress={changeColourScheme}> 
+        <ImageBackground
           source={require("../../common/assets/images/eclipse-alt.png")}
-          style={{height: "4%", width: "8%"}}
+          style={{height: "100%", width: "100%"}}
+          resizeMode="cover"
         />
+       </TouchableOpacity> 
         <Image
           source={require("../../common/assets/images/logo.png")}
           style={styles.logo}

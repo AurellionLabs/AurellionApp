@@ -1,16 +1,10 @@
-import React, { useRef, useEffect } from "react";
-import {
-  Animated,
-  StyleSheet,
-  useColorScheme,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
-import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
-import { DEVICE_HEIGHT } from "../../../common/constants/Platform";
-import ExplorerItem, { ITEM_HEIGHT } from "./ExplorerItem";
+import React, { useRef, useEffect } from 'react';
+import { Animated, StyleSheet, useColorScheme, FlatList, ActivityIndicator } from 'react-native';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { DEVICE_HEIGHT } from '../../../common/constants/Platform';
+import ExplorerItem, { ITEM_HEIGHT } from './ExplorerItem';
 
-import NavigationHeader from "./NavigationHeader";
+import NavigationHeader from './NavigationHeader';
 
 interface ViewAllExplorerContentProps {
   isLoading: boolean;
@@ -19,14 +13,9 @@ interface ViewAllExplorerContentProps {
   currentWCURI?: string;
 }
 
-function ViewAllExplorerContent({
-  isLoading,
-  explorerData,
-  onBackPress,
-  currentWCURI,
-}: ViewAllExplorerContentProps) {
+function ViewAllExplorerContent({ isLoading, explorerData, onBackPress, currentWCURI }: ViewAllExplorerContentProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -39,21 +28,15 @@ function ViewAllExplorerContent({
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <>
-        <NavigationHeader
-          title="Connect your Wallet"
-          onBackPress={onBackPress}
-        />
+        <NavigationHeader title="Connect your Wallet" onBackPress={onBackPress} />
         {isLoading || !currentWCURI ? (
-          <ActivityIndicator
-            style={styles.loader}
-            color={isDarkMode ? LightTheme.accent : DarkTheme.accent}
-          />
+          <ActivityIndicator style={styles.loader} color={isDarkMode ? LightTheme.accent : DarkTheme.accent} />
         ) : (
           <FlatList
             data={explorerData || []}
             style={styles.list}
             contentContainerStyle={styles.listContentContainer}
-            indicatorStyle={isDarkMode ? "white" : "black"}
+            indicatorStyle={isDarkMode ? 'white' : 'black'}
             showsVerticalScrollIndicator
             numColumns={4}
             getItemLayout={(_, index) => ({
@@ -61,9 +44,7 @@ function ViewAllExplorerContent({
               offset: ITEM_HEIGHT * index,
               index,
             })}
-            renderItem={({ item }) => (
-              <ExplorerItem currentWCURI={currentWCURI} walletInfo={item} />
-            )}
+            renderItem={({ item }) => <ExplorerItem currentWCURI={currentWCURI} walletInfo={item} />}
           />
         )}
       </>

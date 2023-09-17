@@ -1,7 +1,7 @@
-import styled from "styled-components/native";
-import { LightTheme } from "../../../common/constants/Colors";
-import Animated from "react-native-reanimated";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import styled from 'styled-components/native';
+import { LightTheme } from '../../../common/constants/Colors';
+import Animated from 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface CustomProps {
   [key: string]: any;

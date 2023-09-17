@@ -1,23 +1,17 @@
-import React from "react";
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  useColorScheme,
-} from "react-native";
+import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
 
-import WCLogo from "../../../common/assets/WCLogo.png";
-import Close from "../../../common/assets/Close.png";
-import CloseWhite from "../../../common/assets/CloseWhite.png";
-import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
+import WCLogo from '../../../common/assets/WCLogo.png';
+import Close from '../../../common/assets/Close.png';
+import CloseWhite from '../../../common/assets/CloseWhite.png';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface ExplorerModalHeaderProps {
   close: () => void;
 }
 
 function ExplorerModalHeader({ close }: ExplorerModalHeaderProps) {
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <View style={styles.container}>
@@ -27,10 +21,7 @@ function ExplorerModalHeader({ close }: ExplorerModalHeaderProps) {
         onPress={close}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
       >
-        <Image
-          style={styles.closeImage}
-          source={isDarkMode ? CloseWhite : Close}
-        />
+        <Image style={styles.closeImage} source={isDarkMode ? CloseWhite : Close} />
       </TouchableOpacity>
     </View>
   );
@@ -39,9 +30,9 @@ function ExplorerModalHeader({ close }: ExplorerModalHeaderProps) {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 8,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
   wcLogo: {
@@ -57,9 +48,9 @@ const styles = StyleSheet.create({
     width: 28,
     backgroundColor: LightTheme.background1,
     borderRadius: 14,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   closeContainerDark: {
     backgroundColor: DarkTheme.background1,

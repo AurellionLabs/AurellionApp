@@ -1,24 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  useColorScheme,
-  ImageBackground,
-} from "react-native";
-import Modal from "react-native-modal";
-import InitialExplorerContent from "./InitialExplorerContent";
-import ViewAllExplorerContent from "./ViewAllExplorerContent";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { StyleSheet, View, useColorScheme, ImageBackground } from 'react-native';
+import Modal from 'react-native-modal';
+import InitialExplorerContent from './InitialExplorerContent';
+import ViewAllExplorerContent from './ViewAllExplorerContent';
 
-import { fetchAllWallets } from "../../../utils/ExplorerUtils";
-import ExplorerModalHeader from "./ExplorerModalHeader";
-import Background from "../../../common/assets/Background.png";
-import { DEVICE_WIDTH } from "../../../common/constants/Platform";
-import QRView from "./QRView";
-import { Routes } from "../../../common/constants/Routes";
-import { WalletInfo } from "../../../types/api";
-import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
+import { fetchAllWallets } from '../../../utils/ExplorerUtils';
+import ExplorerModalHeader from './ExplorerModalHeader';
+import Background from '../../../common/assets/Background.png';
+import { DEVICE_WIDTH } from '../../../common/constants/Platform';
+import QRView from './QRView';
+import { Routes } from '../../../common/constants/Routes';
+import { WalletInfo } from '../../../types/api';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
-const INITIAL_ROUTE = "INIT_WALLETS";
+const INITIAL_ROUTE = 'INIT_WALLETS';
 
 interface ExplorerModalProps {
   modalVisible: boolean;
@@ -26,16 +21,12 @@ interface ExplorerModalProps {
   currentWCURI?: string;
 }
 
-function ExplorerModal({
-  modalVisible,
-  close,
-  currentWCURI,
-}: ExplorerModalProps) {
+function ExplorerModal({ modalVisible, close, currentWCURI }: ExplorerModalProps) {
   const [isWalletListLoading, setWalletListLoading] = useState(true);
   const [initialWallets, setInitialWallets] = useState<WalletInfo[]>([]);
   const [allWallets, setAllWallets] = useState<WalletInfo[]>([]);
 
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
 
   const [viewStack, setViewStack] = useState<Routes[]>([INITIAL_ROUTE]);
 
@@ -64,16 +55,16 @@ function ExplorerModal({
 
   const SCREENS = useMemo(() => {
     return {
-      ["INIT_WALLETS"]: (
+      ['INIT_WALLETS']: (
         <InitialExplorerContent
           isLoading={isWalletListLoading}
           explorerData={initialWallets}
-          onViewAllPress={() => onNavigate("ALL_WALLETS")}
+          onViewAllPress={() => onNavigate('ALL_WALLETS')}
           currentWCURI={currentWCURI}
-          onQRPress={() => onNavigate("QR_CODE")}
+          onQRPress={() => onNavigate('QR_CODE')}
         />
       ),
-      ["ALL_WALLETS"]: (
+      ['ALL_WALLETS']: (
         <ViewAllExplorerContent
           isLoading={isWalletListLoading}
           explorerData={allWallets}
@@ -81,16 +72,9 @@ function ExplorerModal({
           currentWCURI={currentWCURI}
         />
       ),
-      ["QR_CODE"]: <QRView uri={currentWCURI} onBackPress={onNavigateBack} />,
+      ['QR_CODE']: <QRView uri={currentWCURI} onBackPress={onNavigateBack} />,
     };
-  }, [
-    currentWCURI,
-    initialWallets,
-    isWalletListLoading,
-    onNavigateBack,
-    onNavigate,
-    allWallets,
-  ]);
+  }, [currentWCURI, initialWallets, isWalletListLoading, onNavigateBack, onNavigate, allWallets]);
 
   useEffect(() => {
     if (!allWallets.length) {
@@ -110,18 +94,9 @@ function ExplorerModal({
       }}
       useNativeDriver
     >
-      <ImageBackground
-        style={styles.wcContainer}
-        source={Background}
-        imageStyle={styles.wcImage}
-      >
+      <ImageBackground style={styles.wcContainer} source={Background} imageStyle={styles.wcImage}>
         <ExplorerModalHeader close={close} />
-        <View
-          style={[
-            styles.connectWalletContainer,
-            isDarkMode && styles.connectWalletContainerDark,
-          ]}
-        >
+        <View style={[styles.connectWalletContainer, isDarkMode && styles.connectWalletContainerDark]}>
           {SCREENS[viewStack.at(-1) ?? INITIAL_ROUTE]}
         </View>
       </ImageBackground>
@@ -132,7 +107,7 @@ function ExplorerModal({
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   wcContainer: {
     width: DEVICE_WIDTH,

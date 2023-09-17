@@ -1,8 +1,8 @@
 //Based on https://github.com/WalletConnect/web3modal/blob/V2/packages/ui/src/utils/QrCode.ts
-import React, { ReactNode } from "react";
-import { Line, Rect, Circle } from "react-native-svg";
-import QRCodeUtil from "qrcode";
-import { DarkTheme, LightTheme } from "../common/constants/Colors";
+import React, { ReactNode } from 'react';
+import { Line, Rect, Circle } from 'react-native-svg';
+import QRCodeUtil from 'qrcode';
+import { DarkTheme, LightTheme } from '../common/constants/Colors';
 
 type CoordinateMapping = [number, number[]];
 
@@ -19,38 +19,22 @@ function isAdjecentDots(cy: number, otherCy: number, cellSize: number) {
   return diff <= cellSize + CONNECTING_ERROR_MARGIN;
 }
 
-function getMatrix(
-  value: string,
-  errorCorrectionLevel: QRCodeUtil.QRCodeErrorCorrectionLevel
-) {
-  const arr = Array.prototype.slice.call(
-    QRCodeUtil.create(value, { errorCorrectionLevel }).modules.data,
-    0
-  );
+function getMatrix(value: string, errorCorrectionLevel: QRCodeUtil.QRCodeErrorCorrectionLevel) {
+  const arr = Array.prototype.slice.call(QRCodeUtil.create(value, { errorCorrectionLevel }).modules.data, 0);
   const sqrt = Math.sqrt(arr.length);
 
   return arr.reduce(
-    (rows, key, index) =>
-      (index % sqrt === 0
-        ? rows.push([key])
-        : rows[rows.length - 1].push(key)) && rows,
+    (rows, key, index) => (index % sqrt === 0 ? rows.push([key]) : rows[rows.length - 1].push(key)) && rows,
     []
   );
 }
 
 export const QrCodeUtil = {
-  generate(
-    uri: string,
-    size: number,
-    logoSize: number,
-    theme: "dark" | "light"
-  ) {
-    const dotColor =
-      theme === "light" ? DarkTheme.background1 : LightTheme.background1;
-    const edgeColor =
-      theme === "light" ? LightTheme.background1 : DarkTheme.background1;
+  generate(uri: string, size: number, logoSize: number, theme: 'dark' | 'light') {
+    const dotColor = theme === 'light' ? DarkTheme.background1 : LightTheme.background1;
+    const edgeColor = theme === 'light' ? LightTheme.background1 : DarkTheme.background1;
     const dots: ReactNode[] = [];
-    const matrix = getMatrix(uri, "Q");
+    const matrix = getMatrix(uri, 'Q');
     const cellSize = size / matrix.length;
     const qrList = [
       { x: 0, y: 0 },
@@ -91,20 +75,11 @@ export const QrCodeUtil = {
           if (
             !(
               (i < QRCODE_MATRIX_MARGIN && j < QRCODE_MATRIX_MARGIN) ||
-              (i > matrix.length - (QRCODE_MATRIX_MARGIN + 1) &&
-                j < QRCODE_MATRIX_MARGIN) ||
-              (i < QRCODE_MATRIX_MARGIN &&
-                j > matrix.length - (QRCODE_MATRIX_MARGIN + 1))
+              (i > matrix.length - (QRCODE_MATRIX_MARGIN + 1) && j < QRCODE_MATRIX_MARGIN) ||
+              (i < QRCODE_MATRIX_MARGIN && j > matrix.length - (QRCODE_MATRIX_MARGIN + 1))
             )
           ) {
-            if (
-              !(
-                i > matrixMiddleStart &&
-                i < matrixMiddleEnd &&
-                j > matrixMiddleStart &&
-                j < matrixMiddleEnd
-              )
-            ) {
+            if (!(i > matrixMiddleStart && i < matrixMiddleEnd && j > matrixMiddleStart && j < matrixMiddleEnd)) {
               const cx = i * cellSize + cellSize / 2;
               const cy = j * cellSize + cellSize / 2;
               circles.push([cx, cy]);
@@ -130,22 +105,14 @@ export const QrCodeUtil = {
     Object.entries(circlesToConnect)
       // Only get dots that have neighbors
       .map(([cx, cys]) => {
-        const newCys = cys.filter((cy) =>
-          cys.every((otherCy) => !isAdjecentDots(cy, otherCy, cellSize))
-        );
+        const newCys = cys.filter((cy) => cys.every((otherCy) => !isAdjecentDots(cy, otherCy, cellSize)));
 
         return [Number(cx), newCys] as CoordinateMapping;
       })
       .forEach(([cx, cys]) => {
         cys.forEach((cy) => {
           dots.push(
-            <Circle
-              key={`circle_${cx}_${cy}`}
-              cx={cx}
-              cy={cy}
-              fill={dotColor}
-              r={cellSize / CIRCLE_SIZE_MODIFIER}
-            />
+            <Circle key={`circle_${cx}_${cy}`} cx={cx} cy={cy} fill={dotColor} r={cellSize / CIRCLE_SIZE_MODIFIER} />
           );
         });
       });
@@ -156,9 +123,7 @@ export const QrCodeUtil = {
       .filter(([_, cys]) => cys.length > 1)
       // Removing dots with no neighbors
       .map(([cx, cys]) => {
-        const newCys = cys.filter((cy) =>
-          cys.some((otherCy) => isAdjecentDots(cy, otherCy, cellSize))
-        );
+        const newCys = cys.filter((cy) => cys.some((otherCy) => isAdjecentDots(cy, otherCy, cellSize)));
 
         return [Number(cx), newCys] as CoordinateMapping;
       })
@@ -168,9 +133,7 @@ export const QrCodeUtil = {
         const groups: number[][] = [];
 
         for (const cy of cys) {
-          const group = groups.find((item) =>
-            item.some((otherCy) => isAdjecentDots(cy, otherCy, cellSize))
-          );
+          const group = groups.find((item) => item.some((otherCy) => isAdjecentDots(cy, otherCy, cellSize)));
           if (group) {
             group.push(cy);
           } else {
@@ -178,10 +141,7 @@ export const QrCodeUtil = {
           }
         }
 
-        return [cx, groups.map((item) => [item[0], item[item.length - 1]])] as [
-          number,
-          number[][]
-        ];
+        return [cx, groups.map((item) => [item[0], item[item.length - 1]])] as [number, number[][]];
       })
       .forEach(([cx, groups]) => {
         groups.forEach(([y1, y2]) => {

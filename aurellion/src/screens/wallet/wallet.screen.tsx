@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -9,11 +9,11 @@ import {
   useColorScheme,
   View,
   Image,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import "@walletconnect/react-native-compat";
-import useInitialization from "../../common/hooks/useInitialization";
+import '@walletconnect/react-native-compat';
+import useInitialization from '../../common/hooks/useInitialization';
 import {
   universalProviderSession,
   universalProvider,
@@ -22,34 +22,25 @@ import {
   createUniversalProviderSession,
   web3ProviderInit,
   retrieveOldSession,
-} from "../../utils/UniversalProvider";
-import ExplorerModal from "./components/ExplorerModal";
-import { DarkTheme, LightTheme } from "../../common/constants/Colors";
-import { WalletScreenNavigationProp } from "../../navigation/types";
-import { UniversalProvider } from "@walletconnect/universal-provider";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMainContext } from "../main.provider";
+} from '../../utils/UniversalProvider';
+import ExplorerModal from './components/ExplorerModal';
+import { DarkTheme, LightTheme } from '../../common/constants/Colors';
+import { WalletScreenNavigationProp } from '../../navigation/types';
+import { UniversalProvider } from '@walletconnect/universal-provider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMainContext } from '../main.provider';
 
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
-  const isDarkMode = useColorScheme() === "dark";
-  const backgroundColor = isDarkMode
-    ? DarkTheme.background2
-    : LightTheme.background2;
+  const isDarkMode = useColorScheme() === 'dark';
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<string>();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
   // Initialize universal provider
   const initialized = useInitialization();
 
-  const {
-    setUniversalLink,
-    setDeepLink,
-    setWcURI,
-    universalLink,
-    wcURI,
-    deepLink,
-  } = useMainContext();
+  const { setUniversalLink, setDeepLink, setWcURI, universalLink, wcURI, deepLink } = useMainContext();
   const close = () => {
     setModalVisible(false);
   };
@@ -62,7 +53,7 @@ function WalletScreen(): JSX.Element {
         setCurrentAccount(currentAddress);
       }
     } catch (err: unknown) {
-      Alert.alert("Error", "Error getting the Address");
+      Alert.alert('Error', 'Error getting the Address');
     }
   }, []);
 
@@ -95,16 +86,14 @@ function WalletScreen(): JSX.Element {
     let wcURIFromStorage = null;
     let deepLinkFromStorage = null;
     try {
-      universalLinkFromStorage = String(
-        await AsyncStorage.getItem("universalLink")
-      );
-      deepLinkFromStorage = String(await AsyncStorage.getItem("deepLink"));
-      wcURIFromStorage = String(await AsyncStorage.getItem("currentWcURI"));
+      universalLinkFromStorage = String(await AsyncStorage.getItem('universalLink'));
+      deepLinkFromStorage = String(await AsyncStorage.getItem('deepLink'));
+      wcURIFromStorage = String(await AsyncStorage.getItem('currentWcURI'));
       setUniversalLink(universalLinkFromStorage);
       setDeepLink(deepLinkFromStorage);
       setWcURI(wcURIFromStorage);
     } catch (e) {
-      console.error("Error while setting wallet links", e);
+      console.error('Error while setting wallet links', e);
     }
     if (
       universalProviderSession !== undefined &&
@@ -130,7 +119,7 @@ function WalletScreen(): JSX.Element {
       setCurrentAccount(undefined);
       setCurrentWCURI(undefined);
     } catch (err: unknown) {
-      Alert.alert("Error", "Error disconnecting");
+      Alert.alert('Error', 'Error disconnecting');
     }
   }, []);
   const changeStoredWallet = useCallback(async () => {
@@ -143,39 +132,39 @@ function WalletScreen(): JSX.Element {
 
   const subscribeToEvents = useCallback(async () => {
     if (universalProvider) {
-      universalProvider.on("display_uri", (uri: string) => {
+      universalProvider.on('display_uri', (uri: string) => {
         setCurrentWCURI(uri);
       });
 
       // Subscribe to session ping
-      universalProvider.on("session_ping", ({ id, topic }) => {
-        console.log("session_ping", id, topic);
+      universalProvider.on('session_ping', ({ id, topic }) => {
+        console.log('session_ping', id, topic);
       });
 
       // Subscribe to session event
-      universalProvider.on("session_event", async ({ event, chainId }) => {
-        console.log("session_event", event, chainId);
+      universalProvider.on('session_event', async ({ event, chainId }) => {
+        console.log('session_event', event, chainId);
       });
 
       // Subscribe to session update
-      universalProvider.on("session_update", async ({ topic, params }) => {
-        console.log("session_update", topic, params);
+      universalProvider.on('session_update', async ({ topic, params }) => {
+        console.log('session_update', topic, params);
       });
 
       // Subscribe to session delete
-      universalProvider.on("session_delete", onSessionDelete);
+      universalProvider.on('session_delete', onSessionDelete);
     }
   }, [onSessionDelete]);
   useEffect(() => {
-    console.log("Universal Link Updated:", universalLink);
+    console.log('Universal Link Updated:', universalLink);
   }, [universalLink]);
 
   useEffect(() => {
-    console.log("Deep Link Updated:", deepLink);
+    console.log('Deep Link Updated:', deepLink);
   }, [deepLink]);
 
   useEffect(() => {
-    console.log("WCURI Updated:", wcURI);
+    console.log('WCURI Updated:', wcURI);
   }, [wcURI]);
   useEffect(() => {
     if (initialized) {
@@ -186,31 +175,18 @@ function WalletScreen(): JSX.Element {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <View style={[styles.container, { backgroundColor }]}>
-        <Image
-          source={require("../../common/assets/images/logo.png")}
-          style={styles.logo}
-        />
+        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo} />
         {currentAccount ? (
           <View style={styles.container}>
-            <Text style={[styles.text, isDarkMode && styles.whiteText]}>
-              Address: {currentAccount}
-            </Text>
+            <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {currentAccount}</Text>
             <TouchableOpacity
-              style={[
-                styles.blueButton,
-                styles.disconnectButton,
-                isDarkMode && styles.blueButtonDark,
-              ]}
-              onPress={() => navigation.navigate("Locations")}
+              style={[styles.blueButton, styles.disconnectButton, isDarkMode && styles.blueButtonDark]}
+              onPress={() => navigation.navigate('Locations')}
             >
               <Text style={styles.blueButtonText}>Home Screen</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.blueButton,
-                styles.disconnectButton,
-                isDarkMode && styles.blueButtonDark,
-              ]}
+              style={[styles.blueButton, styles.disconnectButton, isDarkMode && styles.blueButtonDark]}
               onPress={() => changeStoredWallet()}
             >
               <Text style={styles.blueButtonText}>Change Wallet</Text>
@@ -229,11 +205,7 @@ function WalletScreen(): JSX.Element {
             )}
           </TouchableOpacity>
         )}
-        <ExplorerModal
-          modalVisible={modalVisible}
-          close={close}
-          currentWCURI={currentWCURI}
-        />
+        <ExplorerModal modalVisible={modalVisible} close={close} currentWCURI={currentWCURI} />
       </View>
     </SafeAreaView>
   );
@@ -247,20 +219,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 8,
   },
   text: {
-    fontWeight: "700",
+    fontWeight: '700',
   },
   whiteText: {
-    color: "white",
+    color: 'white',
   },
   blueButton: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: LightTheme.accent,
     borderRadius: 20,
     width: 150,
@@ -269,9 +241,9 @@ const styles = StyleSheet.create({
     borderColor: LightTheme.overlayThin,
   },
   redButton: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: LightTheme.accent,
     borderRadius: 20,
     width: 150,
@@ -284,8 +256,8 @@ const styles = StyleSheet.create({
     borderColor: DarkTheme.overlayThin,
   },
   blueButtonText: {
-    color: "white",
-    fontWeight: "700",
+    color: 'white',
+    fontWeight: '700',
   },
   disconnectButton: {
     marginTop: 20,

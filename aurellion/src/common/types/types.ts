@@ -35,4 +35,4 @@ export type PackageDeliveryData = {
   startName: string;
   endName: string;
 };
-export type UserType = "customer" | "driver";
+export type UserType = 'customer' | 'driver';

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from 'react';
 
 import {
   ActivityIndicator,
@@ -12,20 +12,18 @@ import {
   Image,
   Keyboard,
   Platform,
-} from "react-native";
-import { Container } from "../../common/components/StyledComponents";
-import { DarkTheme, LightTheme } from "../../common/constants/Colors";
-import { useNavigation } from "@react-navigation/native";
-import MapView, { Marker, Region } from "react-native-maps";
-import LocationsMenu from "./components/locationsMenu";
-import Navbar from "../../common/components/NavBar";
+} from 'react-native';
+import { Container } from '../../common/components/StyledComponents';
+import { DarkTheme, LightTheme } from '../../common/constants/Colors';
+import { useNavigation } from '@react-navigation/native';
+import MapView, { Marker, Region } from 'react-native-maps';
+import LocationsMenu from './components/locationsMenu';
+import Navbar from '../../common/components/NavBar';
 
 const LocationsScreen = () => {
   const navigation = useNavigation();
-  const isDarkMode = useColorScheme() === "dark";
-  const backgroundColor = isDarkMode
-    ? DarkTheme.background2
-    : LightTheme.background2;
+  const isDarkMode = useColorScheme() === 'dark';
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
 
   const [region, setRegion] = useState<Region>({
     latitude: 37.78825,
@@ -37,19 +35,13 @@ const LocationsScreen = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
-    );
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
 
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
-    );
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
 
     return () => {
       keyboardDidShowListener.remove();
@@ -65,14 +57,7 @@ const LocationsScreen = () => {
         setRegion={setRegion}
         isKeyboardVisible={isKeyboardVisible}
       />
-      {!isKeyboardVisible && (
-        <MapView
-          style={styles.mapView}
-          showsUserLocation
-          region={region}
-          showsCompass
-        />
-      )}
+      {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
       <Navbar />
     </Container>
   );
@@ -86,14 +71,14 @@ const styles = StyleSheet.create({
   },
   locationsMenu: {
     // flex: 1,
-    width: "100%",
+    width: '100%',
     borderRadius: 30,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     // height: '30%',
   },
   mapView: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     // height: '70%'
   },
 });

@@ -1,32 +1,20 @@
-import React, { useState } from "react";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Dimensions, Text, useColorScheme, View, Image } from "react-native";
-import {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
-import {
-  SelectedBox,
-  BoxHeadingText,
-  AnimatedBox,
-  AnimatedRoot,
-} from "./StyledComponents";
+import React, { useState } from 'react';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Dimensions, Text, useColorScheme, View, Image } from 'react-native';
+import { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { SelectedBox, BoxHeadingText, AnimatedBox, AnimatedRoot } from './StyledComponents';
 
-import { LightTheme } from "../../../common/constants/Colors";
-import {
-  RedButton,
-  RedButtonText,
-} from "../../../common/components/StyledComponents";
-import { jobCreation } from "../../../dapp-connectors/dapp-controller";
-import { useMainContext } from "../../main.provider";
-import { navigateDeepLink } from "../../../utils/ExplorerUtils";
-import { useNavigation } from "@react-navigation/native";
-import { JobsScreenNavigationProp } from "../../../navigation/types";
+import { LightTheme } from '../../../common/constants/Colors';
+import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
+import { jobCreation } from '../../../dapp-connectors/dapp-controller';
+import { useMainContext } from '../../main.provider';
+import { navigateDeepLink } from '../../../utils/ExplorerUtils';
+import { useNavigation } from '@react-navigation/native';
+import { JobsScreenNavigationProp } from '../../../navigation/types';
 const DeliveryMenu = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI } = useMainContext();
-  const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+  const { height: SCREEN_HEIGHT } = Dimensions.get('window');
   const defaultHeight = (70 / 100) * SCREEN_HEIGHT;
   const [rootPosition, setRootPosition] = useState<number>(defaultHeight);
   const [boxState, setBoxState] = useState<boolean>(true);
@@ -79,50 +67,30 @@ const DeliveryMenu = () => {
     if (packageDeliveryData != undefined) {
       await jobCreation(packageDeliveryData);
     }
-    navigation.navigate("Jobs");
+    navigation.navigate('Jobs');
   };
 
   return (
     <AnimatedRoot height={rootPosition}>
       <GestureDetector gesture={gesture}>
         <AnimatedBox style={translateYStyle}>
-          <SelectedBox
-            boxState={boxState}
-            boxSelected={selectedBox}
-            onPress={() => selector(1)}
-          >
+          <SelectedBox boxState={boxState} boxSelected={selectedBox} onPress={() => selector(1)}>
             <View>
-              <Image
-                source={require("../../../common/assets/images/hare.png")}
-                style={{ height: 20, width: 20 }}
-              />
-              <Text
-                style={{ color: "green", fontWeight: "700", textAlign: "left" }}
-              >
-                Fast
-              </Text>
+              <Image source={require('../../../common/assets/images/hare.png')} style={{ height: 20, width: 20 }} />
+              <Text style={{ color: 'green', fontWeight: '700', textAlign: 'left' }}>Fast</Text>
               <Text>Same Day</Text>
               <Text>Edit...</Text>
             </View>
-            <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
-              100 AURA
-            </Text>
+            <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <SelectedBox
-            boxState={boxState}
-            boxSelected={selectedBox2}
-            onPress={() => selector(2)}
-          >
+          <SelectedBox boxState={boxState} boxSelected={selectedBox2} onPress={() => selector(2)}>
             <View>
-              <Image
-                source={require("../../../common/assets/images/running.png")}
-                style={{ height: 20, width: 20 }}
-              />
+              <Image source={require('../../../common/assets/images/running.png')} style={{ height: 20, width: 20 }} />
               <Text
                 style={{
                   color: LightTheme.foreground2,
-                  fontWeight: "700",
-                  textAlign: "left",
+                  fontWeight: '700',
+                  textAlign: 'left',
                 }}
               >
                 Medium
@@ -130,27 +98,16 @@ const DeliveryMenu = () => {
               <Text>Next Day</Text>
               <Text>Edit...</Text>
             </View>
-            <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
-              100 AURA
-            </Text>
+            <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
-          <SelectedBox
-            boxState={boxState}
-            boxSelected={selectedBox3}
-            onPress={() => selector(3)}
-          >
+          <SelectedBox boxState={boxState} boxSelected={selectedBox3} onPress={() => selector(3)}>
             <View>
-              <Image
-                source={require("../../../common/assets/images/turtle.png")}
-                style={{ height: 20, width: 20 }}
-              />
+              <Image source={require('../../../common/assets/images/turtle.png')} style={{ height: 20, width: 20 }} />
               <BoxHeadingText>Slow</BoxHeadingText>
               <Text>Next 3 Days</Text>
               <Text>Edit...</Text>
             </View>
-            <Text style={{ textAlign: "right", margin: 0, padding: 0 }}>
-              100 AURA
-            </Text>
+            <Text style={{ textAlign: 'right', margin: 0, padding: 0 }}>100 AURA</Text>
           </SelectedBox>
           <RedButton onPress={createJob}>
             <RedButtonText>Begin</RedButtonText>

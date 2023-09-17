@@ -1,8 +1,8 @@
-import styled from "styled-components/native";
-import { DarkTheme, LightTheme } from "../constants/Colors";
-import { View, ViewStyle } from "react-native";
-import Animated from "react-native-reanimated";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import styled from 'styled-components/native';
+import { DarkTheme, LightTheme } from '../constants/Colors';
+import { View, ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;

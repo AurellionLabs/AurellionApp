@@ -1,14 +1,7 @@
-import React from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
-import Chevron from "../../../common/assets/Chevron.png";
-import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
+import Chevron from '../../../common/assets/Chevron.png';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface Props {
   title: string;
@@ -19,15 +12,8 @@ interface Props {
   actionDisabled?: boolean;
 }
 
-function NavigationHeader({
-  title,
-  onBackPress,
-  onActionPress,
-  actionIcon,
-  actionIconStyle,
-  actionDisabled,
-}: Props) {
-  const isDarkMode = useColorScheme() === "dark";
+function NavigationHeader({ title, onBackPress, onActionPress, actionIcon, actionIconStyle, actionDisabled }: Props) {
+  const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <View style={styles.container}>
@@ -43,9 +29,7 @@ function NavigationHeader({
       ) : (
         <View style={styles.button} />
       )}
-      <Text style={[styles.title, isDarkMode && styles.titleDark]}>
-        {title}
-      </Text>
+      <Text style={[styles.title, isDarkMode && styles.titleDark]}>{title}</Text>
       {actionIcon ? (
         <TouchableOpacity
           style={styles.button}
@@ -53,10 +37,7 @@ function NavigationHeader({
           disabled={actionDisabled}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Image
-            style={[actionIconStyle, actionDisabled && styles.actionDisabled]}
-            source={actionIcon}
-          />
+          <Image style={[actionIconStyle, actionDisabled && styles.actionDisabled]} source={actionIcon} />
         </TouchableOpacity>
       ) : (
         <View style={styles.button} />
@@ -67,24 +48,24 @@ function NavigationHeader({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 16,
     paddingHorizontal: 24,
   },
   button: {
     width: 24,
     height: 24,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   backIcon: {
     width: 8,
     height: 18,
   },
   title: {
-    fontWeight: "600",
+    fontWeight: '600',
     color: LightTheme.foreground1,
     fontSize: 20,
     lineHeight: 24,

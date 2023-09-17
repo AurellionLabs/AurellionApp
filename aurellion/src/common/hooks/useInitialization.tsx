@@ -1,9 +1,9 @@
-import "react-native-get-random-values";
-import "@ethersproject/shims";
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
 
-import { useCallback, useEffect, useState } from "react";
-import { createUniversalProvider } from "../../utils/UniversalProvider";
-import { Alert } from "react-native";
+import { useCallback, useEffect, useState } from 'react';
+import { createUniversalProvider } from '../../utils/UniversalProvider';
+import { Alert } from 'react-native';
 
 function useInitialization() {
   const [initialized, setInitialized] = useState(false);
@@ -13,7 +13,7 @@ function useInitialization() {
       await createUniversalProvider();
       setInitialized(true);
     } catch (err: unknown) {
-      Alert.alert("Error", "Error initializing");
+      Alert.alert('Error', 'Error initializing');
     }
   }, []);
 

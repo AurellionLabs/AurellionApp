@@ -1,28 +1,26 @@
-import "@walletconnect/react-native-compat";
-import UniversalProvider from "@walletconnect/universal-provider";
+import '@walletconnect/react-native-compat';
+import UniversalProvider from '@walletconnect/universal-provider';
 
 // @ts-expect-error - `@env` is a virtualised module via Babel config.
-import { ENV_PROJECT_ID, ENV_RELAY_URL } from "@env";
-import { SessionTypes } from "@walletconnect/types";
-import { ethers } from "ethers";
-import { Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ENV_PROJECT_ID, ENV_RELAY_URL } from '@env';
+import { SessionTypes } from '@walletconnect/types';
+import { ethers } from 'ethers';
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export let universalProvider: UniversalProvider;
 export let web3Provider: ethers.providers.Web3Provider | undefined;
 export let universalProviderSession: SessionTypes.Struct | undefined;
 export async function retrieveOldSession() {
   try {
-    const storedSessionData = await AsyncStorage.getItem(
-      "universalProviderSession"
-    );
+    const storedSessionData = await AsyncStorage.getItem('universalProviderSession');
     if (storedSessionData) {
       universalProviderSession = JSON.parse(storedSessionData);
     } else {
-      console.log("could not parse session data");
+      console.log('could not parse session data');
     }
   } catch (e) {
-    console.error("previous session doesnt exist");
+    console.error('previous session doesnt exist');
   }
 }
 export async function createUniversalProvider() {
@@ -31,18 +29,18 @@ export async function createUniversalProvider() {
 
   try {
     universalProvider = await UniversalProvider.init({
-      logger: "info",
+      logger: 'info',
       relayUrl: ENV_RELAY_URL,
-      projectId: "bebf58b7af307d2e05fa0ff4f31ff769",
+      projectId: 'bebf58b7af307d2e05fa0ff4f31ff769',
       metadata: {
-        name: "Aurellion",
-        description: "A Anonymised Decentralised Shipping Service",
-        url: "https://walletconnect.com/",
-        icons: ["../../common/assets/images/logo.png"],
+        name: 'Aurellion',
+        description: 'A Anonymised Decentralised Shipping Service',
+        url: 'https://walletconnect.com/',
+        icons: ['../../common/assets/images/logo.png'],
       },
     });
   } catch {
-    Alert.alert("Error", "Error connecting to WalletConnect");
+    Alert.alert('Error', 'Error connecting to WalletConnect');
   }
 }
 
@@ -59,23 +57,14 @@ export async function createUniversalProviderSession(callbacks?: {
     universalProviderSession = await universalProvider.connect({
       namespaces: {
         eip155: {
-          methods: [
-            "eth_sendTransaction",
-            "eth_signTransaction",
-            "eth_sign",
-            "personal_sign",
-            "eth_signTypedData",
-          ],
-          chains: ["eip155:5"],
-          events: ["chainChanged", "accountsChanged"],
+          methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
+          chains: ['eip155:5'],
+          events: ['chainChanged', 'accountsChanged'],
           rpcMap: {},
         },
       },
     });
-    await AsyncStorage.setItem(
-      "universalProviderSession",
-      JSON.stringify(universalProviderSession)
-    );
+    await AsyncStorage.setItem('universalProviderSession', JSON.stringify(universalProviderSession));
 
     web3Provider = new ethers.providers.Web3Provider(universalProvider);
     callbacks?.onSuccess?.();
@@ -87,6 +76,6 @@ export async function web3ProviderInit(provider: UniversalProvider) {
   try {
     web3Provider = new ethers.providers.Web3Provider(provider);
   } catch (error) {
-    console.error("Error Intialising Web3Provider", error);
+    console.error('Error Intialising Web3Provider', error);
   }
 }

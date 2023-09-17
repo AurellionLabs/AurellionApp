@@ -1,20 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Animated,
-  StyleSheet,
-  useColorScheme,
-} from "react-native";
-import {
-  DEVICE_HEIGHT,
-  DEVICE_WIDTH,
-} from "../../../common/constants/Platform";
-import NavigationHeader from "./NavigationHeader";
-import QRCode from "./QRCode";
-import CopyIcon from "../../../common/assets/Copy.png";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
+import React, { useEffect, useRef } from 'react';
+import { ActivityIndicator, Alert, Animated, StyleSheet, useColorScheme } from 'react-native';
+import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../../../common/constants/Platform';
+import NavigationHeader from './NavigationHeader';
+import QRCode from './QRCode';
+import CopyIcon from '../../../common/assets/Copy.png';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface Props {
   uri?: string;
@@ -23,11 +14,11 @@ interface Props {
 
 function QRView({ uri, onBackPress }: Props) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
 
   const copyToClipboard = () => {
     Clipboard.setString(uri!);
-    Alert.alert("Copied to clipboard");
+    Alert.alert('Copied to clipboard');
   };
 
   useEffect(() => {
@@ -48,16 +39,9 @@ function QRView({ uri, onBackPress }: Props) {
         actionDisabled={!uri}
       />
       {uri ? (
-        <QRCode
-          uri={uri}
-          size={DEVICE_WIDTH * 0.9}
-          theme={isDarkMode ? "dark" : "light"}
-        />
+        <QRCode uri={uri} size={DEVICE_WIDTH * 0.9} theme={isDarkMode ? 'dark' : 'light'} />
       ) : (
-        <ActivityIndicator
-          style={styles.loader}
-          color={isDarkMode ? LightTheme.accent : DarkTheme.accent}
-        />
+        <ActivityIndicator style={styles.loader} color={isDarkMode ? LightTheme.accent : DarkTheme.accent} />
       )}
     </Animated.View>
   );

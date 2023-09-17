@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
-import {
-  useColorScheme,
-} from 'react-native';
-import {
-  Container,
-} from '../../common/components/StyledComponents';
-import DeliveryMenu from './components/DeliveryMenu';
-import { DarkTheme, LightTheme } from '../../common/constants/Colors';
-import MapView, { Marker, Region } from 'react-native-maps';
-
+import React, { useState } from "react";
+import { useColorScheme } from "react-native";
+import { Container } from "../../common/components/StyledComponents";
+import DeliveryMenu from "./components/DeliveryMenu";
+import { DarkTheme, LightTheme } from "../../common/constants/Colors";
+import MapView, { Marker, Region } from "react-native-maps";
 
 const DeliveryOptionsScreen = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
   const backgroundColor = isDarkMode
     ? DarkTheme.background2
     : LightTheme.background2;
@@ -24,13 +19,13 @@ const DeliveryOptionsScreen = () => {
 
   return (
     <Container style={{ backgroundColor }}>
-      <MapView style={{ flex: 1, width: '100%', height: '100%' }} region={region} />
+      <MapView
+        style={{ flex: 1, width: "100%", height: "100%" }}
+        region={region}
+      />
       <DeliveryMenu />
     </Container>
   );
 };
-
-
-
 
 export default DeliveryOptionsScreen;

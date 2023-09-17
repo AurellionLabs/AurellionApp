@@ -76,7 +76,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
         packageDeliveryData,
         setPackageDeliveryData,
         refetchDataFromAPI,
-        setRefetchDataFromAPI
+        setRefetchDataFromAPI,
       }}
     >
       {children}

@@ -1,19 +1,19 @@
-import React, { useMemo } from 'react';
-import { Svg } from 'react-native-svg';
-import { View, Image, StyleSheet } from 'react-native';
-import { QrCodeUtil } from '../../../utils/QrCode';
-import WCIsotype from '../../../common/assets/WCIsotype.png';
+import React, { useMemo } from "react";
+import { Svg } from "react-native-svg";
+import { View, Image, StyleSheet } from "react-native";
+import { QrCodeUtil } from "../../../utils/QrCode";
+import WCIsotype from "../../../common/assets/WCIsotype.png";
 
 interface Props {
   uri: string;
   size: number;
-  theme?: 'light' | 'dark';
+  theme?: "light" | "dark";
 }
 
-function QRCode({ uri, size, theme = 'light' }: Props) {
+function QRCode({ uri, size, theme = "light" }: Props) {
   const dots = useMemo(
     () => QrCodeUtil.generate(uri, size, size / 4, theme),
-    [uri, size, theme],
+    [uri, size, theme]
   );
 
   return (
@@ -32,11 +32,11 @@ function QRCode({ uri, size, theme = 'light' }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   logo: {
-    position: 'absolute',
+    position: "absolute",
   },
 });
 

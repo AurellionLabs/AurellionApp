@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
   Animated,
   ActivityIndicator,
   useColorScheme,
-} from 'react-native';
-import ExplorerItem from './ExplorerItem';
-import ViewAllBox from './ViewAllBox';
-import QRIcon from '../../../common/assets/QR.png';
-import NavigationHeader from './NavigationHeader';
-import { WalletInfo } from '../../../types/api';
-import { DEVICE_HEIGHT } from '../../../common/constants/Platform';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+} from "react-native";
+import ExplorerItem from "./ExplorerItem";
+import ViewAllBox from "./ViewAllBox";
+import QRIcon from "../../../common/assets/QR.png";
+import NavigationHeader from "./NavigationHeader";
+import { WalletInfo } from "../../../types/api";
+import { DEVICE_HEIGHT } from "../../../common/constants/Platform";
+import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
 
 interface InitialExplorerContentProps {
   isLoading: boolean;
@@ -30,7 +30,7 @@ function InitialExplorerContent({
   onQRPress,
 }: InitialExplorerContentProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   explorerContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 4,
   },
   loader: {

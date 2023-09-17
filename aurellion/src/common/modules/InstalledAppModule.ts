@@ -1,7 +1,7 @@
-import {Linking, NativeModules, Platform} from 'react-native';
+import { Linking, NativeModules, Platform } from "react-native";
 
-const {InstalledAppModule} = NativeModules;
-const isAndroid = Platform.OS === 'android';
+const { InstalledAppModule } = NativeModules;
+const isAndroid = Platform.OS === "android";
 
 interface InstalledAppInterface {
   /**
@@ -31,4 +31,4 @@ async function isAppInstalled(id?: string | null): Promise<boolean> {
   }
 }
 
-export default {isAppInstalled} as InstalledAppInterface;
+export default { isAppInstalled } as InstalledAppInterface;

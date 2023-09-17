@@ -97,14 +97,17 @@ export const fetchCustomersJobsObj = async () => {
       throw new Error("Signer is undefined");
     }
     try {
-        contract = new ethers.Contract(
-            REACT_APP_AUSYS_CONTRACT_ADDRESS,
-            contractABI,
-            signer) 
-    }catch(error) {
-         console.error(`failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`)
-         throw error
-    };
+      contract = new ethers.Contract(
+        REACT_APP_AUSYS_CONTRACT_ADDRESS,
+        contractABI,
+        signer
+      );
+    } catch (error) {
+      console.error(
+        `failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`
+      );
+      throw error;
+    }
 
     const walletAddress = await signer.getAddress();
     if (!walletAddress) {
@@ -115,8 +118,13 @@ export const fetchCustomersJobsObj = async () => {
     try {
       jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
     } catch (error) {
-      console.log(walletAddress)
-      console.error("Error fetching number of jobs created with walletAddress",walletAddress,"Error:" , error);
+      console.log(walletAddress);
+      console.error(
+        "Error fetching number of jobs created with walletAddress",
+        walletAddress,
+        "Error:",
+        error
+      );
       throw error;
     }
     contract = new ethers.Contract(
@@ -125,9 +133,7 @@ export const fetchCustomersJobsObj = async () => {
       signer
     );
 
-      jobNumber = await contract.numberOfJobsCreatedForCustomer(
-      walletAddress
-    );
+    jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
     const jobs = [];
     const jobsObjList: Journey[] = [];
     for (let i = 0; i < jobNumber; i++) {
@@ -154,7 +160,6 @@ export const fetchCustomersJobsObj = async () => {
     return []; // Return an empty array in case of an error
   }
 };
-
 
 export const checkIfDriverAssignedToJobId = async (jobID: string) => {
   try {

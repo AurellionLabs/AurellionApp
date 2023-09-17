@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "prepare": "cd .. && husky install aurellion/.husky"
+    "prepare": "cd .. && husky install aurellion/.husky",
+    "format": "prettier --write . && git add -A ."
   },
   "dependencies": {
     "@babel/plugin-proposal-private-methods": "^7.18.6",

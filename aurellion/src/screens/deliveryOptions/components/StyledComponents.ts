@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
-import { LightTheme } from '../../../common/constants/Colors';
-import Animated from 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import styled from "styled-components/native";
+import { LightTheme } from "../../../common/constants/Colors";
+import Animated from "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 interface CustomProps {
   [key: string]: any;
@@ -15,28 +15,33 @@ interface Props {
 }
 export const SelectedBox = styled.TouchableOpacity<Props>`
   padding: 8px;
-  margin: ${(props: Props) => (props.boxSelected ? "3%" :  "2%")};
-  border-width: ${(props: Props) => (props.boxSelected ? "2px" :  "1px")};
+  margin: ${(props: Props) => (props.boxSelected ? "3%" : "2%")};
+  border-width: ${(props: Props) => (props.boxSelected ? "2px" : "1px")};
   flex-direction: row;
-  border-radius: ${(props: Props) => (props.boxSelected ? "20px" :  "0px")};
+  border-radius: ${(props: Props) => (props.boxSelected ? "20px" : "0px")};
   width: 100%;
-  height: ${(props: Props) => (props.boxState ? '25%' : '60%')};
-  border-color:${(props: Props) => (props.boxSelected ? LightTheme.foreground2 : "white")};
-  border-top-color:  ${(props: Props) => (props.boxSelected ? LightTheme.foreground2 :  "rgba(0, 0, 0, 0.2)")};
+  height: ${(props: Props) => (props.boxState ? "25%" : "60%")};
+  border-color: ${(props: Props) =>
+    props.boxSelected ? LightTheme.foreground2 : "white"};
+  border-top-color: ${(props: Props) =>
+    props.boxSelected ? LightTheme.foreground2 : "rgba(0, 0, 0, 0.2)"};
   justify-content: space-between;
-  display: ${(props: Props) => (props.boxState ? 'flex' : (props: Props) => (props.boxSelected ? "flex" :  "none"))}; 
+  display: ${(props: Props) =>
+    props.boxState
+      ? "flex"
+      : (props: Props) => (props.boxSelected ? "flex" : "none")};
 `;
 
 export const UnSelectedBox = styled.View<Props>`
   padding: 8px;
-  border-top-color:  rgba(0, 0, 0, 0.2);
+  border-top-color: rgba(0, 0, 0, 0.2);
   flex-direction: row;
   border-top-width: 1px;
   margin: 2%;
   width: 100%;
   height: 25%;
   justify-content: space-between;
-  display: ${(props: Props) => (props.boxState ? 'flex' : 'none')};
+  display: ${(props: Props) => (props.boxState ? "flex" : "none")};
 `;
 
 export const BoxHeadingText = styled.Text`
@@ -58,7 +63,6 @@ export const AnimatedBox = styled(Animated.View)`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background-color: white;
-  
 `;
 
 interface AnimatedRootProps {
@@ -72,5 +76,4 @@ export const AnimatedRoot = styled(GestureHandlerRootView)`
   flex-direction: column;
   width: 100%;
   height: ${(props: AnimatedRootProps) => props.height}px;
-  
 `;

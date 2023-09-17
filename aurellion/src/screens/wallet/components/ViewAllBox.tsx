@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Image,
   StyleSheet,
@@ -6,17 +6,17 @@ import {
   Text,
   TouchableOpacity,
   useColorScheme,
-} from 'react-native';
+} from "react-native";
 
-import ViewAllIcon from '../../../common/assets/ViewAll.png';
-import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
+import ViewAllIcon from "../../../common/assets/ViewAll.png";
+import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
 
 interface Props {
   onPress: any;
 }
 
-function ViewAllBox({onPress}: Props) {
-  const isDarkMode = useColorScheme() === 'dark';
+function ViewAllBox({ onPress }: Props) {
+  const isDarkMode = useColorScheme() === "dark";
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
@@ -24,7 +24,8 @@ function ViewAllBox({onPress}: Props) {
       <View>
         <Text
           style={[styles.text, isDarkMode && styles.textDark]}
-          numberOfLines={1}>
+          numberOfLines={1}
+        >
           View All
         </Text>
       </View>
@@ -41,16 +42,16 @@ const styles = StyleSheet.create({
     borderColor: LightTheme.overlayThin,
   },
   container: {
-    width: '25%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "25%",
+    justifyContent: "center",
+    alignItems: "center",
     marginVertical: 8,
   },
   text: {
     color: LightTheme.foreground1,
     marginVertical: 8,
     maxWidth: 100,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 12,
   },
   textDark: {

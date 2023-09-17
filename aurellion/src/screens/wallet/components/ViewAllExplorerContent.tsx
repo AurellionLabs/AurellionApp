@@ -1,16 +1,16 @@
-import React, {useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from "react";
 import {
   Animated,
   StyleSheet,
   useColorScheme,
   FlatList,
   ActivityIndicator,
-} from 'react-native';
-import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
-import {DEVICE_HEIGHT} from '../../../common/constants/Platform';
-import ExplorerItem, {ITEM_HEIGHT} from './ExplorerItem';
+} from "react-native";
+import { DarkTheme, LightTheme } from "../../../common/constants/Colors";
+import { DEVICE_HEIGHT } from "../../../common/constants/Platform";
+import ExplorerItem, { ITEM_HEIGHT } from "./ExplorerItem";
 
-import NavigationHeader from './NavigationHeader';
+import NavigationHeader from "./NavigationHeader";
 
 interface ViewAllExplorerContentProps {
   isLoading: boolean;
@@ -26,7 +26,7 @@ function ViewAllExplorerContent({
   currentWCURI,
 }: ViewAllExplorerContentProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -37,7 +37,7 @@ function ViewAllExplorerContent({
   }, [fadeAnim]);
 
   return (
-    <Animated.View style={{opacity: fadeAnim}}>
+    <Animated.View style={{ opacity: fadeAnim }}>
       <>
         <NavigationHeader
           title="Connect your Wallet"
@@ -53,7 +53,7 @@ function ViewAllExplorerContent({
             data={explorerData || []}
             style={styles.list}
             contentContainerStyle={styles.listContentContainer}
-            indicatorStyle={isDarkMode ? 'white' : 'black'}
+            indicatorStyle={isDarkMode ? "white" : "black"}
             showsVerticalScrollIndicator
             numColumns={4}
             getItemLayout={(_, index) => ({
@@ -61,7 +61,7 @@ function ViewAllExplorerContent({
               offset: ITEM_HEIGHT * index,
               index,
             })}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <ExplorerItem currentWCURI={currentWCURI} walletInfo={item} />
             )}
           />

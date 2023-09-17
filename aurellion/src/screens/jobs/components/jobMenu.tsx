@@ -14,7 +14,7 @@ import {
   Container,
 } from "../../../common/components/StyledComponents";
 import { UserType } from "../../../common/types/types";
-import Loader from "../../../common/loader";
+import Loader from "../../../common/loader/loader";
 
 const Menu = () => {
   const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } =

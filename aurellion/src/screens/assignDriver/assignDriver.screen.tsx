@@ -16,7 +16,7 @@ import {
 import { useMainContext } from "../main.provider";
 import { assignDriverToJobId } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
-import Loader from "../../common/loader";
+import Loader from "../../common/loader/loader";
 
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();

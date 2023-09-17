@@ -19,7 +19,7 @@ import {
   driverPackageSign,
 } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
-import Loader from "../../common/loader";
+import Loader from "../../common/loader/loader";
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();

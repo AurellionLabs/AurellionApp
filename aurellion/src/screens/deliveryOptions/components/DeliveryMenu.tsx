@@ -23,7 +23,7 @@ import { useMainContext } from "../../main.provider";
 import { navigateDeepLink } from "../../../utils/ExplorerUtils";
 import { useNavigation } from "@react-navigation/native";
 import { JobsScreenNavigationProp } from "../../../navigation/types";
-import Loader from "../../../common/loader";
+import Loader from "../../../common/loader/loader";
 const DeliveryMenu = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI } = useMainContext();

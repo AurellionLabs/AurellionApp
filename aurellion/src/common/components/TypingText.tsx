@@ -2,9 +2,9 @@ import { DarkTheme } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { LightTheme } from '../constants/Colors';
-import { RedButtonText } from './StyledComponents';
+import { TitleText } from './StyledComponents';
 
-function TypingText({ text, speed }) {
+function TypingText({ text, speed, isDarkMode }) {
   const [displayedText, setDisplayedText] = useState('');
   const [index, setIndex] = useState(0);
 
@@ -17,8 +17,8 @@ function TypingText({ text, speed }) {
       return () => clearInterval(timer);
     }
   }, [index, text, speed]);
-
-  return <RedButtonText style={{color:LightTheme.accent,fontFamily:"Inter-Bold",fontWeight:"300", fontSize:70, paddingBottom:"10%"}}>{displayedText}</RedButtonText>;
+    
+  return <TitleText isDarkMode={isDarkMode}>{displayedText}</TitleText>;
 }
 
 export default TypingText;

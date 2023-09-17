@@ -1,11 +1,11 @@
 import styled from "styled-components/native";
 import { DarkTheme, LightTheme } from "../constants/Colors";
 import {
-  Touchable,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-  ViewStyle,
+    Touchable,
+    TouchableOpacity,
+    TouchableOpacityProps,
+    View,
+    ViewStyle,
 } from "react-native";
 import Animated from "react-native-reanimated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -27,7 +27,7 @@ export const Shadow = styled.View`
 `;
 
 interface RedButtonProps {
-  styles: ViewStyle;
+    styles: ViewStyle;
 }
 
 interface props {
@@ -44,8 +44,8 @@ export const RedButton = styled.TouchableOpacity`
   border-width: 1px;
   border-color: ${LightTheme.overlayThin};
   ${({ isDarkMode }: { isDarkMode: boolean }) =>
-    isDarkMode &&
-    `
+        isDarkMode &&
+        `
     background-color: ${DarkTheme.accent};
     border-color: ${DarkTheme.overlayThin};
   `}
@@ -55,6 +55,12 @@ export const RedButtonText = styled.Text`
   color: white;
   font-family: Inter-Regular;
 `;
+export const TitleText = styled.Text<props>`
+    color: ${(props: props) => props.isDarkMode ? DarkTheme.title : LightTheme.title};
+    font-family: Inter-Regualr;
+    font-size: 40px;
+
+`
 export const Box = styled.View`
   position: absolute;
   bottom: 0;
@@ -67,10 +73,10 @@ export const Box = styled.View`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: ${(props: props) => props.isDarkMode ? DarkTheme.background2 : LightTheme.background2 };
+  background-color: ${(props: props) => props.isDarkMode ? DarkTheme.background2 : LightTheme.background2};
 `;
 export const StyledText = styled.Text<props>`
-    color: ${(props: props) => props.isDarkMode ? "white" : "black" };
+    color: ${(props: props) => props.isDarkMode ? "white" : "black"};
     font-family: Inter-Regular;
 `
 export const ButtonBox = styled.View`
@@ -85,8 +91,8 @@ export const ButtonBox = styled.View`
 `;
 
 interface ButtonProps {
-  isDarkMode: boolean;
-  backgroundColor: string;
+    isDarkMode: boolean;
+    backgroundColor: string;
 }
 
 export const Button = styled.TouchableOpacity`
@@ -100,8 +106,8 @@ export const Button = styled.TouchableOpacity`
   border-width: 1px;
   border-color: ${LightTheme.overlayThin};
   ${(props: ButtonProps) =>
-    props.isDarkMode &&
-    `
+        props.isDarkMode &&
+        `
     background-color: ${DarkTheme.accent};
     border-color: ${DarkTheme.overlayThin};
   `}
@@ -118,7 +124,7 @@ export const BoldText = styled.Text`
 `;
 
 interface ContainerProps {
-  styles: ViewStyle;
+    styles: ViewStyle;
 }
 
 export const Container = styled.View`

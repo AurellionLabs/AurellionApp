@@ -17,6 +17,7 @@ export async function retrieveOldSession() {
         if (storedSessionData) {
                 universalProviderSession = JSON.parse(storedSessionData);
             } else {
+                universalProviderSession = undefined
                 console.log("could not parse session data")
             }
     } catch (e) {

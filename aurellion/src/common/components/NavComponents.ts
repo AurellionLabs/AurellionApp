@@ -4,7 +4,6 @@ import { View, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
 `;
@@ -57,19 +56,19 @@ export const Box = styled.View`
 `;
 
 export const ButtonBox = styled.View`
-padding: 8px;
-border-top-color:  rgba(0, 0, 0, 0.2);
-flex-direction: row;
-border-top-width: 1px;
-margin: 2%;
-width: 100%;
-height: 25%;
-justify-content: space-between;
+  padding: 8px;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  flex-direction: row;
+  border-top-width: 1px;
+  margin: 2%;
+  width: 100%;
+  height: 25%;
+  justify-content: space-between;
 `;
 
 interface ButtonProps {
-  isDarkMode: boolean,
-  backgroundColor: string,
+  isDarkMode: boolean;
+  backgroundColor: string;
 }
 
 export const Button = styled.TouchableOpacity`
@@ -101,7 +100,7 @@ export const BoldText = styled.Text`
 `;
 
 interface ContainerProps {
-  styles: ViewStyle
+  styles: ViewStyle;
 }
 
 export const Container = styled.View`
@@ -127,7 +126,6 @@ export const NavWrapper = styled.View`
   width: 100%;
   height: 10%;
   background-color: #d1d1d1;
-  flexDirection: row;
+  flexdirection: row;
   justify-content: flex-start;
-
 `;

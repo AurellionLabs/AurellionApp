@@ -17,9 +17,8 @@ function TypingText({ text, speed, isDarkMode }) {
       return () => clearInterval(timer);
     }
   }, [index, text, speed]);
-    
+
   return <TitleText isDarkMode={isDarkMode}>{displayedText}</TitleText>;
 }
 
 export default TypingText;
-

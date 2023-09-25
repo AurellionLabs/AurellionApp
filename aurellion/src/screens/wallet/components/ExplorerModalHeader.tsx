@@ -1,22 +1,16 @@
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  useColorScheme,
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
 
 import WCLogo from '../../../common/assets/WCLogo.png';
 import Close from '../../../common/assets/Close.png';
 import CloseWhite from '../../../common/assets/CloseWhite.png';
-import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface ExplorerModalHeaderProps {
   close: () => void;
 }
 
-function ExplorerModalHeader({close}: ExplorerModalHeaderProps) {
+function ExplorerModalHeader({ close }: ExplorerModalHeaderProps) {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
@@ -25,11 +19,9 @@ function ExplorerModalHeader({close}: ExplorerModalHeaderProps) {
       <TouchableOpacity
         style={[styles.closeContainer, isDarkMode && styles.closeContainerDark]}
         onPress={close}
-        hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
-        <Image
-          style={styles.closeImage}
-          source={isDarkMode ? CloseWhite : Close}
-        />
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+      >
+        <Image style={styles.closeImage} source={isDarkMode ? CloseWhite : Close} />
       </TouchableOpacity>
     </View>
   );

@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 import Chevron from '../../../common/assets/Chevron.png';
-import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface Props {
   title: string;
@@ -19,14 +12,7 @@ interface Props {
   actionDisabled?: boolean;
 }
 
-function NavigationHeader({
-  title,
-  onBackPress,
-  onActionPress,
-  actionIcon,
-  actionIconStyle,
-  actionDisabled,
-}: Props) {
+function NavigationHeader({ title, onBackPress, onActionPress, actionIcon, actionIconStyle, actionDisabled }: Props) {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
@@ -36,25 +22,22 @@ function NavigationHeader({
           style={styles.button}
           onPress={onBackPress}
           disabled={actionDisabled}
-          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
           <Image style={styles.backIcon} source={Chevron} />
         </TouchableOpacity>
       ) : (
         <View style={styles.button} />
       )}
-      <Text style={[styles.title, isDarkMode && styles.titleDark]}>
-        {title}
-      </Text>
+      <Text style={[styles.title, isDarkMode && styles.titleDark]}>{title}</Text>
       {actionIcon ? (
         <TouchableOpacity
           style={styles.button}
           onPress={onActionPress}
           disabled={actionDisabled}
-          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
-          <Image
-            style={[actionIconStyle, actionDisabled && styles.actionDisabled]}
-            source={actionIcon}
-          />
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Image style={[actionIconStyle, actionDisabled && styles.actionDisabled]} source={actionIcon} />
         </TouchableOpacity>
       ) : (
         <View style={styles.button} />

@@ -51,7 +51,7 @@ export const RedButtonText = styled.Text`
 `;
 export const TitleText = styled.Text<props>`
   color: ${(props: props) => (props.isDarkMode ? DarkTheme.title : LightTheme.title)};
-  font-family: Inter-Regualr;
+  font-family: Inter-Regular;
   font-size: 40px;
 `;
 export const Box = styled.View`

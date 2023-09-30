@@ -192,12 +192,12 @@ function WalletScreen(): JSX.Element {
         <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} />
         {currentAccount ? (
           <View style={styles.container}>
-            <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {currentAccount}</Text>
-            <RedButton onPress={() => navigation.navigate('Locations')}>
+            <Text style={[styles.text, isDarkMode && styles.whiteText]}>{currentAccount}</Text>
+            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Locations')}>
               <RedButtonText>Home Screen</RedButtonText>
             </RedButton>
 
-            <RedButton onPress={() => changeStoredWallet()}>
+            <RedButton style={{ marginTop: '5%', marginBottom: '0%' }} onPress={() => changeStoredWallet()}>
               <RedButtonText>Change Wallet</RedButtonText>
             </RedButton>
           </View>
@@ -223,7 +223,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,

@@ -196,6 +196,10 @@ function WalletScreen(): JSX.Element {
             <RedButton onPress={() => navigation.navigate('Locations')}>
               <RedButtonText>Home Screen</RedButtonText>
             </RedButton>
+
+            <RedButton onPress={() => changeStoredWallet()}>
+              <RedButtonText>Change Wallet</RedButtonText>
+            </RedButton>
           </View>
         ) : (
           <RedButton onPress={onConnect} style={{ marginTop: '60%', bottom: '10%' }}>

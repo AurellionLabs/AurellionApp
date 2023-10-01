@@ -62,16 +62,7 @@ function WalletScreen(): JSX.Element {
         setCurrentAccount(currentAddress);
       }
     } catch (err: unknown) {
-      console.log("Error getting the Address", err);
-      console.log("Trying to remedy");
-      try {
-        await AsyncStorage.removeItem("universalProviderSession");
-        await onConnect();
-      } catch (e) {
-        console.log("failed to remedy with", e);
-        Alert.alert("Error", "Error getting the Address");
-        throw e;
-      }
+      Alert.alert("Error", "Error getting the Address");
     }
   }, []);
 

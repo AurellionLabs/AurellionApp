@@ -4,13 +4,11 @@ export type Location = {
 }
 
 export type ParcelData = {
-    startLocation: Location;
-    endLocatio: Location;
-    name: string;
-    //add customer?
-    //add driver?
-    //add box
-} 
+    startLocation: location;
+    endLocation: location;
+    startName: string;
+    endName: string;
+}
 
 export type Journey = {
     parcelData: ParcelData;
@@ -29,10 +27,5 @@ export type location = {
     lat: string;
     lng: string;
 }
-export type PackageDeliveryData = {
-    startLocation: location;
-    endLocation: location;
-    startName: string;
-    endName: string;
-}
+
 export type UserType = 'customer' | 'driver';

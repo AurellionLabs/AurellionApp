@@ -19,31 +19,37 @@ import {
   driverPackageSign,
 } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
+import Loader from "../../common/loader/loader";
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
-  const {
-    universalLink,
-    deepLink,
-    wcURI,
-    userType,
-    setRefetchDataFromAPI,
-    packageDeliveryData,
-  } = useMainContext();
+  const { universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI } =
+    useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
-  const { heading, jobID } = route.params;
+  const { heading, job } = route.params;
   const isDarkMode = useColorScheme() === "dark";
   const [isSigned, setIsSigned] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const onPress = async () => {
-    navigateDeepLink(universalLink, deepLink, wcURI);
-    if (userType === "customer") {
-      await customerPackageSign(jobID);
-    } else if (userType === "driver") {
-      await driverPackageSign(jobID);
+    setIsLoading(true);
+    try {
+      navigateDeepLink(universalLink, deepLink, wcURI);
+      if (userType === "customer") {
+        await customerPackageSign(job.jobId);
+      } else if (userType === "driver") {
+        await driverPackageSign(job.jobId);
+      }
+      setIsSigned(true);
+      setRefetchDataFromAPI(true);
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Error Signing off Package");
+    } finally {
+      setIsLoading(false);
     }
-    setIsSigned(true);
-    setRefetchDataFromAPI(true);
   };
 
   return (
@@ -55,11 +61,18 @@ const SignatureScreen = () => {
           loop={false}
           onAnimationFinish={() => navigation.navigate("Jobs")}
         />
+      ) : isLoading ? (
+        <Loader
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        />
       ) : (
         <>
           <BoldText>{heading}</BoldText>
           <BoldText>Receiver's Address</BoldText>
-          <BoldText>{packageDeliveryData?.endName}</BoldText>
+          <BoldText>{job?.parcelData.endName}</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
               isDarkMode={isDarkMode}

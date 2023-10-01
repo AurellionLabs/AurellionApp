@@ -1,6 +1,6 @@
 import { JsonRpcSigner } from "@ethersproject/providers";
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import { PackageDeliveryData, UserType } from "../common/types/types";
+import { ParcelData, UserType } from "../common/types/types";
 
 interface IMainContext {
   wallet: JsonRpcSigner | undefined;
@@ -15,9 +15,9 @@ interface IMainContext {
   setWcURI: Dispatch<SetStateAction<string>>;
   userType: UserType;
   setUserType: Dispatch<SetStateAction<UserType>>;
-  packageDeliveryData: PackageDeliveryData | undefined;
+  packageDeliveryData: ParcelData | undefined;
   setPackageDeliveryData: Dispatch<
-    SetStateAction<PackageDeliveryData | undefined>
+    SetStateAction<ParcelData | undefined>
   >;
   refetchDataFromAPI: boolean;
   setRefetchDataFromAPI: Dispatch<SetStateAction<boolean>>;
@@ -54,7 +54,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
   const [wcURI, setWcURI] = useState<string>("");
   const [userType, setUserType] = useState<UserType>("customer");
   const [packageDeliveryData, setPackageDeliveryData] = useState<
-    PackageDeliveryData | undefined
+    ParcelData | undefined
   >(undefined);
   const [refetchDataFromAPI, setRefetchDataFromAPI] = useState<boolean>(false);
 

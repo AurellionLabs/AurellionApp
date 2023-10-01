@@ -4,11 +4,11 @@ import {
   REACT_APP_AUSYS_CONTRACT_ADDRESS,
   REACT_APP_AURA_CONTRACT_ADDRESS,
 } from "@env";
-import { PackageDeliveryData, Journey } from "../common/types/types";
+import { ParcelData, Journey } from "../common/types/types";
 
 const contractABI = require("./aurellion-abi.json");
 
-export const jobCreation = async (locationData: PackageDeliveryData) => {
+export const jobCreation = async (locationData: ParcelData) => {
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -34,6 +34,7 @@ export const jobCreation = async (locationData: PackageDeliveryData) => {
     console.log("success");
   } catch (error) {
     console.error("Error in jobCreation:", error);
+    throw error
   }
 };
 
@@ -59,6 +60,7 @@ export const customerPackageSign = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in customerPackageSign:", error);
+    throw error;
   }
 };
 
@@ -84,6 +86,7 @@ export const driverPackageSign = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in driverPackageSign:", error);
+    throw error;
   }
 };
 
@@ -171,6 +174,7 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
     return isAssigned;
   } catch (error) {
     console.error("Error in checkIfDriverAssignedToJobId:", error);
+    throw error
   }
 };
 
@@ -194,6 +198,7 @@ export const assignDriverToJobId = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error("Error in assignDriverToJobId:", error);
+    throw error
   }
 };
 

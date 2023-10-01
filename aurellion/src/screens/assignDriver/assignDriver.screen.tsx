@@ -16,20 +16,33 @@ import {
 import { useMainContext } from "../main.provider";
 import { assignDriverToJobId } from "../../dapp-connectors/dapp-controller";
 import { navigateDeepLink } from "../../utils/ExplorerUtils";
+import Loader from "../../common/loader/loader";
 
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI, setRefetchDataFromAPI } = useMainContext();
+  const { universalLink, deepLink, wcURI, setRefetchDataFromAPI } =
+    useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
   const { jobID } = route.params;
   const isDarkMode = useColorScheme() === "dark";
   const [isAssigned, setIsAssigned] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const acceptJob = async () => {
-    navigateDeepLink(universalLink, deepLink, wcURI);
-    await assignDriverToJobId(jobID);
-    setIsAssigned(true);
-    setRefetchDataFromAPI(true)
+    setIsLoading(true);
+    try {
+      navigateDeepLink(universalLink, deepLink, wcURI);
+      await assignDriverToJobId(jobID);
+      setIsAssigned(true);
+      setRefetchDataFromAPI(true);
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage("Error assigning driver to job");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -45,6 +58,13 @@ const AssignDriverScreen = () => {
               jobID: jobID,
             })
           }
+        />
+      ) : isLoading ? (
+        <Loader
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
         />
       ) : (
         <>

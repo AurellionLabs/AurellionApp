@@ -87,9 +87,7 @@ export const driverPackageSign = async (jobID: string) => {
   }
 };
 
-export const fetchCustomersJobsObj = async () => {
-  const jobs = [];
-  const jobsObjList: Journey[] = [];
+export const fetchCustomerJobs = async () => {
   let contract;
   try {
     const signer = await getSigner();
@@ -128,29 +126,29 @@ export const fetchCustomersJobsObj = async () => {
       jobNumber = await contract.numberOfJobsCreatedForCustomer(
       walletAddress
     );
-    const jobs = [];
-    const jobsObjList: Journey[] = [];
+    const jobIds = [];
+    const jobs: Journey[] = [];
     for (let i = 0; i < jobNumber; i++) {
       try {
-        const job = await contract.customerToJobId(walletAddress, i);
-        jobs.push(job);
+        const jobId = await contract.customerToJobId(walletAddress, i);
+        jobIds.push(jobId);
       } catch (err) {
         console.error(`Error fetching job with index ${i}:`, err);
       }
     }
 
-    for (const jobID of jobs) {
+    for (const jobId of jobIds) {
       try {
-        const jobsObj = await contract.jobIdToJourney(jobID);
-        jobsObjList.push(jobsObj);
+        const job = await contract.jobIdToJourney(jobId);
+        jobs.push(job);
       } catch (err) {
-        console.error(`Error fetching job object with ID ${jobID}:`, err);
+        console.error(`Error fetching job object with ID ${jobId}:`, err);
       }
     }
 
-    return jobsObjList;
+    return jobs;
   } catch (error) {
-    console.error("General error in fetchCustomersJobsObj:", error);
+    console.error("General error in fetchCustomerJobs:", error);
     return []; // Return an empty array in case of an error
   }
 };

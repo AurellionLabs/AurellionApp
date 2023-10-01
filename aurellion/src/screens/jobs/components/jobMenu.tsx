@@ -4,7 +4,7 @@ import { ScrollView } from "react-native";
 import { LightTheme } from "../../../common/constants/Colors";
 import {
   fetchDriverUnassignedJourneys,
-  fetchCustomersJobsObj,
+  fetchCustomerJobs,
 } from "../../../dapp-connectors/dapp-controller";
 import { useMainContext } from "../../main.provider";
 import { Journey } from "../../../common/types/types";
@@ -28,7 +28,7 @@ const Menu = () => {
   const fetchAndSetJourneys = async () => {
     let journeys: Journey[] = [];
     if (userType === "customer") {
-      journeys = await fetchCustomersJobsObj();
+      journeys = await fetchCustomerJobs();
     } else if (userType === "driver") {
       journeys = await fetchDriverUnassignedJourneys();
     }

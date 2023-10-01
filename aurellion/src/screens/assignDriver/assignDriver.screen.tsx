@@ -23,7 +23,7 @@ const AssignDriverScreen = () => {
   const { universalLink, deepLink, wcURI, setRefetchDataFromAPI } =
     useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
-  const { jobID } = route.params;
+  const { job } = route.params;
   const isDarkMode = useColorScheme() === "dark";
   const [isAssigned, setIsAssigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,7 @@ const AssignDriverScreen = () => {
     setIsLoading(true);
     try {
       navigateDeepLink(universalLink, deepLink, wcURI);
-      await assignDriverToJobId(jobID);
+      await assignDriverToJobId(job.jobId);
       setIsAssigned(true);
       setRefetchDataFromAPI(true);
     } catch (error) {
@@ -55,7 +55,7 @@ const AssignDriverScreen = () => {
           onAnimationFinish={() =>
             navigation.navigate("Signature", {
               heading: "Sign to confirm pacakge received from customer",
-              jobID: jobID,
+              job: job,
             })
           }
         />
@@ -69,6 +69,8 @@ const AssignDriverScreen = () => {
       ) : (
         <>
           <BoldText>Do you want to accept this job?</BoldText>
+          <BoldText>Receiver's Address</BoldText>
+          <BoldText>{job?.parcelData.endName}</BoldText>
           <View style={{ marginTop: 50 }}>
             <Button
               isDarkMode={isDarkMode}

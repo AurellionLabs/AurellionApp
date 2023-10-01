@@ -13,7 +13,7 @@ export type HomeStackNavigatorParamList = {
     Jobs: undefined;
     Locations: undefined;
     AssignDriver: {
-        jobID: string
+        job: Journey
     }
 };
 

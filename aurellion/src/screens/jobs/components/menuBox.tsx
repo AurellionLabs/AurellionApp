@@ -22,7 +22,7 @@ const MenuBox: React.FC<BoxProps> = ({ selected, job }) => {
       });
     } else if (userType === "driver") {
       navigation.navigate("AssignDriver", {
-        jobID: job.jobId,
+        job: job,
       });
     }
   };

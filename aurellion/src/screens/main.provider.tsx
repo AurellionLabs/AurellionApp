@@ -14,6 +14,8 @@ interface IMainContext {
   wcURI: string;
   setWcURI: Dispatch<SetStateAction<string>>;
   userType: UserType;
+  setIsDarkMode: Dispatch<SetStateAction<boolean>>;
+  isDarkMode: boolean;
   setUserType: Dispatch<SetStateAction<UserType>>;
   packageDeliveryData: PackageDeliveryData | undefined;
   setPackageDeliveryData: Dispatch<SetStateAction<PackageDeliveryData | undefined>>;
@@ -38,6 +40,8 @@ export const MainContext = React.createContext<IMainContext>({
   setPackageDeliveryData: () => {},
   refetchDataFromAPI: false,
   setRefetchDataFromAPI: () => {},
+  isDarkMode: false,
+  setIsDarkMode: () => {},
 });
 
 interface MainProviderProps {
@@ -53,7 +57,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
   const [userType, setUserType] = useState<UserType>('customer');
   const [packageDeliveryData, setPackageDeliveryData] = useState<PackageDeliveryData | undefined>(undefined);
   const [refetchDataFromAPI, setRefetchDataFromAPI] = useState<boolean>(false);
-
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   return (
     <MainContext.Provider
       value={{
@@ -73,6 +77,8 @@ const MainProvider = ({ children }: MainProviderProps) => {
         setPackageDeliveryData,
         refetchDataFromAPI,
         setRefetchDataFromAPI,
+        isDarkMode,
+        setIsDarkMode,
       }}
     >
       {children}

@@ -38,7 +38,7 @@ export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
 `;
 export const RedButtonText = styled.Text`
   color: white;
-  font-weight: 700;
+  font-family: Inter-Regular;
 `;
 export const Box = styled.View`
   position: absolute;

@@ -15,11 +15,11 @@ const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator initialRouteName="Wallet">
       <HomeStack.Screen options={{ headerShown: false }} name="DeliveryOptions" component={DeliveryOptions} />
-      <HomeStack.Screen name="Wallet" component={WalletScreen} />
+      <HomeStack.Screen options={{ headerShown: false }} name="Wallet" component={WalletScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="AssignDriver" component={AssignDriverScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="Jobs" component={JobScreen} />
-      <HomeStack.Screen name="Locations" component={LocationsScreen} />
+      <HomeStack.Screen options={{ headerShown: false }} name="Locations" component={LocationsScreen} />
       {/* <HomeStack.Screen options={{ headerShown: false }} name="UserSelection" component={UserSelectionScreen} /> */}
     </HomeStack.Navigator>
   );

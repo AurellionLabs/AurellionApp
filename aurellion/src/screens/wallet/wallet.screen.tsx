@@ -9,9 +9,9 @@ import {
   useColorScheme,
   View,
   Image,
+  ImageBackground,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
 import '@walletconnect/react-native-compat';
 import useInitialization from '../../common/hooks/useInitialization';
 import {
@@ -26,25 +26,26 @@ import {
 import ExplorerModal from './components/ExplorerModal';
 import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
+import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
+import TypingText from '../../common/components/TypingText';
 import { UniversalProvider } from '@walletconnect/universal-provider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMainContext } from '../main.provider';
-
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
+
   const [modalVisible, setModalVisible] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<string>();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
   // Initialize universal provider
   const initialized = useInitialization();
 
-  const { setUniversalLink, setDeepLink, setWcURI, universalLink, wcURI, deepLink } = useMainContext();
+  const { setIsDarkMode, isDarkMode, setUniversalLink, setDeepLink, setWcURI, universalLink, wcURI, deepLink } =
+    useMainContext();
   const close = () => {
     setModalVisible(false);
   };
-
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
   const getAddress = useCallback(async () => {
     try {
       if (web3Provider) {
@@ -162,7 +163,6 @@ function WalletScreen(): JSX.Element {
   useEffect(() => {
     console.log('Deep Link Updated:', deepLink);
   }, [deepLink]);
-
   useEffect(() => {
     console.log('WCURI Updated:', wcURI);
   }, [wcURI]);
@@ -171,39 +171,44 @@ function WalletScreen(): JSX.Element {
       subscribeToEvents();
     }
   }, [initialized, subscribeToEvents]);
-
+  const changeColourScheme = () => {
+    if (isDarkMode) setIsDarkMode(false);
+    else setIsDarkMode(true);
+  };
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <View style={[styles.container, { backgroundColor }]}>
-        <Image source={require('../../common/assets/images/logo.png')} style={styles.logo} />
+        <TouchableOpacity style={{ height: '4%', width: '8%', right: '40%' }} onPress={changeColourScheme}>
+          <ImageBackground
+            source={require('../../common/assets/images/eclipse-alt.png')}
+            style={{ height: '100%', width: '100%', top: '30%' }}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+        <Image
+          source={require('../../common/assets/images/logo.png')}
+          style={{ width: 250, height: 250, marginBottom: '5%', marginTop: '20%' }}
+        />
+        <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} />
         {currentAccount ? (
           <View style={styles.container}>
-            <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {currentAccount}</Text>
-            <TouchableOpacity
-              style={[styles.blueButton, styles.disconnectButton, isDarkMode && styles.blueButtonDark]}
-              onPress={() => navigation.navigate('Locations')}
-            >
-              <Text style={styles.blueButtonText}>Home Screen</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.blueButton, styles.disconnectButton, isDarkMode && styles.blueButtonDark]}
-              onPress={() => changeStoredWallet()}
-            >
-              <Text style={styles.blueButtonText}>Change Wallet</Text>
-            </TouchableOpacity>
+            <Text style={[styles.text, isDarkMode && styles.whiteText]}>{currentAccount}</Text>
+            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Locations')}>
+              <RedButtonText>Home Screen</RedButtonText>
+            </RedButton>
+
+            <RedButton style={{ marginTop: '5%', marginBottom: '0%' }} onPress={() => changeStoredWallet()}>
+              <RedButtonText>Change Wallet</RedButtonText>
+            </RedButton>
           </View>
         ) : (
-          <TouchableOpacity
-            onPress={onConnect}
-            style={[styles.blueButton, isDarkMode && styles.blueButtonDark]}
-            disabled={!initialized}
-          >
+          <RedButton onPress={onConnect} style={{ marginTop: '60%', bottom: '10%' }}>
             {initialized ? (
-              <Text style={styles.blueButtonText}>Connect Wallet</Text>
+              <RedButtonText>Connect Wallet</RedButtonText>
             ) : (
               <ActivityIndicator size="small" color="white" />
             )}
-          </TouchableOpacity>
+          </RedButton>
         )}
         <ExplorerModal modalVisible={modalVisible} close={close} currentWCURI={currentWCURI} />
       </View>
@@ -218,7 +223,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,
@@ -261,9 +265,5 @@ const styles = StyleSheet.create({
   },
   disconnectButton: {
     marginTop: 20,
-  },
-  logo: {
-    width: 250,
-    height: 250,
   },
 });

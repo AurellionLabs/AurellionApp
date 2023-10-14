@@ -3,14 +3,13 @@ import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 export const Container = styled.View`
   display: flex;
-//   flex: 1;
+  //   flex: 1;
   height: 100%;
-//   background-color: red;
+  //   background-color: red;
   justify-content: space-evenly;
-//   align-items: flex-start;
+  //   align-items: flex-start;
   padding-horizontal: 15px;
 `;
-
 
 export const Heading = styled.Text`
   flex: 0.5;
@@ -19,13 +18,13 @@ export const Heading = styled.Text`
   margin-top: 20px;
   margin-bottom: 20px;
   color: black;
-//   background-color: white;
+  //   background-color: white;
 `;
 
 export const DetailsContainer = styled.View`
   flex: 5;
   min-width: 100%;
-//   background-color: white;
+  //   background-color: white;
   margin-bottom: 20px;
 `;
 
@@ -44,7 +43,6 @@ export const Value = styled.Text`
   font-size: 16px;
   color: black;
 `;
-
 
 export const ConfirmButton = styled.TouchableOpacity`
   background-color: ${LightTheme.accent};

@@ -21,11 +21,7 @@ interface ExplorerModalProps {
   currentWCURI?: string;
 }
 
-function ExplorerModal({
-  modalVisible,
-  close,
-  currentWCURI,
-}: ExplorerModalProps) {
+function ExplorerModal({ modalVisible, close, currentWCURI }: ExplorerModalProps) {
   const [isWalletListLoading, setWalletListLoading] = useState(true);
   const [initialWallets, setInitialWallets] = useState<WalletInfo[]>([]);
   const [allWallets, setAllWallets] = useState<WalletInfo[]>([]);
@@ -35,7 +31,7 @@ function ExplorerModal({
   const [viewStack, setViewStack] = useState<Routes[]>([INITIAL_ROUTE]);
 
   const fetchWallets = useCallback(() => {
-    fetchAllWallets().then(wallets => {
+    fetchAllWallets().then((wallets) => {
       setWalletListLoading(false);
       if (wallets) {
         setInitialWallets(wallets.slice(0, 7));
@@ -48,7 +44,7 @@ function ExplorerModal({
     (route: Routes) => {
       setViewStack(viewStack.concat([route]));
     },
-    [viewStack],
+    [viewStack]
   );
 
   const onNavigateBack = useCallback(() => {
@@ -78,14 +74,7 @@ function ExplorerModal({
       ),
       ['QR_CODE']: <QRView uri={currentWCURI} onBackPress={onNavigateBack} />,
     };
-  }, [
-    currentWCURI,
-    initialWallets,
-    isWalletListLoading,
-    onNavigateBack,
-    onNavigate,
-    allWallets,
-  ]);
+  }, [currentWCURI, initialWallets, isWalletListLoading, onNavigateBack, onNavigate, allWallets]);
 
   useEffect(() => {
     if (!allWallets.length) {
@@ -103,17 +92,11 @@ function ExplorerModal({
       onModalHide={() => {
         setViewStack([INITIAL_ROUTE]);
       }}
-      useNativeDriver>
-      <ImageBackground
-        style={styles.wcContainer}
-        source={Background}
-        imageStyle={styles.wcImage}>
+      useNativeDriver
+    >
+      <ImageBackground style={styles.wcContainer} source={Background} imageStyle={styles.wcImage}>
         <ExplorerModalHeader close={close} />
-        <View
-          style={[
-            styles.connectWalletContainer,
-            isDarkMode && styles.connectWalletContainerDark,
-          ]}>
+        <View style={[styles.connectWalletContainer, isDarkMode && styles.connectWalletContainerDark]}>
           {SCREENS[viewStack.at(-1) ?? INITIAL_ROUTE]}
         </View>
       </ImageBackground>

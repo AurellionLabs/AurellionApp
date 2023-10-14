@@ -13,13 +13,28 @@ import {
     ConfirmButton,
     ConfirmButtonText,
 } from './components/StyledComponents';
+import { navigateDeepLink } from '../../utils/ExplorerUtils';
+import { jobCreation } from '../../dapp-connectors/dapp-controller';
+import { useNavigation } from '@react-navigation/native';
+import { JobsScreenNavigationProp } from '../../navigation/types';
+import { DeliverySpeedOption } from '../../common/types/types';
+
 
 const ConfirmationScreen: React.FC = () => {
-    const { walletAddress, packageDeliveryData } = useMainContext();
+    const { walletAddress,recipientWalletAddress ,packageDeliveryData, universalLink, deepLink, wcURI, deliveryOption} = useMainContext();
+    const navigation = useNavigation<JobsScreenNavigationProp>()
 
     const handleConfirm = () => {
-        // Handle confirmation logic here
+        createJob();
     };
+
+    const createJob = async () => {
+        navigateDeepLink(universalLink, deepLink, wcURI)
+        if (packageDeliveryData != undefined){
+        await jobCreation(packageDeliveryData)}
+        navigation.navigate('Jobs') 
+    }
+      
 
     return (
         <Container>
@@ -41,14 +56,14 @@ const ConfirmationScreen: React.FC = () => {
                     </Section>
                     <Section>
                         <Label>Recipient Wallet</Label>
-                        <Value>recipient address</Value>
+                        <Value>{recipientWalletAddress}</Value>
                     </Section>
                     <Separator />
                     <Section>
                         <Label>Delivery Option</Label>
-                        <Value>chosen option</Value>
-                        <Value>chosen option</Value>
-                        <Value>chosen option</Value>
+                        {deliveryOption?.deliverySpeed==DeliverySpeedOption.FAST && <Value>Fast</Value>}
+                        {deliveryOption?.deliverySpeed==DeliverySpeedOption.MEDIUM && <Value>Medium</Value>}
+                        {deliveryOption?.deliverySpeed==DeliverySpeedOption.SLOW && <Value>Slow</Value>}
                     </Section>
                     <Separator />
                     <Section>

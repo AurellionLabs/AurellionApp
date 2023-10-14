@@ -17,16 +17,12 @@ import {
 
 import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
-import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
-import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
-import { JobsScreenNavigationProp } from '../../../navigation/types';
 import { ConfirmationScreenNavigationProp } from '../../../navigation/types';
+import { DeliverySpeedOption } from '../../../common/types/types';
 const DeliveryMenu = () => {
-  const navigation = useNavigation<JobsScreenNavigationProp>()
-  const confirmationNavigation = useNavigation<ConfirmationScreenNavigationProp>()
-  const {universalLink, deepLink, wcURI}= useMainContext();
+  const navigation = useNavigation<ConfirmationScreenNavigationProp>()
   const { height: SCREEN_HEIGHT } = Dimensions.get('window')
   const defaultHeight = 70/100 * SCREEN_HEIGHT
   const [rootPosition,setRootPosition] = useState<number>(defaultHeight)
@@ -34,7 +30,8 @@ const DeliveryMenu = () => {
   const [selectedBox,setSelectedBox] = useState<boolean>(true)
   const [selectedBox2,setSelectedBox2] = useState<boolean>(false)
   const [selectedBox3,setSelectedBox3] = useState<boolean>(false)
-  const {packageDeliveryData} = useMainContext();
+  const {setDeliveryOption} = useMainContext();
+  const [selectedDeliverOption, setSelectedDeliveryOption] = useState<DeliverySpeedOption>(DeliverySpeedOption.FAST);
 
 
   const translateY = useSharedValue(0)
@@ -67,29 +64,27 @@ const DeliveryMenu = () => {
       setSelectedBox(true)
       setSelectedBox2(false)
       setSelectedBox3(false)
+      setSelectedDeliveryOption(DeliverySpeedOption.FAST);
     }
     if (box == 2) {
       setSelectedBox(false)
       setSelectedBox2(true)
       setSelectedBox3(false)
+      setSelectedDeliveryOption(DeliverySpeedOption.MEDIUM);
     }
     if (box == 3) {
       setSelectedBox(false)
       setSelectedBox2(false)
       setSelectedBox3(true)
+      setSelectedDeliveryOption(DeliverySpeedOption.SLOW);
     }
   }
 
-  const createJob = async () => {
-    navigateDeepLink(universalLink, deepLink, wcURI)
-    if (packageDeliveryData != undefined){
-    await jobCreation(packageDeliveryData)}
-    navigation.navigate('Jobs') 
-    
-  }
+
 
   const submitSelection = () => {
-    confirmationNavigation.navigate('Confirmation') 
+    navigation.navigate('Confirmation'); 
+    setDeliveryOption((prevState) => ({...prevState, deliverySpeed: selectedDeliverOption}));
   }
 
   return (

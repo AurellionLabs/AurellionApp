@@ -209,7 +209,5 @@ contract locationContract {
         customerToJobId[customer].push(journey.jobId);
         // add jobId to global mapping of jobs
         numberToJobID[jobIdCounter] = journey.jobId;
-        jobIdCounter++;
     }
-
 }

@@ -15,6 +15,7 @@ export type HomeStackNavigatorParamList = {
         jobID: string
     };
     Confirmation: undefined;
+    RecipientWalletAddress: undefined;
 
 };
 
@@ -61,4 +62,9 @@ export type JobsScreenNavigationProp = StackNavigationProp<
 export type ConfirmationScreenNavigationProp = StackNavigationProp<
     HomeStackNavigatorParamList,
     'Confirmation'
+>;
+
+export type RecipientWalletAddrScreenNavigationProp = StackNavigationProp<
+    HomeStackNavigatorParamList,
+    'RecipientWalletAddress'
 >;

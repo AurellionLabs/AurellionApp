@@ -6,8 +6,9 @@ import { Region } from 'react-native-maps';
 import {RedButton, RedButtonText} from '../../../common/components/StyledComponents';
 import { useNavigation } from '@react-navigation/native';
 import { useMainContext } from '../../main.provider';
-import { LocationsScreenNavigationProp } from '../../../navigation/types';
+import { RecipientWalletAddrScreenNavigationProp } from '../../../navigation/types';
 import { PackageDeliveryData } from '../../../common/types/types';
+import { LightTheme } from '../../../common/constants/Colors';
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA'; 
 interface LocationMenuProps {
     region: Region,
@@ -27,7 +28,7 @@ interface Geometry {
 
 const LocationsMenu = ({region, setRegion, isKeyboardVisible, style}:LocationMenuProps) => {
 
-  const navigation = useNavigation<LocationsScreenNavigationProp>();
+  const navigation = useNavigation<RecipientWalletAddrScreenNavigationProp>();
   const {setPackageDeliveryData} = useMainContext();
   const [currentAddress, setCurrentAddress] = useState<string>('');
   const [sendingAddress, setSendingAddress] = useState('Enter sending address');
@@ -152,7 +153,7 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
         console.log("packageDeliveryData");
         console.log(packageDeliveryData);
 
-        navigation.navigate('DeliveryOptions');
+        navigation.navigate('RecipientWalletAddress');
 
         })
         .catch((error) => {
@@ -165,30 +166,51 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
 
   useEffect(() => {
     if(!isKeyboardVisible){
-      setSendingAutocomplete(false);
-      setRecipientAutocomplete(false);
+      setSendingAutocomplete({autocompleteState:false, fieldName:AutocompleteLocationField.SENDING});
+      setRecipientAutocomplete({autocompleteState:false, fieldName:AutocompleteLocationField.RECIPIENT});
     }
     }, [isKeyboardVisible]);
 
+  enum AutocompleteLocationField {
+    SENDING,
+    RECIPIENT
+  }
 
-  const [sendingAutocomplete, setSendingAutocomplete] = useState(false);
-  const [recipientAutocomplete, setRecipientAutocomplete] = useState(false);
+  type AutocompleteState = {
+    autocompleteState: boolean,
+    fieldName: AutocompleteLocationField,
+  }
+  const [sendingAutocomplete, setSendingAutocomplete] = useState<AutocompleteState>({autocompleteState:false, fieldName:AutocompleteLocationField.SENDING});
+  const [recipientAutocomplete, setRecipientAutocomplete] = useState({autocompleteState:false, fieldName:AutocompleteLocationField.RECIPIENT});
 
   
-   function getTextStyle(touched:any, other:any) {
-    if(touched) {
+   function getTextStyle(touched:AutocompleteState, other:AutocompleteState) {
+    if(touched.autocompleteState == false && other.autocompleteState == false){
+      return {
+        height: 15, backgroundColor: 'white', paddingHorizontal:15, paddingBottom:"13%"
+      }
+    }
+    else if(touched.autocompleteState == true && touched.fieldName == AutocompleteLocationField.SENDING) {
       return {
         height: "100%", backgroundColor: 'white', paddingHorizontal:15
       }
     } 
-    else if(touched == false && other == false){
+    else if(touched.autocompleteState == true && touched.fieldName == AutocompleteLocationField.RECIPIENT) {
       return {
-        height: 15, backgroundColor: 'black', paddingHorizontal:15, paddingBottom:"13%"
+        height: "100%", backgroundColor: 'white', paddingHorizontal:15,
+      }
     }
+    else if (touched.fieldName == AutocompleteLocationField.SENDING && touched.autocompleteState == false 
+      && other.fieldName == AutocompleteLocationField.RECIPIENT && other.autocompleteState == true){
+        return {
+          height: 15, backgroundColor: 'white', paddingHorizontal:15, paddingBottom:"13%", ariaDisabled:true
+        }
     }
+    // when touched.fieldName == AutocompleteLocationField.RECIPIENT && touched.autocompleteState == false 
+    // && other.fieldName == AutocompleteLocationField.SENDING && other.autocompleteState == true
     else {
       return {
-          height: 15, backgroundColor: 'white', paddingHorizontal:15, paddingBottom:"13%"
+           display:'none'
       }
     }
   }
@@ -228,7 +250,10 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                   currentLocation={true}
                   styles={textInputStyles}
                   textInputProps={{
-                    onFocus: () => {setSendingAutocomplete(true);},
+                    onFocus: () => {
+                      setSendingAutocomplete((prevState) => ({...prevState, autocompleteState:true}));
+                      setRecipientAutocomplete((prevState) => ({...prevState, autocompleteState:false}));
+                    },
                   }}
                   predefinedPlaces={[currentLocationGeo]}
                 />
@@ -253,7 +278,10 @@ const geocodeAddress = (address: string): Promise<{ latitude: number; longitude:
                 // currentLocation={true}
                 styles={textInputStyles}
                 textInputProps={{
-                  onFocus: () => {setRecipientAutocomplete(true);},
+                  onFocus: () => {
+                    setRecipientAutocomplete((prevState) => ({...prevState, autocompleteState:true}));
+                    setSendingAutocomplete((prevState) => ({...prevState, autocompleteState:false}));
+                  },
                 }}
                 predefinedPlaces={[currentLocationGeo]}
               />

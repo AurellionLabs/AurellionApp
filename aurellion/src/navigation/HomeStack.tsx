@@ -9,6 +9,7 @@ import LocationsScreen from "../screens/locationsScreen/locations.screen";
 import JobScreen from "../screens/jobs/jobs.screen";
 import AssignDriverScreen from "../screens/assignDriver/assignDriver.screen";
 import ConfirmationScreen from "../screens/confirmationScreen/confirmation.screen";
+import RecipientWalletAddressScreen from "../screens/recipientWalletAddressScreen/recipientWalletAddress.screen";
 
 const HomeStack = createStackNavigator<HomeStackNavigatorParamList>();
 
@@ -24,8 +25,9 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="AssignDriver" component={AssignDriverScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="Jobs" component={JobScreen} />
-      <HomeStack.Screen name="Locations" component={LocationsScreen} />
+      <HomeStack.Screen options={{ headerShown: false }} name="Locations" component={LocationsScreen} />
       <HomeStack.Screen name="Confirmation" component={ConfirmationScreen} />
+      <HomeStack.Screen name="RecipientWalletAddress" component={RecipientWalletAddressScreen} />
       {/* <HomeStack.Screen options={{ headerShown: false }} name="UserSelection" component={UserSelectionScreen} /> */}
     </HomeStack.Navigator>
   );

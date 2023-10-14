@@ -20,6 +20,7 @@ import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import LocationsMenu from './components/locationsMenu';
+import Navbar from '../../common/components/NavBar';
 
 
 const LocationsScreen = () => {
@@ -56,7 +57,6 @@ const LocationsScreen = () => {
   
   return (
     <Container style={styles.container}>
-      <LocationsMenu style={styles.locationsMenu} region={region} setRegion={setRegion} isKeyboardVisible={isKeyboardVisible} />
       {!isKeyboardVisible && (
         <MapView 
         style={styles.mapView} 
@@ -65,6 +65,8 @@ const LocationsScreen = () => {
         showsCompass
         />
       )}
+      <LocationsMenu style={styles.locationsMenu} region={region} setRegion={setRegion} isKeyboardVisible={isKeyboardVisible} />
+      {!isKeyboardVisible && (<Navbar/>)}
     </Container>
   );
 };
@@ -75,17 +77,22 @@ const styles = StyleSheet.create({
         // backgroundColor: 'white',
         // backgroundColor: 
         // backgroundColor: 'blue',
+        // flex: 1,
+        // flexDirection:'column',
     },
     locationsMenu:{
         // flex: 1,
         width: '100%',
         borderRadius: 30,
-        backgroundColor: 'black',
+        backgroundColor: 'white',
         // height: '30%',
+        position: 'absolute', 
+        top: 0,
     },
     mapView : {
         flex: 1,
         width: '100%', 
+        // height: '100%',
         // height: '70%' 
     }
 });

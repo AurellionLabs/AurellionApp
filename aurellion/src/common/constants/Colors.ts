@@ -1,6 +1,6 @@
 // Will be better used when Themeing is added
 export const DarkTheme = {
-  accent: '#47A1FF',
+  accent: '#BD2222',
   foreground1: '#E4E7E7',
   foreground2: '#949E9E',
   foreground3: '#6E7777',
@@ -11,6 +11,7 @@ export const DarkTheme = {
   background3: '#3B4040',
   overlayThin: 'rgba(255, 255, 255, 0.1)',
   overlayThick: 'rgba(255, 255, 255, 0.3)',
+  title: '#BD2222',
 };
 
 export const LightTheme = {
@@ -25,4 +26,5 @@ export const LightTheme = {
   background3: '#E4E7E7',
   overlayThin: 'rgba(0, 0, 0, 0.1)',
   overlayThick: 'rgba(0, 0, 0, 0.3)',
+  title: 'black',
 };

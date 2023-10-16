@@ -11,21 +11,14 @@ interface Props {
 }
 
 function QRCode({ uri, size, theme = 'light' }: Props) {
-  const dots = useMemo(
-    () => QrCodeUtil.generate(uri, size, size / 4, theme),
-    [uri, size, theme],
-  );
+  const dots = useMemo(() => QrCodeUtil.generate(uri, size, size / 4, theme), [uri, size, theme]);
 
   return (
     <View style={styles.container}>
       <Svg height={size} width={size}>
         {dots}
       </Svg>
-      <Image
-        source={WCIsotype}
-        resizeMode="contain"
-        style={[styles.logo, { width: size / 4 }]}
-      />
+      <Image source={WCIsotype} resizeMode="contain" style={[styles.logo, { width: size / 4 }]} />
     </View>
   );
 }

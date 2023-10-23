@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useColorScheme, View } from 'react-native';
-import { Container, Button, ButtonText, BoldText } from '../../common/components/StyledComponents';
-import { LightTheme } from '../../common/constants/Colors';
+import { View } from 'react-native';
+import { Container, Button, ButtonText, StyledText } from '../../common/components/StyledComponents';
+import { LightTheme, DarkTheme } from '../../common/constants/Colors';
 import LottieView from 'lottie-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { JobsScreenNavigationProp, SignatureScreenRouteProp } from '../../navigation/types';
@@ -12,14 +12,14 @@ import Loader from '../../common/loader/loader';
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI } = useMainContext();
+  const { universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI, isDarkMode } = useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
   const { heading, job } = route.params;
-  const isDarkMode = useColorScheme() === 'dark';
   const [isSigned, setIsSigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
 
   const onPress = async () => {
     setIsLoading(true);
@@ -41,7 +41,7 @@ const SignatureScreen = () => {
   };
 
   return (
-    <Container styles={{ justifyContent: 'center' }}>
+    <Container styles={{ justifyContent: 'center', backgroundColor }}>
       {isSigned ? (
         <LottieView
           source={require('../../common/assets/animations/success.json')}
@@ -53,9 +53,15 @@ const SignatureScreen = () => {
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (
         <>
-          <BoldText>{heading}</BoldText>
-          <BoldText>Receiver's Address</BoldText>
-          <BoldText>{job?.parcelData.endName}</BoldText>
+          <StyledText isDarkMode style={{ fontWeight: 700, fontSize: 17 }}>
+            {heading}
+          </StyledText>
+          <View style={{ marginTop: '20%' }}>
+            <StyledText isDarkMode style={{ fontWeight: 700 }}>
+              Receiver's Address:
+            </StyledText>
+          </View>
+          <StyledText isDarkMode>{job?.parcelData.endName}</StyledText>
           <View style={{ marginTop: 50 }}>
             <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={onPress}>
               <ButtonText>Sign</ButtonText>

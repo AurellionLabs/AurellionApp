@@ -37,6 +37,16 @@ interface Geometry {
   location: GeoLocationCoords;
 }
 
+enum AutocompleteLocationField {
+  SENDING,
+  RECIPIENT,
+}
+
+type AutocompleteState = {
+  autocompleteState: boolean;
+  fieldName: AutocompleteLocationField;
+};
+
 const LocationsMenu = ({ region, setRegion, isKeyboardVisible, style }: LocationMenuProps) => {
   const navigation = useNavigation<RecipientWalletAddrScreenNavigationProp>();
   const { setPackageDeliveryData } = useMainContext();
@@ -46,6 +56,16 @@ const LocationsMenu = ({ region, setRegion, isKeyboardVisible, style }: Location
   const [currentLocationCoords, setCurrentLocationCoords] = useState<Geometry>({
     location: { lat: 0, lng: 0 },
   });
+
+  const [sendingAutocomplete, setSendingAutocomplete] = useState<AutocompleteState>({
+    autocompleteState: false,
+    fieldName: AutocompleteLocationField.SENDING,
+  });
+  const [recipientAutocomplete, setRecipientAutocomplete] = useState({
+    autocompleteState: false,
+    fieldName: AutocompleteLocationField.RECIPIENT,
+  });
+
   navigator.geolocation = require('@react-native-community/geolocation');
 
   useEffect(() => {
@@ -177,24 +197,6 @@ const LocationsMenu = ({ region, setRegion, isKeyboardVisible, style }: Location
       setRecipientAutocomplete({ autocompleteState: false, fieldName: AutocompleteLocationField.RECIPIENT });
     }
   }, [isKeyboardVisible]);
-
-  enum AutocompleteLocationField {
-    SENDING,
-    RECIPIENT,
-  }
-
-  type AutocompleteState = {
-    autocompleteState: boolean;
-    fieldName: AutocompleteLocationField;
-  };
-  const [sendingAutocomplete, setSendingAutocomplete] = useState<AutocompleteState>({
-    autocompleteState: false,
-    fieldName: AutocompleteLocationField.SENDING,
-  });
-  const [recipientAutocomplete, setRecipientAutocomplete] = useState({
-    autocompleteState: false,
-    fieldName: AutocompleteLocationField.RECIPIENT,
-  });
 
   function getTextStyle(touched: AutocompleteState, other: AutocompleteState) {
     if (touched.autocompleteState == false && other.autocompleteState == false) {

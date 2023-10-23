@@ -58,3 +58,8 @@ export const ConfirmButtonText = styled.Text`
   font-weight: bold;
   color: white;
 `;
+
+export const ConfirmedAddr = styled(Value)`
+  margin-top: 5%;
+  padding-horizontal: 1%;
+`;

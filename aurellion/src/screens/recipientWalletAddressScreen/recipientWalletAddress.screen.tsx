@@ -14,17 +14,13 @@ import {
   ConfirmButton,
   ConfirmButtonText,
   Section,
+  ConfirmedAddr,
 } from './components/StyledComponents';
 import { TextInput } from 'react-native-gesture-handler';
 
 const RecipientWalletAddressScreen: React.FC = () => {
   const { recipientWalletAddress, setRecipientWalletAddress } = useMainContext();
   const navigation = useNavigation<DeliveryOptionsScreenNavigationProp>();
-
-  const NewValue = styled(Value)`
-    margin-top: 5%;
-    padding-horizontal: 1%;
-  `;
 
   const handleConfirm = () => {
     navigation.navigate('DeliveryOptions');
@@ -40,10 +36,9 @@ const RecipientWalletAddressScreen: React.FC = () => {
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, width: '100%', borderRadius: 7, padding: 5 }}
             placeholder="Enter Recipient Wallet Address"
             onChangeText={(newText) => setRecipientWalletAddress(newText)}
-            defaultValue={recipientWalletAddress}
           />
           <Text style={{ marginTop: '10%', paddingHorizontal: '1%' }}>Confirmed Address : </Text>
-          <NewValue>{recipientWalletAddress}</NewValue>
+          <ConfirmedAddr>{recipientWalletAddress}</ConfirmedAddr>
         </Section>
       </DetailsContainer>
       <View style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>

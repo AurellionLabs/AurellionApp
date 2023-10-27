@@ -1,16 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
-import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
-import {WalletInfo} from '../../../types/api';
-import {navigateDeepLink} from '../../../utils/ExplorerUtils';
- import { useMainContext } from '../../main.provider';
+import { Image, Text, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { WalletInfo } from '../../../types/api';
+import { navigateDeepLink } from '../../../utils/ExplorerUtils';
+import { useMainContext } from '../../main.provider';
 
 interface ExplorerItemProps {
   currentWCURI: string;
@@ -19,42 +13,27 @@ interface ExplorerItemProps {
 
 export const ITEM_HEIGHT = 80;
 
-function ExplorerItem({currentWCURI, walletInfo}: ExplorerItemProps) {
+function ExplorerItem({ currentWCURI, walletInfo }: ExplorerItemProps) {
   const isDarkMode = useColorScheme() === 'dark';
-  const {setUniversalLink, setDeepLink, setWcURI} = useMainContext()
+  const { setUniversalLink, setDeepLink, setWcURI } = useMainContext();
   const onPress = async () => {
-    setUniversalLink(walletInfo.mobile.universal)
+    setUniversalLink(walletInfo.mobile.universal);
     await AsyncStorage.setItem('universalLink', walletInfo.mobile.universal);
-    setDeepLink(walletInfo.mobile.native)
+    setDeepLink(walletInfo.mobile.native);
     await AsyncStorage.setItem('deepLink', walletInfo.mobile.native);
-    setWcURI(currentWCURI)
+    setWcURI(currentWCURI);
     await AsyncStorage.setItem('currentWCURI', currentWCURI);
-    navigateDeepLink(
-      walletInfo.mobile.universal,
-      walletInfo.mobile.native,
-      currentWCURI, 
-    );
+    navigateDeepLink(walletInfo.mobile.universal, walletInfo.mobile.native, currentWCURI);
   };
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      key={walletInfo.id}
-      style={styles.container}>
-      <Image style={styles.icon} source={{uri: walletInfo.image_url.md}} />
-      <Text
-        style={[styles.name, isDarkMode && styles.nameDark]}
-        numberOfLines={1}>
+    <TouchableOpacity onPress={onPress} key={walletInfo.id} style={styles.container}>
+      <Image style={styles.icon} source={{ uri: walletInfo.image_url.md }} />
+      <Text style={[styles.name, isDarkMode && styles.nameDark]} numberOfLines={1}>
         {walletInfo.name}
       </Text>
       {walletInfo.isInstalled ? (
-        <Text
-          style={[
-            styles.installedText,
-            isDarkMode && styles.installedTextDark,
-          ]}>
-          Installed
-        </Text>
+        <Text style={[styles.installedText, isDarkMode && styles.installedTextDark]}>Installed</Text>
       ) : null}
     </TouchableOpacity>
   );

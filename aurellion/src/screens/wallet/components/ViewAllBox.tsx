@@ -1,30 +1,21 @@
 import * as React from 'react';
-import {
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-} from 'react-native';
+import { Image, StyleSheet, View, Text, TouchableOpacity, useColorScheme } from 'react-native';
 
 import ViewAllIcon from '../../../common/assets/ViewAll.png';
-import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 interface Props {
   onPress: any;
 }
 
-function ViewAllBox({onPress}: Props) {
+function ViewAllBox({ onPress }: Props) {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <Image style={styles.icon} source={ViewAllIcon} />
       <View>
-        <Text
-          style={[styles.text, isDarkMode && styles.textDark]}
-          numberOfLines={1}>
+        <Text style={[styles.text, isDarkMode && styles.textDark]} numberOfLines={1}>
           View All
         </Text>
       </View>

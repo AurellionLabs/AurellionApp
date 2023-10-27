@@ -1,6 +1,6 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
-import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import { PackageDeliveryData, UserType } from "../common/types/types";
+import { JsonRpcSigner } from '@ethersproject/providers';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { PackageDeliveryData, UserType } from '../common/types/types';
 
 interface IMainContext {
   wallet: JsonRpcSigner | undefined;
@@ -14,11 +14,11 @@ interface IMainContext {
   wcURI: string;
   setWcURI: Dispatch<SetStateAction<string>>;
   userType: UserType;
+  setIsDarkMode: Dispatch<SetStateAction<boolean>>;
+  isDarkMode: boolean;
   setUserType: Dispatch<SetStateAction<UserType>>;
   packageDeliveryData: PackageDeliveryData | undefined;
-  setPackageDeliveryData: Dispatch<
-    SetStateAction<PackageDeliveryData | undefined>
-  >;
+  setPackageDeliveryData: Dispatch<SetStateAction<PackageDeliveryData | undefined>>;
   refetchDataFromAPI: boolean;
   setRefetchDataFromAPI: Dispatch<SetStateAction<boolean>>;
 }
@@ -26,20 +26,22 @@ interface IMainContext {
 export const MainContext = React.createContext<IMainContext>({
   wallet: undefined,
   setWallet: () => {},
-  walletAddress: "",
+  walletAddress: '',
   setWalletAddress: () => {},
-  universalLink: "",
+  universalLink: '',
   setUniversalLink: () => {},
-  deepLink: "",
+  deepLink: '',
   setDeepLink: () => {},
-  wcURI: "",
+  wcURI: '',
   setWcURI: () => {},
-  userType: "customer",
+  userType: 'customer',
   setUserType: () => {},
   packageDeliveryData: undefined,
   setPackageDeliveryData: () => {},
   refetchDataFromAPI: false,
   setRefetchDataFromAPI: () => {},
+  isDarkMode: false,
+  setIsDarkMode: () => {},
 });
 
 interface MainProviderProps {
@@ -48,16 +50,14 @@ interface MainProviderProps {
 
 const MainProvider = ({ children }: MainProviderProps) => {
   const [wallet, setWallet] = useState<JsonRpcSigner | undefined>();
-  const [walletAddress, setWalletAddress] = useState<string>("");
-  const [universalLink, setUniversalLink] = useState<string>("");
-  const [deepLink, setDeepLink] = useState<string>("");
-  const [wcURI, setWcURI] = useState<string>("");
-  const [userType, setUserType] = useState<UserType>("customer");
-  const [packageDeliveryData, setPackageDeliveryData] = useState<
-    PackageDeliveryData | undefined
-  >(undefined);
+  const [walletAddress, setWalletAddress] = useState<string>('');
+  const [universalLink, setUniversalLink] = useState<string>('');
+  const [deepLink, setDeepLink] = useState<string>('');
+  const [wcURI, setWcURI] = useState<string>('');
+  const [userType, setUserType] = useState<UserType>('customer');
+  const [packageDeliveryData, setPackageDeliveryData] = useState<PackageDeliveryData | undefined>(undefined);
   const [refetchDataFromAPI, setRefetchDataFromAPI] = useState<boolean>(false);
-
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   return (
     <MainContext.Provider
       value={{
@@ -76,7 +76,9 @@ const MainProvider = ({ children }: MainProviderProps) => {
         packageDeliveryData,
         setPackageDeliveryData,
         refetchDataFromAPI,
-        setRefetchDataFromAPI
+        setRefetchDataFromAPI,
+        isDarkMode,
+        setIsDarkMode,
       }}
     >
       {children}

@@ -1,11 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  StyleSheet,
-  View,
-  Animated,
-  ActivityIndicator,
-  useColorScheme,
-} from 'react-native';
+import { StyleSheet, View, Animated, ActivityIndicator, useColorScheme } from 'react-native';
 import ExplorerItem from './ExplorerItem';
 import ViewAllBox from './ViewAllBox';
 import QRIcon from '../../../common/assets/QR.png';
@@ -49,18 +43,11 @@ function InitialExplorerContent({
         actionIconStyle={styles.qrIcon}
       />
       {isLoading || !currentWCURI ? (
-        <ActivityIndicator
-          style={styles.loader}
-          color={isDarkMode ? LightTheme.accent : DarkTheme.accent}
-        />
+        <ActivityIndicator style={styles.loader} color={isDarkMode ? LightTheme.accent : DarkTheme.accent} />
       ) : (
         <View style={styles.explorerContainer}>
           {explorerData.map((item: WalletInfo) => (
-            <ExplorerItem
-              walletInfo={item}
-              key={item.id}
-              currentWCURI={currentWCURI}
-            />
+            <ExplorerItem walletInfo={item} key={item.id} currentWCURI={currentWCURI} />
           ))}
           <ViewAllBox onPress={onViewAllPress} />
         </View>

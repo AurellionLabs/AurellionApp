@@ -11,6 +11,7 @@ import { useMainContext } from '../../main.provider';
 import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
 import { JobsScreenNavigationProp } from '../../../navigation/types';
+import Loader from '../../../common/loader/loader';
 const DeliveryMenu = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, isDarkMode } = useMainContext();
@@ -22,6 +23,10 @@ const DeliveryMenu = () => {
   const [selectedBox2, setSelectedBox2] = useState<boolean>(false);
   const [selectedBox3, setSelectedBox3] = useState<boolean>(false);
   const { packageDeliveryData } = useMainContext();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const translateY = useSharedValue(0);
   const setJSHeight = (selectedheight: number) => {
@@ -63,73 +68,96 @@ const DeliveryMenu = () => {
   };
 
   const createJob = async () => {
-    navigateDeepLink(universalLink, deepLink, wcURI);
-    if (packageDeliveryData != undefined) {
-      await jobCreation(packageDeliveryData);
+    setIsLoading(true);
+    try {
+      navigateDeepLink(universalLink, deepLink, wcURI);
+      if (packageDeliveryData) {
+        await jobCreation(packageDeliveryData);
+      }
+      navigation.navigate('Jobs');
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage('Error Creating Job');
+    } finally {
+      setIsLoading(false);
     }
-    navigation.navigate('Jobs');
   };
 
   return (
-    <AnimatedRoot height={rootPosition}>
-      <GestureDetector gesture={gesture}>
-        <AnimatedBox isDarkMode={isDarkMode} style={translateYStyle}>
-          <SelectedBox
-            isDarkMode={isDarkMode}
-            boxState={boxState}
-            boxSelected={selectedBox}
-            onPress={() => selector(1)}
-          >
-            <View>
-              <Image source={require('../../../common/assets/images/rabbit.png')} style={{ height: 20, width: 20 }} />
-              <StyledText style={{ color: 'green', fontWeight: '700', textAlign: 'left' }}>Fast</StyledText>
-              <StyledText isDarkMode={isDarkMode}>Same Day</StyledText>
-              <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
-            </View>
-            <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
-              100 AURA
-            </StyledText>
-          </SelectedBox>
-          <SelectedBox
-            isDarkMode={isDarkMode}
-            boxState={boxState}
-            boxSelected={selectedBox2}
-            onPress={() => selector(2)}
-          >
-            <View>
-              <Image source={require('../../../common/assets/images/running.png')} style={{ height: 20, width: 20 }} />
-              <StyledText style={{ color: LightTheme.foreground2, fontWeight: '700', textAlign: 'left' }}>
-                Medium
-              </StyledText>
-              <StyledText isDarkMode={isDarkMode}>Next Day</StyledText>
-              <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
-            </View>
-            <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
-              100 AURA
-            </StyledText>
-          </SelectedBox>
-          <SelectedBox
-            isDarkMode={isDarkMode}
-            boxState={boxState}
-            boxSelected={selectedBox3}
-            onPress={() => selector(3)}
-          >
-            <View>
-              <Image source={require('../../../common/assets/images/turtle.png')} style={{ height: 20, width: 20 }} />
-              <BoxHeadingText>Slow</BoxHeadingText>
-              <StyledText isDarkMode={isDarkMode}>Next 3 Days</StyledText>
-              <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
-            </View>
-            <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
-              100 AURA
-            </StyledText>
-          </SelectedBox>
-          <RedButton onPress={createJob}>
-            <RedButtonText>Begin</RedButtonText>
-          </RedButton>
-        </AnimatedBox>
-      </GestureDetector>
-    </AnimatedRoot>
+    <>
+      {isLoading || isError ? (
+        <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
+      ) : (
+        <AnimatedRoot height={rootPosition}>
+          <GestureDetector gesture={gesture}>
+            <AnimatedBox isDarkMode={isDarkMode} style={translateYStyle}>
+              <SelectedBox
+                isDarkMode={isDarkMode}
+                boxState={boxState}
+                boxSelected={selectedBox}
+                onPress={() => selector(1)}
+              >
+                <View>
+                  <Image
+                    source={require('../../../common/assets/images/rabbit.png')}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <StyledText style={{ color: 'green', fontWeight: '700', textAlign: 'left' }}>Fast</StyledText>
+                  <StyledText isDarkMode={isDarkMode}>Same Day</StyledText>
+                  <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
+                </View>
+                <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
+                  100 AURA
+                </StyledText>
+              </SelectedBox>
+              <SelectedBox
+                isDarkMode={isDarkMode}
+                boxState={boxState}
+                boxSelected={selectedBox2}
+                onPress={() => selector(2)}
+              >
+                <View>
+                  <Image
+                    source={require('../../../common/assets/images/running.png')}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <StyledText style={{ color: LightTheme.foreground2, fontWeight: '700', textAlign: 'left' }}>
+                    Medium
+                  </StyledText>
+                  <StyledText isDarkMode={isDarkMode}>Next Day</StyledText>
+                  <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
+                </View>
+                <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
+                  100 AURA
+                </StyledText>
+              </SelectedBox>
+              <SelectedBox
+                isDarkMode={isDarkMode}
+                boxState={boxState}
+                boxSelected={selectedBox3}
+                onPress={() => selector(3)}
+              >
+                <View>
+                  <Image
+                    source={require('../../../common/assets/images/turtle.png')}
+                    style={{ height: 20, width: 20 }}
+                  />
+                  <BoxHeadingText>Slow</BoxHeadingText>
+                  <StyledText isDarkMode={isDarkMode}>Next 3 Days</StyledText>
+                  <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
+                </View>
+                <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
+                  100 AURA
+                </StyledText>
+              </SelectedBox>
+              <RedButton onPress={createJob}>
+                <RedButtonText>Begin</RedButtonText>
+              </RedButton>
+            </AnimatedBox>
+          </GestureDetector>
+        </AnimatedRoot>
+      )}
+    </>
   );
 };
 

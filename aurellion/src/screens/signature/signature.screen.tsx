@@ -53,15 +53,15 @@ const SignatureScreen = () => {
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (
         <>
-          <StyledText isDarkMode style={{ fontWeight: 700, fontSize: 17 }}>
+          <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
             {heading}
           </StyledText>
           <View style={{ marginTop: '20%' }}>
-            <StyledText isDarkMode style={{ fontWeight: 700 }}>
+            <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700 }}>
               Receiver's Address:
             </StyledText>
           </View>
-          <StyledText isDarkMode>{job?.parcelData.endName}</StyledText>
+          <StyledText isDarkMode={isDarkMode}>{job?.parcelData.endName}</StyledText>
           <View style={{ marginTop: 50 }}>
             <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={onPress}>
               <ButtonText>Sign</ButtonText>

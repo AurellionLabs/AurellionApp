@@ -13,6 +13,7 @@ import Loader from '../../common/loader/loader';
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
+  console.log('isDarkModel', isDarkMode);
   const route = useRoute<SignatureScreenRouteProp>();
   const { job } = route.params;
   const [isAssigned, setIsAssigned] = useState(false);
@@ -54,15 +55,15 @@ const AssignDriverScreen = () => {
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (
         <>
-          <StyledText isDarkMode style={{ fontWeight: 700, fontSize: 17 }}>
+          <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
             Do you want to accept this job?
           </StyledText>
           <View style={{ marginTop: '20%' }}>
-            <StyledText isDarkMode style={{ fontWeight: 700 }}>
+            <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700 }}>
               Receiver's Address
             </StyledText>
           </View>
-          <StyledText isDarkMode>{job?.parcelData.endName}</StyledText>
+          <StyledText isDarkMode={isDarkMode}>{job?.parcelData.endName}</StyledText>
           <View style={{ marginTop: 50 }}>
             <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={acceptJob}>
               <ButtonText>Accept Job</ButtonText>

@@ -3,9 +3,10 @@ import SwitchSelector from 'react-native-switch-selector';
 import { useColorScheme, View } from 'react-native';
 import { Container, Button, ButtonText, BoldText } from '../../common/components/StyledComponents';
 import { LightTheme } from '../../common/constants/Colors';
-import { useMainContext, UserType } from '../main.provider';
+import { useMainContext } from '../main.provider';
 import { useNavigation } from '@react-navigation/native';
 import { UserSelectionScreenNavigationProp } from '../../navigation/types';
+import { UserType } from '../../common/types/types';
 
 const UserSelectionScreen = () => {
   const navigation = useNavigation<UserSelectionScreenNavigationProp>();

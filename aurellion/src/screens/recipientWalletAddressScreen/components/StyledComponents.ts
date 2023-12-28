@@ -3,11 +3,8 @@ import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 
 export const Container = styled.View`
   display: flex;
-  //   flex: 1;
   height: 100%;
-  //   background-color: red;
   justify-content: space-evenly;
-  //   align-items: flex-start;
   padding-horizontal: 15px;
 `;
 
@@ -18,13 +15,11 @@ export const Heading = styled.Text`
   margin-top: 20px;
   margin-bottom: 20px;
   color: black;
-  //   background-color: white;
 `;
 
 export const DetailsContainer = styled.View`
   flex: 5;
   min-width: 100%;
-  //   background-color: white;
   margin-bottom: 20px;
 `;
 

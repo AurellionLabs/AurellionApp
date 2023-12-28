@@ -15,12 +15,14 @@ export const jobCreation = async (locationData: PackageDeliveryData) => {
     const walletAddress = await signer.getAddress();
     const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
     const receipt = await jobTx.wait();
+    console.log('Job Creation Transaction Hash:');
     console.log('Transaction Hash:', receipt.transactionHash);
     console.log('Block Number:', receipt.blockNumber);
     console.log('Gas Used:', receipt.gasUsed.toString());
     console.log('success');
   } catch (error) {
     console.error('Error in jobCreation:', error);
+    throw error;
   }
 };
 

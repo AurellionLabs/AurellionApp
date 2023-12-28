@@ -14,6 +14,8 @@ export type HomeStackNavigatorParamList = {
   AssignDriver: {
     jobID: string;
   };
+  Confirmation: undefined;
+  RecipientWalletAddress: undefined;
 };
 
 export type DeliveryOptionsScreenNavigationProp = StackNavigationProp<HomeStackNavigatorParamList, 'DeliveryOptions'>;
@@ -33,3 +35,10 @@ export type AssignDriverScreenNavigationProp = StackNavigationProp<HomeStackNavi
 export type AssignDriverScreenRouteProp = RouteProp<HomeStackNavigatorParamList, 'AssignDriver'>;
 
 export type JobsScreenNavigationProp = StackNavigationProp<HomeStackNavigatorParamList, 'Jobs'>;
+
+export type ConfirmationScreenNavigationProp = StackNavigationProp<HomeStackNavigatorParamList, 'Confirmation'>;
+
+export type RecipientWalletAddrScreenNavigationProp = StackNavigationProp<
+  HomeStackNavigatorParamList,
+  'RecipientWalletAddress'
+>;

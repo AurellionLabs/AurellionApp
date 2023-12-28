@@ -8,13 +8,12 @@ import { LightTheme } from '../../../common/constants/Colors';
 import { RedButton, RedButtonText, StyledText } from '../../../common/components/StyledComponents';
 import { jobCreation } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
-import { navigateDeepLink } from '../../../utils/ExplorerUtils';
 import { useNavigation } from '@react-navigation/native';
-import { JobsScreenNavigationProp } from '../../../navigation/types';
+import { ConfirmationScreenNavigationProp } from '../../../navigation/types';
+import { DeliverySpeedOption } from '../../../common/types/types';
 import Loader from '../../../common/loader/loader';
 const DeliveryMenu = () => {
-  const navigation = useNavigation<JobsScreenNavigationProp>();
-  const { universalLink, deepLink, wcURI, isDarkMode } = useMainContext();
+  const navigation = useNavigation<ConfirmationScreenNavigationProp>();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window');
   const defaultHeight = (70 / 100) * SCREEN_HEIGHT;
   const [rootPosition, setRootPosition] = useState<number>(defaultHeight);
@@ -22,7 +21,9 @@ const DeliveryMenu = () => {
   const [selectedBox, setSelectedBox] = useState<boolean>(true);
   const [selectedBox2, setSelectedBox2] = useState<boolean>(false);
   const [selectedBox3, setSelectedBox3] = useState<boolean>(false);
-  const { packageDeliveryData } = useMainContext();
+  const { setDeliveryOption, isDarkMode } = useMainContext();
+
+  const [selectedDeliverOption, setSelectedDeliveryOption] = useState<DeliverySpeedOption>(DeliverySpeedOption.FAST);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -54,33 +55,25 @@ const DeliveryMenu = () => {
       setSelectedBox(true);
       setSelectedBox2(false);
       setSelectedBox3(false);
+      setSelectedDeliveryOption(DeliverySpeedOption.FAST);
     }
     if (box == 2) {
       setSelectedBox(false);
       setSelectedBox2(true);
       setSelectedBox3(false);
+      setSelectedDeliveryOption(DeliverySpeedOption.MEDIUM);
     }
     if (box == 3) {
       setSelectedBox(false);
       setSelectedBox2(false);
       setSelectedBox3(true);
+      setSelectedDeliveryOption(DeliverySpeedOption.SLOW);
     }
   };
 
-  const createJob = async () => {
-    setIsLoading(true);
-    try {
-      navigateDeepLink(universalLink, deepLink, wcURI);
-      if (packageDeliveryData) {
-        await jobCreation(packageDeliveryData);
-      }
-      navigation.navigate('Jobs');
-    } catch (error) {
-      setIsError(true);
-      setErrorMessage('Error Creating Job');
-    } finally {
-      setIsLoading(false);
-    }
+  const submitSelection = () => {
+    navigation.navigate('Confirmation');
+    setDeliveryOption((prevState) => ({ ...prevState, deliverySpeed: selectedDeliverOption }));
   };
 
   return (
@@ -150,7 +143,7 @@ const DeliveryMenu = () => {
                   100 AURA
                 </StyledText>
               </SelectedBox>
-              <RedButton onPress={createJob}>
+              <RedButton onPress={submitSelection}>
                 <RedButtonText>Begin</RedButtonText>
               </RedButton>
             </AnimatedBox>

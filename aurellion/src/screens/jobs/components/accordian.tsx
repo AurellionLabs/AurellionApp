@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, LayoutAnimation, Image } from 'react-native';
-
+import { StyledText } from '../../../common/components/StyledComponents';
+import { useMainContext } from '../../main.provider';
 type AccordionData = {
   title: string;
   expanded: boolean;
@@ -10,16 +11,37 @@ type AccordionData = {
 };
 
 function AccordionItem({ children, title, expanded, onHeaderPress }: AccordionData): JSX.Element {
+  const { isDarkMode } = useMainContext();
   const body = <View style={styles.accordBody}>{children}</View>;
 
   return (
     <View style={styles.accordContainer}>
       <TouchableOpacity style={styles.accordHeader} onPress={onHeaderPress}>
-        <Text style={styles.accordTitle}>{title}</Text>
+        <StyledText isDarkMode={isDarkMode} style={styles.accordTitle}>
+          {title}
+        </StyledText>
         {expanded ? (
-          <Image source={require('../../../common/assets/images/chevron-up.png')} style={{ height: 24, width: 24 }} />
+          isDarkMode ? (
+            <Image
+              source={require('../../../common/assets/images/chevron-up-white.png')}
+              style={{ height: 24, width: 24 }}
+            />
+          ) : (
+            <Image
+              source={require('../../../common/assets/images/chevron-up-black.png')}
+              style={{ height: 24, width: 24 }}
+            />
+          )
+        ) : isDarkMode ? (
+          <Image
+            source={require('../../../common/assets/images/chevron-down-white.png')}
+            style={{ height: 24, width: 24 }}
+          />
         ) : (
-          <Image source={require('../../../common/assets/images/chevron-down.png')} style={{ height: 24, width: 24 }} />
+          <Image
+            source={require('../../../common/assets/images/chevron-down-black.png')}
+            style={{ height: 24, width: 24 }}
+          />
         )}
       </TouchableOpacity>
       {expanded && body}
@@ -67,14 +89,13 @@ const styles = StyleSheet.create({
   },
   accordHeader: {
     width: '100%',
-    padding: 12,
-    backgroundColor: '#666',
-    color: '#eee',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   accordTitle: {
-    fontSize: 20,
+    fontSize: 17,
   },
   accordBody: {
     padding: 12,

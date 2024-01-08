@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SwitchSelector from 'react-native-switch-selector';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { LightTheme } from '../../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
 import {
   fetchDriverUnassignedJourneys,
   fetchCustomersJobsObj,
@@ -16,7 +16,7 @@ import Loader from '../../../common/loader/loader';
 import Accordion from './accordian';
 
 const Menu = () => {
-  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } = useMainContext();
+  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
   const [switchOption, setSwitchOption] = useState(0);
   const [createdJobs, setCreatedJobs] = useState<Journey[]>([]);
   const [receiverJobs, setReceiveJobs] = useState<Journey[]>([]);
@@ -28,6 +28,8 @@ const Menu = () => {
     { label: 'Customer', value: 'customer', accessibilityLabel: 'Customer' },
     { label: 'Driver', value: 'driver', accessibilityLabel: 'Driver' },
   ];
+
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
 
   const fetchAndSetJourneys = async () => {
     let createdJourneys: Journey[] = [];
@@ -87,7 +89,7 @@ const Menu = () => {
   }, [refetchDataFromAPI]);
 
   return (
-    <Container>
+    <Container styles={{ width: '100%', backgroundColor: backgroundColor }}>
       {isError || isLoading ? (
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (
@@ -166,7 +168,7 @@ const Menu = () => {
 const styles = StyleSheet.create({
   container: {
     // TODO: width doesn't behave as expected
-    width: '70%',
+    width: '100%',
   },
 });
 

@@ -1,16 +1,15 @@
 import React from 'react';
 import { SelectedBox } from './StyledComponents';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SignatureScreenNavigationProp } from '../../../navigation/types';
 import { useMainContext } from '../../main.provider';
 
 type BoxProps = {
-  selected: boolean;
   jobID: any;
 };
 
-const MenuBox: React.FC<BoxProps> = ({ selected, jobID }) => {
+const JobItem: React.FC<BoxProps> = ({ jobID }) => {
   const { userType } = useMainContext();
   const navigation = useNavigation<SignatureScreenNavigationProp>();
   const onPress = () => {
@@ -26,12 +25,10 @@ const MenuBox: React.FC<BoxProps> = ({ selected, jobID }) => {
     }
   };
   return (
-    <SelectedBox boxState={selected} boxSelected={selected} onPress={onPress}>
-      <View>
-        <Text>{jobID}</Text>
-      </View>
+    <SelectedBox onPress={onPress}>
+      <Text>{jobID}</Text>
     </SelectedBox>
   );
 };
 
-export default MenuBox;
+export default JobItem;

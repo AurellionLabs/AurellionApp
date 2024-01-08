@@ -202,7 +202,7 @@ function WalletScreen(): JSX.Element {
         {walletAddress ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {walletAddress}</Text>
-            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Jobs')}>
+            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Locations')}>
               <RedButtonText>Home Screen</RedButtonText>
             </RedButton>
 

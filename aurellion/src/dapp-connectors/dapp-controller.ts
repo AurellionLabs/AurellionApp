@@ -105,7 +105,7 @@ export const fetchCustomersJobsObj = async () => {
       }
     }
 
-    for (const jobID of jobs) {
+    for (var jobID of jobs) {
       try {
         const jobsObj = await contract.jobIdToJourney(jobID);
         jobsObjList.push(jobsObj);
@@ -113,7 +113,6 @@ export const fetchCustomersJobsObj = async () => {
         console.error(`Error fetching job object with ID ${jobID}:`, err);
       }
     }
-
     return jobsObjList;
   } catch (error) {
     console.error('General error in fetchCustomersJobsObj:', error);
@@ -168,7 +167,6 @@ export const fetchReceiverJobsObj = async () => {
         console.error(`Error fetching job object with jobId ${jobID}:`, err);
       }
     }
-    console.log(jobsObjList);
     return jobsObjList;
   } catch (error) {
     console.error('General error in fetchReceiverJobsObj:', error);

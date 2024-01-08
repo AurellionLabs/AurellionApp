@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import SwitchSelector from 'react-native-switch-selector';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LightTheme } from '../../../common/constants/Colors';
-import { fetchDriverUnassignedJourneys, fetchCustomersJobsObj } from '../../../dapp-connectors/dapp-controller';
+import {
+  fetchDriverUnassignedJourneys,
+  fetchCustomersJobsObj,
+  fetchReceiverJobsObj,
+} from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { Journey } from '../../../common/types/types';
-import MenuBox from './menuBox';
+import JobItem from './jobItem';
 import { Container } from '../../../common/components/StyledComponents';
 import { UserType } from '../../../common/types/types';
 import Loader from '../../../common/loader/loader';
+import Accordion from './accordian';
 
 const Menu = () => {
   const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } = useMainContext();
   const [switchOption, setSwitchOption] = useState(0);
-  const [jobIDs, setJobIDs] = useState<string[]>([]);
+  const [createdJobs, setCreatedJobs] = useState<Journey[]>([]);
+  const [receiverJobs, setReceiveJobs] = useState<Journey[]>([]);
+  const [unassignedDriverJobs, setUnassignedDriverJobs] = useState<Journey[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,18 +30,22 @@ const Menu = () => {
   ];
 
   const fetchAndSetJourneys = async () => {
-    let journeys: Journey[] = [];
+    let createdJourneys: Journey[] = [];
+    let receiveJourneys: Journey[] = [];
+    let unassignedDriverJourneys: Journey[] = [];
     setIsLoading(true);
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        journeys = await fetchCustomersJobsObj();
+        createdJourneys = await fetchCustomersJobsObj();
+        setCreatedJobs(createdJourneys);
+        receiveJourneys = await fetchReceiverJobsObj();
+        setReceiveJobs(receiveJourneys);
       } else if (userType === 'driver') {
         setSwitchOption(1);
-        journeys = await fetchDriverUnassignedJourneys();
+        unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
+        setUnassignedDriverJobs(unassignedDriverJourneys);
       }
-      const tempJobIDs = journeys.map((job) => job.jobId);
-      setJobIDs(tempJobIDs);
     } catch (error) {
       setIsError(true);
       setErrorMessage('Error Fetching Jobs');
@@ -42,19 +53,23 @@ const Menu = () => {
       setIsLoading(false);
     }
   };
-
+  // Logic is similar to fetchAndSetJourneys but without the loading animation
   const refetchAndSetJourneys = async () => {
-    let journeys: Journey[] = [];
+    let createdJourneys: Journey[] = [];
+    let receiveJourneys: Journey[] = [];
+    let unassignedDriverJourneys: Journey[] = [];
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        journeys = await fetchCustomersJobsObj();
+        createdJourneys = await fetchCustomersJobsObj();
+        setCreatedJobs(createdJourneys);
+        receiveJourneys = await fetchReceiverJobsObj();
+        setReceiveJobs(receiveJourneys);
       } else if (userType === 'driver') {
         setSwitchOption(1);
-        journeys = await fetchDriverUnassignedJourneys();
+        unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
+        setUnassignedDriverJobs(unassignedDriverJourneys);
       }
-      const tempJobIDs = journeys.map((job) => job.jobId);
-      setJobIDs(tempJobIDs);
     } catch (error) {
       console.log('Error Fetching Jobs');
     }
@@ -88,15 +103,71 @@ const Menu = () => {
             options={options}
             accessibilityLabel="user-type-switch-selector"
           />
-          <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} style={{ width: '100%' }}>
-            {jobIDs.map((job) => (
-              <MenuBox key={job} selected={true} jobID={job} />
-            ))}
-          </ScrollView>
+          {userType === 'customer' && (
+            <ScrollView style={styles.container}>
+              <Accordion
+                data={[
+                  {
+                    title: 'Send Parcels',
+                    content: (
+                      <>
+                        {createdJobs.map((job) => (
+                          <JobItem key={job.jobId} jobID={job.jobId} />
+                        ))}
+                      </>
+                    ),
+                  },
+                  {
+                    title: 'Receive Parcels',
+                    content: (
+                      <>
+                        {receiverJobs.map((job) => (
+                          <JobItem key={job.jobId} jobID={job.jobId} />
+                        ))}
+                      </>
+                    ),
+                  },
+                ]}
+              />
+            </ScrollView>
+          )}
+          {userType === 'driver' && (
+            <ScrollView style={styles.container}>
+              <Accordion
+                data={[
+                  {
+                    title: 'Assigned Jobs',
+                    content: (
+                      <>
+                        <Text>Need to be implemented</Text>
+                      </>
+                    ),
+                  },
+                  {
+                    title: 'Available Jobs',
+                    content: (
+                      <>
+                        {unassignedDriverJobs.map((job) => (
+                          <JobItem key={job.jobId} jobID={job.jobId} />
+                        ))}
+                      </>
+                    ),
+                  },
+                ]}
+              />
+            </ScrollView>
+          )}
         </>
       )}
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    // TODO: width doesn't behave as expected
+    width: '70%',
+  },
+});
 
 export default Menu;

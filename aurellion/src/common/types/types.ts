@@ -24,3 +24,15 @@ export type Journey = {
 };
 
 export type UserType = 'customer' | 'driver';
+
+export enum DeliverySpeedOption {
+  FAST,
+  SLOW,
+  MEDIUM,
+}
+
+export type DeliveryOption = {
+  deliverySpeed?: DeliverySpeedOption;
+  price?: number;
+  eta?: number;
+};

@@ -15,6 +15,7 @@ export const jobCreation = async (locationData: ParcelData) => {
     const walletAddress = await signer.getAddress();
     const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
     const receipt = await jobTx.wait();
+    console.log('Job Creation Transaction Hash:');
     console.log('Transaction Hash:', receipt.transactionHash);
     console.log('Block Number:', receipt.blockNumber);
     console.log('Gas Used:', receipt.gasUsed.toString());

@@ -13,7 +13,6 @@ import Loader from '../../common/loader/loader';
 const AssignDriverScreen = () => {
   const navigation = useNavigation<AssignDriverScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
-  console.log('isDarkModel', isDarkMode);
   const route = useRoute<SignatureScreenRouteProp>();
   const { job } = route.params;
   const [isAssigned, setIsAssigned] = useState(false);

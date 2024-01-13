@@ -35,13 +35,22 @@ function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState<string>();
   const [currentWCURI, setCurrentWCURI] = useState<string>();
   // Initialize universal provider
   const initialized = useInitialization();
 
-  const { setIsDarkMode, isDarkMode, setUniversalLink, setDeepLink, setWcURI, universalLink, wcURI, deepLink } =
-    useMainContext();
+  const {
+    setIsDarkMode,
+    isDarkMode,
+    setUniversalLink,
+    setDeepLink,
+    setWcURI,
+    universalLink,
+    wcURI,
+    deepLink,
+    walletAddress,
+    setWalletAddress,
+  } = useMainContext();
   const close = () => {
     setModalVisible(false);
   };
@@ -51,7 +60,7 @@ function WalletScreen(): JSX.Element {
       if (web3Provider) {
         const signer = web3Provider.getSigner();
         const currentAddress = await signer.getAddress();
-        setCurrentAccount(currentAddress);
+        setWalletAddress(currentAddress);
       }
     } catch (err: unknown) {
       Alert.alert('Error', 'Error getting the Address');
@@ -74,11 +83,11 @@ function WalletScreen(): JSX.Element {
     async ({ topic }: { topic: string }) => {
       if (topic === universalProviderSession?.topic) {
         clearSession();
-        setCurrentAccount(undefined);
+        setWalletAddress(undefined);
         setCurrentWCURI(undefined);
       }
     },
-    [setCurrentAccount]
+    [setWalletAddress]
   );
 
   const onConnect = useCallback(async () => {
@@ -117,7 +126,7 @@ function WalletScreen(): JSX.Element {
     try {
       await universalProvider.disconnect();
       clearSession();
-      setCurrentAccount(undefined);
+      setWalletAddress(undefined);
       setCurrentWCURI(undefined);
     } catch (err: unknown) {
       Alert.alert('Error', 'Error disconnecting');
@@ -190,9 +199,9 @@ function WalletScreen(): JSX.Element {
           style={{ width: 250, height: 250, marginBottom: '5%', marginTop: '20%' }}
         />
         <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} />
-        {currentAccount ? (
+        {walletAddress ? (
           <View style={styles.container}>
-            <Text style={[styles.text, isDarkMode && styles.whiteText]}>{currentAccount}</Text>
+            <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {walletAddress}</Text>
             <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Locations')}>
               <RedButtonText>Home Screen</RedButtonText>
             </RedButton>

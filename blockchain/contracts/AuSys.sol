@@ -50,7 +50,12 @@ contract locationContract {
     // maps a customer to a job
     mapping(address => bytes32[]) public customerToJobId;
     mapping (address => uint256) public numberOfJobsCreatedForCustomer;
+    // driver related mappings
     mapping (address => uint256) public numberOfJobsAssigned;
+
+    // maps a receiver to a job
+    mapping(address => bytes32[]) public receiverToJobId;
+    mapping (address => uint256) public numberOfJobsCreatedForReceiver;
     // Map Job ID to Journey
     mapping(bytes32 => Journey) public  jobIdToJourney;
     
@@ -205,8 +210,12 @@ contract locationContract {
         });
         jobIdToJourney[journey.jobId] = journey;
         jobToBox[journey.jobId] = jobIdCounter;
-        numberOfJobsCreatedForCustomer[customer]+=1;
+
+        numberOfJobsCreatedForCustomer[customer] += 1;
         customerToJobId[customer].push(journey.jobId);
+
+        numberOfJobsCreatedForReceiver[reciever] += 1; 
+        receiverToJobId[reciever].push(journey.jobId);  
         // add jobId to global mapping of jobs
         numberToJobID[jobIdCounter] = journey.jobId;
     }

@@ -1,11 +1,11 @@
 import { BigNumber, ethers } from 'ethers';
 import { getSigner } from './wallet-utils';
 import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from '@env';
-import { PackageDeliveryData, Journey } from '../common/types/types';
+import { ParcelData, Journey } from '../common/types/types';
 
 const contractABI = require('./aurellion-abi.json');
 
-export const jobCreation = async (locationData: PackageDeliveryData) => {
+export const jobCreation = async (locationData: ParcelData) => {
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -40,6 +40,7 @@ export const customerPackageSign = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error('Error in customerPackageSign:', error);
+    throw error;
   }
 };
 
@@ -57,12 +58,11 @@ export const driverPackageSign = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error('Error in driverPackageSign:', error);
+    throw error;
   }
 };
 
-export const fetchCustomersJobsObj = async () => {
-  const jobs = [];
-  const jobsObjList: Journey[] = [];
+export const fetchCustomerJobs = async () => {
   let contract;
   try {
     const signer = await getSigner();
@@ -94,29 +94,29 @@ export const fetchCustomersJobsObj = async () => {
     contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
 
     jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
-    const jobs = [];
-    const jobsObjList: Journey[] = [];
+    const jobIds = [];
+    const jobs: Journey[] = [];
     for (let i = 0; i < jobNumber; i++) {
       try {
-        const job = await contract.customerToJobId(walletAddress, i);
-        jobs.push(job);
+        const jobId = await contract.customerToJobId(walletAddress, i);
+        jobIds.push(jobId);
       } catch (err) {
         console.error(`Error fetching job with index ${i}:`, err);
       }
     }
 
-    for (const jobID of jobs) {
+    for (const jobId of jobIds) {
       try {
-        const jobsObj = await contract.jobIdToJourney(jobID);
-        jobsObjList.push(jobsObj);
+        const job = await contract.jobIdToJourney(jobId);
+        jobs.push(job);
       } catch (err) {
-        console.error(`Error fetching job object with ID ${jobID}:`, err);
+        console.error(`Error fetching job object with ID ${jobId}:`, err);
       }
     }
 
-    return jobsObjList;
+    return jobs;
   } catch (error) {
-    console.error('General error in fetchCustomersJobsObj:', error);
+    console.error('General error in fetchCustomerJobs:', error);
     return []; // Return an empty array in case of an error
   }
 };
@@ -133,6 +133,7 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
     return isAssigned;
   } catch (error) {
     console.error('Error in checkIfDriverAssignedToJobId:', error);
+    throw error;
   }
 };
 
@@ -149,6 +150,7 @@ export const assignDriverToJobId = async (jobID: string) => {
     console.log(receipt);
   } catch (error) {
     console.error('Error in assignDriverToJobId:', error);
+    throw error;
   }
 };
 

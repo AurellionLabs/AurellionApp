@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SwitchSelector from 'react-native-switch-selector';
 import { ScrollView } from 'react-native';
 import { LightTheme } from '../../../common/constants/Colors';
-import { fetchDriverUnassignedJourneys, fetchCustomersJobsObj } from '../../../dapp-connectors/dapp-controller';
+import { fetchDriverUnassignedJourneys, fetchCustomerJobs } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { Journey } from '../../../common/types/types';
 import MenuBox from './menuBox';
@@ -13,7 +13,7 @@ import Loader from '../../../common/loader/loader';
 const Menu = () => {
   const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI } = useMainContext();
   const [switchOption, setSwitchOption] = useState(0);
-  const [jobIDs, setJobIDs] = useState<string[]>([]);
+  const [jobs, setJobs] = useState<Journey[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,18 +23,17 @@ const Menu = () => {
   ];
 
   const fetchAndSetJourneys = async () => {
-    let journeys: Journey[] = [];
+    let jobs: Journey[] = [];
     setIsLoading(true);
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        journeys = await fetchCustomersJobsObj();
+        jobs = await fetchCustomerJobs();
       } else if (userType === 'driver') {
         setSwitchOption(1);
-        journeys = await fetchDriverUnassignedJourneys();
+        jobs = await fetchDriverUnassignedJourneys();
       }
-      const tempJobIDs = journeys.map((job) => job.jobId);
-      setJobIDs(tempJobIDs);
+      setJobs(jobs);
     } catch (error) {
       setIsError(true);
       setErrorMessage('Error Fetching Jobs');
@@ -44,17 +43,16 @@ const Menu = () => {
   };
 
   const refetchAndSetJourneys = async () => {
-    let journeys: Journey[] = [];
+    let jobs: Journey[] = [];
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        journeys = await fetchCustomersJobsObj();
+        jobs = await fetchCustomerJobs();
       } else if (userType === 'driver') {
         setSwitchOption(1);
-        journeys = await fetchDriverUnassignedJourneys();
+        jobs = await fetchDriverUnassignedJourneys();
       }
-      const tempJobIDs = journeys.map((job) => job.jobId);
-      setJobIDs(tempJobIDs);
+      setJobs(jobs);
     } catch (error) {
       console.log('Error Fetching Jobs');
     }
@@ -89,8 +87,8 @@ const Menu = () => {
             accessibilityLabel="user-type-switch-selector"
           />
           <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} style={{ width: '100%' }}>
-            {jobIDs.map((job) => (
-              <MenuBox key={job} selected={true} jobID={job} />
+            {jobs?.map((job) => (
+              <MenuBox key={job.jobId} selected={true} job={job} />
             ))}
           </ScrollView>
         </>

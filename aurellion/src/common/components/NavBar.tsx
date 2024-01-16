@@ -1,14 +1,11 @@
 import React from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components/native';
-<<<<<<< HEAD
-=======
 import {
   HomeStackNavigatorParamList,
   JobsScreenNavigationProp,
   LocationsScreenNavigationProp,
 } from '../../navigation/types';
->>>>>>> f6a5dded7ce50623caaa160e20d6840020cf768e
 
 const NavbarWrapper = styled.View`
   flex-direction: row;
@@ -33,18 +30,6 @@ const NavText = styled.Text`
 `;
 
 const Navbar = () => {
-<<<<<<< HEAD
-  return (
-    <NavbarWrapper>
-      <NavItem>
-      <Image source={require('../assets/images/home.png')} style={{height:24,width:24}} />
-      </NavItem>
-      <NavItem>
-      <Image source={require('../assets/images/user-profile.png')} style={{height:24,width:24}} />
-      </NavItem>
-      <NavItem>
-      <Image source={require('../assets/images/parcel.png')} style={{height:24,width:24}} />
-=======
   // add functions here
   //type NavigateToScreen = | { screen: "Locations"; params?: HomeStackNavigatorParamList['Locations'] } | { screen: "Jobs"; params?: HomeStackNavigatorParamList['Jobs'] };
   const navigation = useNavigation<JobsScreenNavigationProp>();
@@ -58,7 +43,6 @@ const Navbar = () => {
       </NavItem>
       <NavItem onPress={() => navigation.navigate('Jobs')}>
         <Image source={require('../assets/images/parcel.png')} style={{ height: 24, width: 24 }} />
->>>>>>> f6a5dded7ce50623caaa160e20d6840020cf768e
       </NavItem>
     </NavbarWrapper>
   );

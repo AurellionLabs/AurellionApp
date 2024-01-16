@@ -1,19 +1,10 @@
 pragma solidity ^0.8.17;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 
-import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
-// import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/extensions/extensions/IERC20Metadata.sol";
-import "../node_modules/openzeppelin-solidity/contracts/utils/Context.sol";
-
-import "../node_modules/openzeppelin-solidity/contracts/utils/Context.sol";
-
-
-// import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-// import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-// import "@openzeppelin/contracts/utils/Context.sol";
-
-
-contract Aura is Context, IERC20 {
+contract Aura is Context, IERC20, IERC20Metadata {
     mapping(address => uint256) private _balances;
 
     mapping(address => mapping(address => uint256)) private _allowances;
@@ -23,18 +14,14 @@ contract Aura is Context, IERC20 {
     string private _name = "Aura";
     string private _symbol = "AURA";
     address private _treasuryAddress;
-    uint256 public minAura = 100;
-    uint256 public mintAmount = 50;
     address public _deployer;
 
     constructor() {
         _deployer = msg.sender;
     }
 
-    function mintTokenToTreasury() public {
-        if(balanceOf(_treasuryAddress) <  minAura){
-            _mint(_treasuryAddress, mintAmount * 10 ** 18);
-        }
+    function mintTokenToTreasury(uint256 amount) public {
+        _mint(msg.sender, amount * 10 ** 18);
     }
 
     modifier isOwner() {

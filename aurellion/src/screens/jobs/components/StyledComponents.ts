@@ -23,12 +23,12 @@ export const SelectedBox = styled.TouchableOpacity<Props>`
   border-bottom-width: 1px;
   border-bottom-color: rgba(0, 0, 0, 0.2);
   justify-content: space-between;
-  display: flex; 
+  display: flex;
 `;
 
 export const UnSelectedBox = styled.View<Props>`
   padding: 8px;
-  border-top-color:  rgba(0, 0, 0, 0.2);
+  border-top-color: rgba(0, 0, 0, 0.2);
   flex-direction: row;
   border-top-width: 1px;
   margin: 2%;
@@ -52,7 +52,6 @@ export const Box = styled.View`
   width: 100%;
   height: 100%;
   background-color: white;
-  
 `;
 
 interface AnimatedRootProps {
@@ -66,5 +65,4 @@ export const AnimatedRoot = styled(GestureHandlerRootView)`
   flex-direction: column;
   width: 100%;
   height: ${(props: AnimatedRootProps) => props.height}px;
-  
 `;

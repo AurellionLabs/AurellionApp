@@ -1,17 +1,17 @@
-import {Alert, Linking} from 'react-native';
+import { Alert, Linking } from 'react-native';
 
 // @ts-expect-error - `@env` is a virtualised module via Babel config.
-import {ENV_PROJECT_ID} from 'aurellion/src/utils/.env';
-import {WalletInfo} from '../types/api';
-import {isAndroid} from '../common/constants/Platform';
+import { ENV_PROJECT_ID } from 'aurellion/src/utils/.env';
+import { WalletInfo } from '../types/api';
+import { isAndroid } from '../common/constants/Platform';
 import InstalledAppModule from '../common/modules/InstalledAppModule';
 
-function getUrlParams(url: string | null): {[key: string]: string} {
+function getUrlParams(url: string | null): { [key: string]: string } {
   if (!url) {
     return {};
   }
   const regex = /[?&]([^=#]+)=([^&#]*)/g;
-  const params: {[key: string]: string} = {};
+  const params: { [key: string]: string } = {};
   let match: RegExpExecArray | null;
 
   while ((match = regex.exec(url)) !== null) {
@@ -21,13 +21,8 @@ function getUrlParams(url: string | null): {[key: string]: string} {
   return params;
 }
 
-export async function isAppInstalled(
-  applicationId?: string | null,
-  appScheme?: string | null,
-): Promise<boolean> {
-  return await InstalledAppModule.isAppInstalled(
-    isAndroid ? applicationId : appScheme,
-  );
+export async function isAppInstalled(applicationId?: string | null, appScheme?: string | null): Promise<boolean> {
+  return await InstalledAppModule.isAppInstalled(isAndroid ? applicationId : appScheme);
 }
 
 function getScheme(url: string): string | null {
@@ -63,11 +58,7 @@ function formatUniversalUrl(appUrl: string, wcUri: string): string {
   return `${plainAppUrl}/wc?uri=${encodedWcUrl}`;
 }
 
-export const navigateDeepLink = async (
-  universalLink: string,
-  deepLink: string,
-  wcURI: string,
-) => {
+export const navigateDeepLink = async (universalLink: string, deepLink: string, wcURI: string) => {
   let tempDeepLink;
 
   if (universalLink && universalLink !== '') {
@@ -88,33 +79,29 @@ export const navigateDeepLink = async (
   }
 };
 
-const setInstalledFlag = async (
-  wallets: WalletInfo[],
-): Promise<WalletInfo[]> => {
-  const promises = wallets.map(async wallet => {
+const setInstalledFlag = async (wallets: WalletInfo[]): Promise<WalletInfo[]> => {
+  const promises = wallets.map(async (wallet) => {
     const applicationId = getUrlParams(wallet?.app?.android)?.id;
     const appScheme = getScheme(wallet?.mobile?.native);
     const isInstalled = await isAppInstalled(applicationId, appScheme);
-    return {...wallet, isInstalled};
+    return { ...wallet, isInstalled };
   });
   return Promise.all(promises);
 };
 
 export const fetchAllWallets = () => {
   return fetch(
-    `https://explorer-api.walletconnect.com/v3/wallets?projectId=bebf58b7af307d2e05fa0ff4f31ff769&sdks=sign_v2`,
+    `https://explorer-api.walletconnect.com/v3/wallets?projectId=bebf58b7af307d2e05fa0ff4f31ff769&sdks=sign_v2`
   )
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(
-      wallet => {
-        const result: WalletInfo[] = Object.keys(wallet?.listings).map(
-          key => wallet?.listings[key],
-        );
+      (wallet) => {
+        const result: WalletInfo[] = Object.keys(wallet?.listings).map((key) => wallet?.listings[key]);
         return result;
       },
       () => {
         Alert.alert('Error', 'Error fetching all wallets');
-      },
+      }
     )
     .then(async (wallets: WalletInfo[] | void) => {
       if (wallets) {

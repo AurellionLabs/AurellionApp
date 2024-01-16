@@ -1,14 +1,8 @@
-import styled from "styled-components/native";
-import { DarkTheme, LightTheme } from "../constants/Colors";
-import {
-  Touchable,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-  ViewStyle,
-} from "react-native";
-import Animated from "react-native-reanimated";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import styled from 'styled-components/native';
+import { DarkTheme, LightTheme } from '../constants/Colors';
+import { Touchable, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
@@ -28,6 +22,10 @@ export const Shadow = styled.View`
 
 interface RedButtonProps {
   styles: ViewStyle;
+}
+
+interface props {
+  isDarkMode: boolean;
 }
 export const RedButton = styled.TouchableOpacity`
   display: flex;
@@ -49,7 +47,12 @@ export const RedButton = styled.TouchableOpacity`
 `;
 export const RedButtonText = styled.Text`
   color: white;
-  font-weight: 700;
+  font-family: Inter-Regular;
+`;
+export const TitleText = styled.Text<props>`
+  color: ${(props: props) => (props.isDarkMode ? DarkTheme.title : LightTheme.title)};
+  font-family: Inter-Regular;
+  font-size: 40px;
 `;
 export const Box = styled.View`
   position: absolute;
@@ -63,9 +66,12 @@ export const Box = styled.View`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: white;
+  background-color: ${(props: props) => (props.isDarkMode ? DarkTheme.background2 : LightTheme.background2)};
 `;
-
+export const StyledText = styled.Text<props>`
+  color: ${(props: props) => (props.isDarkMode ? 'white' : 'black')};
+  font-family: Inter-Regular;
+`;
 export const ButtonBox = styled.View`
   padding: 8px;
   border-top-color: rgba(0, 0, 0, 0.2);
@@ -107,7 +113,7 @@ export const ButtonText = styled.Text`
 
 export const BoldText = styled.Text`
   color: #000;
-  font-weight: 700;
+  font-family: Inter-Bold;
 `;
 
 interface ContainerProps {

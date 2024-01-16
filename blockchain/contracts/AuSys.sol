@@ -72,7 +72,8 @@ contract locationContract {
     constructor(AuraContract.Aura _aura){
         auraToken = _aura;
     }
-    
+    event printUint(uint256 value);  
+    event userSigned(bytes32 jobID, address user ); 
     // vulnerability somebody 
     modifier customerDriverCheck(address customer, address driver,bytes32 id){
         require(jobIdToJourney[id].driver == driver &&  jobIdToJourney[id].customer == customer || jobIdToJourney[id].reciever == customer,"Was not correct 1");
@@ -106,11 +107,13 @@ contract locationContract {
     }
     function packageSign(address driver, address customer, bytes32 id) customerDriverCheck(customer,driver,id) public {
         if(msg.sender == customer){
-            customerHandOff[customer][id] = true;
+            customerHandOff[customer][id] = true;     
+            emit userSigned(id,customer); 
         }
 
         if(msg.sender == driver){
             driverHandOn[driver][id] = true;
+            emit userSigned(id,driver); 
         }
     }
     function boxActivate(address driver, uint box) DriversBoxVerify(driver,box) public pure returns(bool) {
@@ -134,7 +137,6 @@ contract locationContract {
 
     }
 
-    event printUint(uint256 value); 
 
     function assignJobToBox(bytes32 job,uint box) public {
                     jobToBox[job] = box;

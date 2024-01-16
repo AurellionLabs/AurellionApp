@@ -57,7 +57,20 @@ export const customerPackageSign = async (jobID: string) => {
     console.error("Error in customerPackageSign:", error);
   }
 };
-
+export const signatureQourumCheck = async (jobID: string) =>{
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      throw new Error("Signer is undefined");
+    }
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer
+            );
+    }
+     customerSigned = await contract.customerHandOff(address,id);     
+}
 export const driverPackageSign = async (jobID: string) => {
   try {
     const signer = await getSigner();

@@ -57,14 +57,7 @@ export async function createUniversalProviderSession(callbacks?: {
     universalProviderSession = await universalProvider.connect({
       namespaces: {
         eip155: {
-<<<<<<< HEAD
-          methods: [
-            'eth_sendTransaction',
-            'eth_signTransaction',
-            'eth_sign',
-            'personal_sign',
-            'eth_signTypedData',
-          ],
+          methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
           chains: ['eip155:80001'],
           events: ['chainChanged', 'accountsChanged'],
           rpcMap: {},

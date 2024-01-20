@@ -14,6 +14,7 @@ export const jobCreation = async (locationData: ParcelData) => {
     const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
     const walletAddress = await signer.getAddress();
     const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
+    console.log(jobTx);
     const receipt = await jobTx.wait();
     console.log('Job Creation Transaction Hash:');
     console.log('Transaction Hash:', receipt.transactionHash);
@@ -206,4 +207,3 @@ export const fetchDriverUnassignedJourneys = async () => {
   }
   return journeys;
 };
->>>>>>> f6a5dded7ce50623caaa160e20d6840020cf768e

@@ -301,13 +301,6 @@
 		"type": "function"
 	},
 	{
-<<<<<<< HEAD
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "driver",
-				"type": "address"
-=======
 		"inputs": [],
 		"name": "jobIdCounter",
 		"outputs": [
@@ -390,7 +383,6 @@
 				"internalType": "enum locationContract.Status",
 				"name": "currentStatus",
 				"type": "uint8"
->>>>>>> f6a5dded7ce50623caaa160e20d6840020cf768e
 			},
 			{
 				"internalType": "address",

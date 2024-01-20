@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components/native';

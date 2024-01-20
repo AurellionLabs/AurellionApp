@@ -15,18 +15,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "id",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "signed",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
       }
     ],
-    "name": "emitSig",
+    "name": "printUint",
     "type": "event"
   },
   {
@@ -34,12 +28,18 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
+        "internalType": "bytes32",
+        "name": "jobID",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       }
     ],
-    "name": "printUint",
+    "name": "userSigned",
     "type": "event"
   },
   {
@@ -243,14 +243,14 @@
           {
             "components": [
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lat",
-                "type": "string"
+                "type": "int256"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lng",
-                "type": "string"
+                "type": "int256"
               }
             ],
             "internalType": "struct locationContract.Location",
@@ -260,14 +260,14 @@
           {
             "components": [
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lat",
-                "type": "string"
+                "type": "int256"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lng",
-                "type": "string"
+                "type": "int256"
               }
             ],
             "internalType": "struct locationContract.Location",
@@ -306,19 +306,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "jobIdCounter",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -333,14 +320,14 @@
           {
             "components": [
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lat",
-                "type": "string"
+                "type": "int256"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lng",
-                "type": "string"
+                "type": "int256"
               }
             ],
             "internalType": "struct locationContract.Location",
@@ -350,14 +337,14 @@
           {
             "components": [
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lat",
-                "type": "string"
+                "type": "int256"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lng",
-                "type": "string"
+                "type": "int256"
               }
             ],
             "internalType": "struct locationContract.Location",
@@ -455,31 +442,12 @@
         "type": "address"
       }
     ],
-    "name": "numberOfJobsCreatedForCustomer",
+    "name": "numberOfJobsCreated",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "numberToJobID",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -523,14 +491,14 @@
           {
             "components": [
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lat",
-                "type": "string"
+                "type": "int256"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lng",
-                "type": "string"
+                "type": "int256"
               }
             ],
             "internalType": "struct locationContract.Location",
@@ -540,14 +508,14 @@
           {
             "components": [
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lat",
-                "type": "string"
+                "type": "int256"
               },
               {
-                "internalType": "string",
+                "internalType": "int256",
                 "name": "lng",
-                "type": "string"
+                "type": "int256"
               }
             ],
             "internalType": "struct locationContract.Location",

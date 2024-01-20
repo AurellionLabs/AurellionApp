@@ -31,6 +31,7 @@ import TypingText from '../../common/components/TypingText';
 import { UniversalProvider } from '@walletconnect/universal-provider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMainContext } from '../main.provider';
+import { listenForSignature } from '../../dapp-connectors/dapp-listener';
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
 
@@ -69,6 +70,7 @@ function WalletScreen(): JSX.Element {
 
   const onSessionCreated = useCallback(async () => {
     getAddress();
+    listenForSignature();
     setModalVisible(false);
     console.log(await getAddress());
   }, [getAddress]);
@@ -112,6 +114,7 @@ function WalletScreen(): JSX.Element {
       universalProvider
     ) {
       web3ProviderInit(universalProvider);
+      listenForSignature();
       getAddress();
     } else {
       createUniversalProviderSession({

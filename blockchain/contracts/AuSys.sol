@@ -103,7 +103,7 @@ contract locationContract {
     function getHashedJobId() private returns(bytes32) {
         return keccak256(abi.encode(jobIdCounter+=1));
     }
-    event emitSig(bytes32 id,string signed);
+    event emitSig(address user, bytes32 id);
     //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all jobs then not showing up
     function assignDriverToJobId(address driver, bytes32 jobID) public {
         driverToJobId[driver].push(jobID);
@@ -113,16 +113,16 @@ contract locationContract {
     function packageSign(address driver, address customer, bytes32 id) customerDriverCheck(customer,driver,id) public {
         if(msg.sender == customer){
             customerHandOff[customer][id] = true;
-            emit emitSig(id,"Signed");
+            emit emitSig(customer,id);
         }
 
         if(msg.sender == driver){
             driverHandOn[driver][id] = true;
-            emit emitSig(id,"Signed");
+            emit emitSig(driver,id);
         }
 
         if(customerHandOff[customer][id] == true && driverHandOn[driver][id] == true){
-            emit emitSig(id,"Signed");
+            emit emitSig(driver,id);
         } 
     }
     function boxActivate(address driver, uint box) DriversBoxVerify(driver,box) public pure returns(bool) {

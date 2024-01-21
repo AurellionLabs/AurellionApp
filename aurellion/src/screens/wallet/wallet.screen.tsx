@@ -28,7 +28,6 @@ import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
 import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
 import TypingText from '../../common/components/TypingText';
-import { UniversalProvider } from '@walletconnect/universal-provider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMainContext } from '../main.provider';
 function WalletScreen(): JSX.Element {

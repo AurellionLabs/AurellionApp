@@ -10,7 +10,8 @@ import {
 } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { Journey } from '../../../common/types/types';
-import JobItem from './jobItem';
+import CustomerJobItem from './customerJobItem';
+import DriverJobItem from './driverJobItem';
 import { Container } from '../../../common/components/StyledComponents';
 import { UserType } from '../../../common/types/types';
 import Loader from '../../../common/loader/loader';
@@ -122,7 +123,7 @@ const Menu = () => {
                     content: (
                       <>
                         {createdJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <CustomerJobItem key={job.jobId} job={job} handOn />
                         ))}
                       </>
                     ),
@@ -132,7 +133,7 @@ const Menu = () => {
                     content: (
                       <>
                         {receiverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <CustomerJobItem key={job.jobId} job={job} handOff />
                         ))}
                       </>
                     ),
@@ -150,7 +151,7 @@ const Menu = () => {
                     content: (
                       <>
                         {assignedDriverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <DriverJobItem key={job.jobId} job={job} assigned />
                         ))}
                       </>
                     ),
@@ -160,7 +161,7 @@ const Menu = () => {
                     content: (
                       <>
                         {unassignedDriverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <DriverJobItem key={job.jobId} job={job} available />
                         ))}
                       </>
                     ),

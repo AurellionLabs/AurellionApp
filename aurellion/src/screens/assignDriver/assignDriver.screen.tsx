@@ -4,14 +4,18 @@ import { Container, Button, ButtonText, BoldText } from '../../common/components
 import { LightTheme } from '../../common/constants/Colors';
 import LottieView from 'lottie-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AssignDriverScreenNavigationProp, SignatureScreenRouteProp } from '../../navigation/types';
+import {
+  AssignDriverScreenNavigationProp,
+  JobsScreenNavigationProp,
+  SignatureScreenRouteProp,
+} from '../../navigation/types';
 import { useMainContext } from '../main.provider';
 import { assignDriverToJobId } from '../../dapp-connectors/dapp-controller';
 import { navigateDeepLink } from '../../utils/ExplorerUtils';
 import Loader from '../../common/loader/loader';
 
 const AssignDriverScreen = () => {
-  const navigation = useNavigation<AssignDriverScreenNavigationProp>();
+  const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, setRefetchDataFromAPI } = useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
   const { jobID } = route.params;
@@ -43,12 +47,7 @@ const AssignDriverScreen = () => {
           source={require('../../common/assets/animations/success.json')}
           autoPlay
           loop={false}
-          onAnimationFinish={() =>
-            navigation.navigate('Signature', {
-              heading: 'Sign to confirm pacakge received from customer',
-              jobID: jobID,
-            })
-          }
+          onAnimationFinish={() => navigation.navigate('Jobs')}
         />
       ) : isLoading ? (
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />

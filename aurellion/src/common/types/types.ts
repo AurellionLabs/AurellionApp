@@ -12,10 +12,17 @@ export type ParcelData = {
   //add box
 };
 
+export enum JourneyStatus {
+  PENDING = 0,
+  IN_PROGRESS = 1,
+  COMPLETED = 2,
+  CANCELED = 3,
+}
+
 export type Journey = {
   parcelData: ParcelData;
   jobId: string;
-  Status: string;
+  currentStatus: JourneyStatus;
   customer: string;
   reciever: string;
   driver: string;

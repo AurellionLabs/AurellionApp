@@ -63,6 +63,8 @@ export const driverPackageSign = async (jobID: string) => {
 };
 
 export const fetchCustomerJobs = async () => {
+  const jobIds = [];
+  const jobs: Journey[] = [];
   let contract;
   try {
     const signer = await getSigner();
@@ -94,8 +96,7 @@ export const fetchCustomerJobs = async () => {
     contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
 
     jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
-    const jobIds = [];
-    const jobs: Journey[] = [];
+
     for (let i = 0; i < jobNumber; i++) {
       try {
         const jobId = await contract.customerToJobId(walletAddress, i);
@@ -113,10 +114,63 @@ export const fetchCustomerJobs = async () => {
         console.error(`Error fetching job object with ID ${jobId}:`, err);
       }
     }
-
     return jobs;
   } catch (error) {
     console.error('General error in fetchCustomerJobs:', error);
+    return []; // Return an empty array in case of an error
+  }
+};
+
+export const fetchReceiverJobs = async () => {
+  let contract;
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      throw new Error('Signer is undefined');
+    }
+    try {
+      contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    } catch (error) {
+      console.error(
+        `failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`
+      );
+      throw error;
+    }
+
+    const walletAddress = await signer.getAddress();
+    if (!walletAddress) {
+      throw new Error('Failed to get wallet address');
+    }
+
+    let jobNumber;
+    try {
+      jobNumber = await contract.numberOfJobsCreatedForReceiver(walletAddress);
+    } catch (error) {
+      console.error('Error fetching number of jobs for receiver with wallet address', walletAddress, 'Error:', error);
+      throw error;
+    }
+    const jobs = [];
+    const jobsObjList: Journey[] = [];
+    for (let i = 0; i < jobNumber; i++) {
+      try {
+        const job = await contract.receiverToJobId(walletAddress, i);
+        jobs.push(job);
+      } catch (err) {
+        console.error(`Error fetching jobId with index ${i}:`, err);
+      }
+    }
+
+    for (const jobID of jobs) {
+      try {
+        const jobsObj = await contract.jobIdToJourney(jobID);
+        jobsObjList.push(jobsObj);
+      } catch (err) {
+        console.error(`Error fetching job object with jobId ${jobID}:`, err);
+      }
+    }
+    return jobsObjList;
+  } catch (error) {
+    console.error('General error in fetchReceiverJobs:', error);
     return []; // Return an empty array in case of an error
   }
 };

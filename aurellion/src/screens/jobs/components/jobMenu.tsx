@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import SwitchSelector from 'react-native-switch-selector';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { LightTheme, DarkTheme } from '../../../common/constants/Colors';
 import {
   fetchDriverUnassignedJourneys,
-  fetchCustomersJobsObj,
-  fetchReceiverJobsObj,
+  fetchCustomerJobs,
+  fetchReceiverJobs,
 } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { Journey } from '../../../common/types/types';
@@ -39,9 +39,9 @@ const Menu = () => {
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        createdJourneys = await fetchCustomersJobsObj();
+        createdJourneys = await fetchCustomerJobs();
         setCreatedJobs(createdJourneys);
-        receiveJourneys = await fetchReceiverJobsObj();
+        receiveJourneys = await fetchReceiverJobs();
         setReceiveJobs(receiveJourneys);
       } else if (userType === 'driver') {
         setSwitchOption(1);
@@ -63,9 +63,9 @@ const Menu = () => {
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        createdJourneys = await fetchCustomersJobsObj();
+        createdJourneys = await fetchCustomerJobs();
         setCreatedJobs(createdJourneys);
-        receiveJourneys = await fetchReceiverJobsObj();
+        receiveJourneys = await fetchReceiverJobs();
         setReceiveJobs(receiveJourneys);
       } else if (userType === 'driver') {
         setSwitchOption(1);
@@ -114,7 +114,7 @@ const Menu = () => {
                     content: (
                       <>
                         {createdJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <JobItem key={job.jobId} job={job} />
                         ))}
                       </>
                     ),
@@ -124,7 +124,7 @@ const Menu = () => {
                     content: (
                       <>
                         {receiverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <JobItem key={job.jobId} job={job} />
                         ))}
                       </>
                     ),
@@ -150,7 +150,7 @@ const Menu = () => {
                     content: (
                       <>
                         {unassignedDriverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <JobItem key={job.jobId} job={job} />
                         ))}
                       </>
                     ),
@@ -167,7 +167,6 @@ const Menu = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // TODO: width doesn't behave as expected
     width: '100%',
   },
 });

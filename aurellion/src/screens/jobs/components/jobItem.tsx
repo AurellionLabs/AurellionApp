@@ -4,29 +4,30 @@ import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SignatureScreenNavigationProp } from '../../../navigation/types';
 import { useMainContext } from '../../main.provider';
+import { Journey } from '../../../common/types/types';
 
 type BoxProps = {
-  jobID: any;
+  job: Journey;
 };
 
-const JobItem: React.FC<BoxProps> = ({ jobID }) => {
+const JobItem: React.FC<BoxProps> = ({ job }) => {
   const { userType } = useMainContext();
   const navigation = useNavigation<SignatureScreenNavigationProp>();
   const onPress = () => {
     if (userType === 'customer') {
       navigation.navigate('Signature', {
         heading: 'Sign to confirm package hand off to driver',
-        jobID: jobID,
+        job: job,
       });
     } else if (userType === 'driver') {
       navigation.navigate('AssignDriver', {
-        jobID: jobID,
+        job: job,
       });
     }
   };
   return (
     <SelectedBox onPress={onPress}>
-      <Text>{jobID}</Text>
+      <Text>{job.jobId}</Text>
     </SelectedBox>
   );
 };

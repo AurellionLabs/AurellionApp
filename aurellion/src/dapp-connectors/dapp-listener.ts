@@ -15,19 +15,23 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
     let customerSig;
     let recieverSig;
     try {
-      driverSig = await contract.customerHandOff(journey.customer, jobID);
+      customerSig = await contract.customerHandOff(journey.customer, jobID);
     } catch (e) {
+      console.log(await customerSig);
+      console.log(journey.customer);
       console.error('Error when trying to fetch customer hand off:', e);
     }
     try {
-      customerSig = await contract.driverHandOn(journey.driver, jobID);
+      driverSig = await contract.driverHandOn(journey.driver, jobID);
     } catch (e) {
+      console.log(driverSig);
+      console.log(journey.driver);
       console.error('Error when trying to fetch driver hand on:', e);
     }
     try {
       recieverSig = await contract.customerHandOff(journey.reciever, jobID);
     } catch (e) {
-      console.error('Error when trying to fetch driver hand on:', e);
+      console.error('Error when trying to fetch reciever hand on:', e);
     }
     if ((driverSig && customerSig == true) || (driverSig && recieverSig == true)) {
       return true;
@@ -37,7 +41,7 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
         console.log('Listening...');
         var sigCount = 0;
         var prevSig: string;
-        const filteredSigs = contract.filters.emitSig(jobID, null);
+        const filteredSigs = contract.filters.emitSig(null, jobID);
         console.log('filteredSigs');
         const timeout = setTimeout(() => {
           contract.off(filteredSigs, handler); // Stop listening to prevent memory leaks

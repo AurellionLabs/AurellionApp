@@ -62,8 +62,8 @@ contract locationContract {
     // maps number to JOB id for the purpose of iterating through jobs 
     mapping(uint => bytes32) public numberToJobID;
     // a bool that checks if the customer has handed off the package (need to change this to address => journey or job id => bool 
-    mapping(address => mapping(bytes32 => bool)) customerHandOff;
-    mapping(address => mapping(bytes32 => bool)) driverHandOn;
+    mapping(address => mapping(bytes32 => bool)) public customerHandOff;
+    mapping(address => mapping(bytes32 => bool)) public driverHandOn;
     //maps a job to a corresponding box
     mapping(bytes32 => uint) jobToBox;
     // maps a customer address to running balance of their token amount
@@ -103,7 +103,7 @@ contract locationContract {
     function getHashedJobId() private returns(bytes32) {
         return keccak256(abi.encode(jobIdCounter+=1));
     }
-    event emitSig(address user, bytes32 id);
+    event emitSig(address indexed user, bytes32 indexed id);
     //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all jobs then not showing up
     function assignDriverToJobId(address driver, bytes32 jobID) public {
         driverToJobId[driver].push(jobID);

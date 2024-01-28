@@ -64,9 +64,18 @@ const SignatureScreen = () => {
           onAnimationFinish={() => navigation.navigate('Jobs')}
         />
       ) : isSigned ? (
-        <Container styles={{ justifyContent: 'center' }}>
-          <LottieView source={require('../../common/assets/animations/signing.json')} autoPlay loop={true} />
-          <StyledText isDarkMode={isDarkMode}>waiting for the other party to sign</StyledText>
+        <Container styles={{ justifyContent: 'center', height: '100%', width: '100%', alignItems: 'center', flex: 1 }}>
+          <View style={{ height: '35%', width: '70%' }}>
+            <LottieView
+              style={{}}
+              source={require('../../common/assets/animations/signing.json')}
+              autoPlay
+              loop={true}
+            />
+          </View>
+          <StyledText style={{ marginBottom: '30%' }} isDarkMode={isDarkMode}>
+            waiting for the other party to sign...
+          </StyledText>
         </Container>
       ) : isLoading ? (
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />

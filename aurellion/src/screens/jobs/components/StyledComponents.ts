@@ -2,9 +2,14 @@ import styled from 'styled-components/native';
 import { LightTheme } from '../../../common/constants/Colors';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StyledText } from '../../../common/components/StyledComponents';
 
 interface CustomProps {
   [key: string]: any;
+}
+
+interface props {
+  isDarkMode: boolean;
 }
 
 interface Props {
@@ -22,6 +27,7 @@ export const SelectedBox = styled.TouchableOpacity<Props>`
   margin-left: 4px;
   margin-right: 4px;
 
+  display: flex;
   flex-direction: row;
   width: 98.5%;
   flex: 1;
@@ -33,8 +39,35 @@ export const SelectedBox = styled.TouchableOpacity<Props>`
   border-radius: 12px;
 
   justify-content: space-between;
-  display: flex;
   // background-color: blue;
+`;
+
+export const StyledSelectedBox = styled.TouchableOpacity<Props>`
+  padding: 12px;
+  margin: 4px;
+  border-radius: 12px;
+  background-color: ${LightTheme.background3};
+`;
+
+export const TextRow = styled.View`
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+`;
+
+export const LabelText = styled(StyledText)<props>`
+  width: 20%;
+  font-weight: bold;
+  color: #333; /* Set label text color */
+  margin-right: 8px;
+  // background-color: green;
+`;
+
+export const TextValue = styled(StyledText)<props>`
+  width: 80%;
+  color: #666; /* Set text value color */
+  word-wrap: break-word;
+  // background-color: red;
 `;
 
 export const UnSelectedBox = styled.View<Props>`

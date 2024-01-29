@@ -5,8 +5,9 @@ export type Location = {
 
 export type ParcelData = {
   startLocation: Location;
-  endLocatio: Location;
-  name: string;
+  endLocation: Location;
+  startName: string;
+  endName: string;
   //add customer?
   //add driver?
   //add box
@@ -15,7 +16,7 @@ export type ParcelData = {
 export type Journey = {
   parcelData: ParcelData;
   jobId: string;
-  Status: string;
+  currentStatus: string;
   customer: string;
   reciever: string;
   driver: string;

@@ -19,11 +19,11 @@ const JobItem: React.FC<BoxProps> = ({ job }) => {
     if (userType === 'customer') {
       navigation.navigate('Signature', {
         heading: 'Sign to confirm package hand off to driver',
-        jobID: job.jobId,
+        job: job,
       });
     } else if (userType === 'driver') {
       navigation.navigate('AssignDriver', {
-        jobID: job.jobId,
+        job: job,
       });
     }
   };

@@ -1,18 +1,19 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Journey } from '../common/types/types';
 
 export type HomeStackNavigatorParamList = {
   DeliveryOptions: undefined;
   Wallet: undefined;
   Signature: {
     heading: string;
-    jobID: string;
+    job: Journey;
   };
   UserSelection: undefined;
   Jobs: undefined;
   Locations: undefined;
   AssignDriver: {
-    jobID: string;
+    job: Journey;
   };
   Confirmation: undefined;
   RecipientWalletAddress: undefined;

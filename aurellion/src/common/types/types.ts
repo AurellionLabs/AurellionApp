@@ -8,9 +8,6 @@ export type ParcelData = {
   endLocation: Location;
   startName: string;
   endName: string;
-  //add customer?
-  //add driver?
-  //add box
 };
 
 export type Journey = {
@@ -26,16 +23,6 @@ export type Journey = {
   ETA: number;
 };
 
-export type location = {
-  lat: string;
-  lng: string;
-};
-export type PackageDeliveryData = {
-  startLocation: location;
-  endLocation: location;
-  startName: string;
-  endName: string;
-};
 export type UserType = 'customer' | 'driver';
 
 export enum DeliverySpeedOption {

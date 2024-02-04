@@ -3,31 +3,24 @@ import { SelectedBox } from './StyledComponents';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SignatureScreenNavigationProp } from '../../../navigation/types';
+import { useMainContext } from '../../main.provider';
 import { Journey } from '../../../common/types/types';
 
 type BoxProps = {
   job: Journey;
-  handOn?: boolean;
-  handOff?: boolean;
 };
 
-const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
+const JobItem: React.FC<BoxProps> = ({ job }) => {
+  const { userType } = useMainContext();
   const navigation = useNavigation<SignatureScreenNavigationProp>();
-
-  if (!handOn && !handOff) {
-    console.error("At least one of 'handOn' or 'handOff' prop must be provided");
-    return null;
-  }
-
   const onPress = () => {
-    if (handOn) {
+    if (userType === 'customer') {
       navigation.navigate('Signature', {
         heading: 'Sign to confirm package hand off to driver',
         job: job,
       });
-    } else if (handOff) {
-      navigation.navigate('Signature', {
-        heading: 'Sign to confirm package received from driver',
+    } else if (userType === 'driver') {
+      navigation.navigate('AssignDriver', {
         job: job,
       });
     }
@@ -39,4 +32,4 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
   );
 };
 
-export default CustomerJobItem;
+export default JobItem;

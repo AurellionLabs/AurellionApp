@@ -22,18 +22,18 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, assigned, available }) => {
   const onPress = () => {
     if (available) {
       navigation.navigate('AssignDriver', {
-        jobID: job.jobId,
+        job: job,
       });
     } else if (assigned) {
       if (job.currentStatus == JourneyStatus.PENDING) {
         navigation.navigate('Signature', {
           heading: 'Sign to confirm package received from customer',
-          jobID: job.jobId,
+          job: job,
         });
       } else if (job.currentStatus == JourneyStatus.IN_PROGRESS) {
         navigation.navigate('Signature', {
           heading: 'Sign to confirm package handed over to receiver',
-          jobID: job.jobId,
+          job: job,
         });
       }
     }

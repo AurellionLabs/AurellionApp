@@ -260,3 +260,56 @@ export const fetchDriverUnassignedJourneys = async () => {
   }
   return journeys;
 };
+
+export const fetchDriverAssignedJourneys = async () => {
+  const jobIds: string[] = [];
+  const journeys: Journey[] = [];
+  let signer: ethers.providers.JsonRpcSigner | undefined;
+  let contract;
+  let jobId: string | null = null;
+  let journey: Journey;
+  let numberOfJobsAssignedForDriver;
+  try {
+    signer = await getSigner();
+  } catch (error) {
+    console.error('Could not get signer object');
+    throw error;
+  }
+  try {
+    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+  } catch (error) {
+    console.error('Could not create Contract object');
+    throw error;
+  }
+  if (signer) {
+    const walletAddress = await signer.getAddress();
+    if (!walletAddress) {
+      throw new Error('Failed to get wallet address');
+    }
+    try {
+      numberOfJobsAssignedForDriver = await contract.numberOfJobsAssigned(walletAddress);
+    } catch (error) {
+      console.error('Could not get number of jobs assigned to driver');
+      throw error;
+    }
+    for (let i = 0; i < numberOfJobsAssignedForDriver; i++) {
+      try {
+        jobId = await contract.driverToJobId(walletAddress, i);
+      } catch (error) {
+        console.error(`No jobId exists at index ${i} for driver`);
+      }
+      if (jobId) {
+        jobIds.push(jobId);
+      }
+    }
+    for (let i = 0; i < jobIds.length; i++) {
+      try {
+        journey = await contract.jobIdToJourney(jobIds[i]);
+        journeys.push(journey);
+      } catch (error) {
+        console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
+      }
+    }
+  }
+  return journeys;
+};

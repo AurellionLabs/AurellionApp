@@ -14,8 +14,10 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
     let driverSig;
     let customerSig;
     let recieverSig;
+    let sigCount = 0;
     try {
       customerSig = await contract.customerHandOff(journey.customer, jobID);
+      if (customerSig) sigCount += 1;
     } catch (e) {
       console.log(await customerSig);
       console.log(journey.customer);
@@ -23,23 +25,19 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
     }
     try {
       driverSig = await contract.driverHandOn(journey.driver, jobID);
+      if (driverSig) sigCount += 1;
     } catch (e) {
       console.log(driverSig);
       console.log(journey.driver);
       console.error('Error when trying to fetch driver hand on:', e);
     }
-    try {
-      recieverSig = await contract.customerHandOff(journey.reciever, jobID);
-    } catch (e) {
-      console.error('Error when trying to fetch reciever hand on:', e);
-    }
-    if ((driverSig && customerSig == true) || (driverSig && recieverSig == true)) {
+    if (driverSig && customerSig == true) {
       return true;
     } else {
       // Wrapping the event listener in a Promise to allow awaiting on a specific condition/event.
       return new Promise((resolve, reject) => {
         console.log('Listening...');
-        var sigCount = 0;
+        console.log(sigCount);
         var prevSig: string;
         const filteredSigs = contract.filters.emitSig(null, jobID);
         console.log('filteredSigs');

@@ -63,7 +63,12 @@ function WalletScreen(): JSX.Element {
         setWalletAddress(currentAddress);
       }
     } catch (err: unknown) {
-      Alert.alert('Error', 'Error getting the Address');
+      console.error('Error', `Error getting the Address${err}`);
+      createUniversalProviderSession({
+        onSuccess: onSessionCreated,
+        onFailure: onSessionError,
+      });
+      setModalVisible(true);
     }
   }, []);
 

@@ -43,6 +43,7 @@ const SignatureScreen = () => {
       setIsLoading(false);
       setIsSigned(true);
       setRefetchDataFromAPI(true);
+      allSignedCheck();
     } catch (error) {
       setIsError(true);
       setErrorMessage('Error Signing off Package');
@@ -53,6 +54,7 @@ const SignatureScreen = () => {
     console.log('calling listenForSignature');
     setAllSigned(await listenForSignature(jobID));
     setIsSigned(false);
+    //to do error handling modal for user
   }
   return (
     <Container styles={{ justifyContent: 'center' }}>

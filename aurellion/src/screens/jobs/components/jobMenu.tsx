@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import SwitchSelector from 'react-native-switch-selector';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { LightTheme, DarkTheme } from '../../../common/constants/Colors';
 import {
   fetchDriverUnassignedJourneys,
-  fetchCustomersJobsObj,
-  fetchReceiverJobsObj,
+  fetchDriverAssignedJourneys,
+  fetchCustomerJobs,
+  fetchReceiverJobs,
 } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '../../main.provider';
 import { Journey } from '../../../common/types/types';
-import JobItem from './jobItem';
+import CustomerJobItem from './customerJobItem';
+import DriverJobItem from './driverJobItem';
 import { Container } from '../../../common/components/StyledComponents';
 import { UserType } from '../../../common/types/types';
 import Loader from '../../../common/loader/loader';
@@ -21,6 +23,7 @@ const Menu = () => {
   const [createdJobs, setCreatedJobs] = useState<Journey[]>([]);
   const [receiverJobs, setReceiveJobs] = useState<Journey[]>([]);
   const [unassignedDriverJobs, setUnassignedDriverJobs] = useState<Journey[]>([]);
+  const [assignedDriverJobs, setAssignedDriverJobs] = useState<Journey[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -35,18 +38,21 @@ const Menu = () => {
     let createdJourneys: Journey[] = [];
     let receiveJourneys: Journey[] = [];
     let unassignedDriverJourneys: Journey[] = [];
+    let assignedDriverJourneys: Journey[] = [];
     setIsLoading(true);
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        createdJourneys = await fetchCustomersJobsObj();
+        createdJourneys = await fetchCustomerJobs();
         setCreatedJobs(createdJourneys);
-        receiveJourneys = await fetchReceiverJobsObj();
+        receiveJourneys = await fetchReceiverJobs();
         setReceiveJobs(receiveJourneys);
       } else if (userType === 'driver') {
         setSwitchOption(1);
         unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
         setUnassignedDriverJobs(unassignedDriverJourneys);
+        assignedDriverJourneys = await fetchDriverAssignedJourneys();
+        setAssignedDriverJobs(assignedDriverJourneys);
       }
     } catch (error) {
       setIsError(true);
@@ -60,17 +66,20 @@ const Menu = () => {
     let createdJourneys: Journey[] = [];
     let receiveJourneys: Journey[] = [];
     let unassignedDriverJourneys: Journey[] = [];
+    let assignedDriverJourneys: Journey[] = [];
     try {
       if (userType === 'customer') {
         setSwitchOption(0);
-        createdJourneys = await fetchCustomersJobsObj();
+        createdJourneys = await fetchCustomerJobs();
         setCreatedJobs(createdJourneys);
-        receiveJourneys = await fetchReceiverJobsObj();
+        receiveJourneys = await fetchReceiverJobs();
         setReceiveJobs(receiveJourneys);
       } else if (userType === 'driver') {
         setSwitchOption(1);
         unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
         setUnassignedDriverJobs(unassignedDriverJourneys);
+        assignedDriverJourneys = await fetchDriverAssignedJourneys();
+        setAssignedDriverJobs(assignedDriverJourneys);
       }
     } catch (error) {
       console.log('Error Fetching Jobs');
@@ -114,7 +123,7 @@ const Menu = () => {
                     content: (
                       <>
                         {createdJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <CustomerJobItem key={job.jobId} job={job} handOn />
                         ))}
                       </>
                     ),
@@ -124,7 +133,7 @@ const Menu = () => {
                     content: (
                       <>
                         {receiverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <CustomerJobItem key={job.jobId} job={job} handOff />
                         ))}
                       </>
                     ),
@@ -141,7 +150,9 @@ const Menu = () => {
                     title: 'Assigned Jobs',
                     content: (
                       <>
-                        <Text>Need to be implemented</Text>
+                        {assignedDriverJobs.map((job) => (
+                          <DriverJobItem key={job.jobId} job={job} assigned />
+                        ))}
                       </>
                     ),
                   },
@@ -150,7 +161,7 @@ const Menu = () => {
                     content: (
                       <>
                         {unassignedDriverJobs.map((job) => (
-                          <JobItem key={job.jobId} jobID={job.jobId} />
+                          <DriverJobItem key={job.jobId} job={job} available />
                         ))}
                       </>
                     ),
@@ -167,7 +178,6 @@ const Menu = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // TODO: width doesn't behave as expected
     width: '100%',
   },
 });

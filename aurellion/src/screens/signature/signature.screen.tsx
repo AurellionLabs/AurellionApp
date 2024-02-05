@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useColorScheme, View } from 'react-native';
-import { Container, Button, ButtonText, BoldText, StyledText } from '../../common/components/StyledComponents';
-import { LightTheme } from '../../common/constants/Colors';
+import { View } from 'react-native';
+import { Container, Button, ButtonText, StyledText } from '../../common/components/StyledComponents';
+import { LightTheme, DarkTheme } from '../../common/constants/Colors';
 import LottieView from 'lottie-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { JobsScreenNavigationProp, SignatureScreenRouteProp } from '../../navigation/types';
@@ -13,14 +13,15 @@ import { listenForSignature } from '../../dapp-connectors/dapp-listener';
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
-  const { isDarkMode, universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI } = useMainContext();
+  const { universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI, isDarkMode } = useMainContext();
   const route = useRoute<SignatureScreenRouteProp>();
-  const { heading, jobID } = route.params;
+  const { heading, job } = route.params;
   const [isSigned, setIsSigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [allSigned, setAllSigned] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
 
   // can use the data from the jouney object for addresses
   const onPress = async () => {
@@ -34,10 +35,9 @@ const SignatureScreen = () => {
     try {
       navigateDeepLink(universalLink, deepLink, wcURI);
       if (userType === 'customer') {
-        console.log('called');
-        await customerPackageSign(jobID);
+        await customerPackageSign(job.jobId);
       } else if (userType === 'driver') {
-        await driverPackageSign(jobID);
+        await driverPackageSign(job.jobId);
       }
       console.log('setIsSigned');
       setIsLoading(false);
@@ -52,7 +52,7 @@ const SignatureScreen = () => {
   }
   async function allSignedCheck() {
     console.log('calling listenForSignature');
-    setAllSigned(await listenForSignature(jobID));
+    setAllSigned(await listenForSignature(job.jobId));
     setIsSigned(false);
     //to do error handling modal for user
   }
@@ -83,7 +83,15 @@ const SignatureScreen = () => {
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (
         <>
-          <BoldText>{heading}</BoldText>
+          <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
+            {heading}
+          </StyledText>
+          <View style={{ marginTop: '20%' }}>
+            <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700 }}>
+              Receiver's Address:
+            </StyledText>
+          </View>
+          <StyledText isDarkMode={isDarkMode}>{job?.parcelData.endName}</StyledText>
           <View style={{ marginTop: 50 }}>
             <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={onPress}>
               <ButtonText>Sign</ButtonText>

@@ -5,17 +5,22 @@ export type Location = {
 
 export type ParcelData = {
   startLocation: Location;
-  endLocatio: Location;
-  name: string;
-  //add customer?
-  //add driver?
-  //add box
+  endLocation: Location;
+  startName: string;
+  endName: string;
 };
+
+export enum JourneyStatus {
+  PENDING = 0,
+  IN_PROGRESS = 1,
+  COMPLETED = 2,
+  CANCELED = 3,
+}
 
 export type Journey = {
   parcelData: ParcelData;
   jobId: string;
-  Status: string;
+  currentStatus: JourneyStatus;
   customer: string;
   reciever: string;
   driver: string;
@@ -25,16 +30,6 @@ export type Journey = {
   ETA: number;
 };
 
-export type location = {
-  lat: string;
-  lng: string;
-};
-export type PackageDeliveryData = {
-  startLocation: location;
-  endLocation: location;
-  startName: string;
-  endName: string;
-};
 export type UserType = 'customer' | 'driver';
 
 export enum DeliverySpeedOption {

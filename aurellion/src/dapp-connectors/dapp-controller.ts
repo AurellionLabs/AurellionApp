@@ -313,3 +313,92 @@ export const fetchDriverAssignedJourneys = async () => {
   }
   return journeys;
 };
+
+export const packageHandOn = async (customerAddress: string, driverAddress: string, jobId: string) => {
+  let signer: ethers.providers.JsonRpcSigner | undefined;
+  let contract;
+  let handOnSuccessful: boolean;
+  try {
+    signer = await getSigner();
+  } catch (error) {
+    console.error('Could not get signer object');
+    throw error;
+  }
+  try {
+    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+  } catch (error) {
+    console.error('Could not create Contract object');
+    throw error;
+  }
+  if (signer) {
+    const walletAddress = await signer.getAddress();
+    if (!walletAddress) {
+      throw new Error('Failed to get wallet address');
+    }
+  }
+  try {
+    handOnSuccessful = await contract.handOn(driverAddress, customerAddress, jobId);
+  } catch (error) {
+    console.error('Could not call contract handOn');
+    throw error;
+  }
+  return handOnSuccessful;
+};
+
+export const packageHandOff = async (customerAddress: string, driverAddress: string, jobId: string) => {
+  let signer: ethers.providers.JsonRpcSigner | undefined;
+  let contract;
+  let handOffSuccessful: boolean;
+  try {
+    signer = await getSigner();
+  } catch (error) {
+    console.error('Could not get signer object');
+    throw error;
+  }
+  try {
+    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+  } catch (error) {
+    console.error('Could not create Contract object');
+    throw error;
+  }
+  if (signer) {
+    const walletAddress = await signer.getAddress();
+    if (!walletAddress) {
+      throw new Error('Failed to get wallet address');
+    }
+  }
+  try {
+    handOffSuccessful = await contract.handOff(driverAddress, customerAddress, jobId);
+  } catch (error) {
+    console.error('Could not call contract handOff');
+    throw error;
+  }
+  return handOffSuccessful;
+};
+
+export const jobIdToJourney = async (jobId: string) => {
+  let signer: ethers.providers.JsonRpcSigner | undefined;
+  let contract;
+  let handOffSuccessful: boolean;
+  try {
+    signer = await getSigner();
+  } catch (error) {
+    console.error('Could not get signer object');
+    throw error;
+  }
+  try {
+    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+  } catch (error) {
+    console.error('Could not create Contract object');
+    throw error;
+  }
+  if (signer) {
+    try {
+      const journey = await contract.jobIdToJourney(jobId);
+      return journey;
+    } catch (error) {
+      console.error('Could not fetch journey object');
+      throw error;
+    }
+  }
+};

@@ -6,10 +6,17 @@ import LottieView from 'lottie-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { JobsScreenNavigationProp, SignatureScreenRouteProp } from '../../navigation/types';
 import { useMainContext } from '../main.provider';
-import { customerPackageSign, driverPackageSign } from '../../dapp-connectors/dapp-controller';
+import {
+  customerPackageSign,
+  driverPackageSign,
+  jobIdToJourney,
+  packageHandOff,
+  packageHandOn,
+} from '../../dapp-connectors/dapp-controller';
 import { navigateDeepLink } from '../../utils/ExplorerUtils';
 import Loader from '../../common/loader/loader';
 import { listenForSignature } from '../../dapp-connectors/dapp-listener';
+import { Journey, JourneyStatus } from '../../common/types/types';
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
@@ -31,6 +38,22 @@ const SignatureScreen = () => {
     console.log('packageSign complete');
     await allSignedCheck();
   };
+
+  const resolvePackageHandling = async () => {
+    try {
+      const journey: Journey = await jobIdToJourney(job.jobId);
+      if (journey.currentStatus === JourneyStatus.PENDING) {
+        await packageHandOn(journey.customer, journey.driver, journey.jobId);
+      } else if (journey.currentStatus === JourneyStatus.IN_PROGRESS) {
+        await packageHandOff(journey.customer, journey.driver, journey.jobId);
+      }
+      console.log('Successfully resolved package handling');
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage('Error resolving package handling');
+    }
+  };
+
   async function packageSign() {
     try {
       navigateDeepLink(universalLink, deepLink, wcURI);
@@ -43,7 +66,8 @@ const SignatureScreen = () => {
       setIsLoading(false);
       setIsSigned(true);
       setRefetchDataFromAPI(true);
-      allSignedCheck();
+      await allSignedCheck();
+      await resolvePackageHandling();
     } catch (error) {
       setIsError(true);
       setErrorMessage('Error Signing off Package');
@@ -51,10 +75,15 @@ const SignatureScreen = () => {
     }
   }
   async function allSignedCheck() {
-    console.log('calling listenForSignature');
-    setAllSigned(await listenForSignature(job.jobId));
-    setIsSigned(false);
-    //to do error handling modal for user
+    try {
+      console.log('calling listenForSignature');
+      setAllSigned(await listenForSignature(job.jobId));
+      setIsSigned(false);
+    } catch (error) {
+      //to do error handling modal for user
+      setIsError(true);
+      setErrorMessage('Error listening for signatures');
+    }
   }
   return (
     <Container styles={{ justifyContent: 'center' }}>

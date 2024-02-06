@@ -9,6 +9,7 @@ import { useMainContext } from '../main.provider';
 import { customerPackageSign, driverPackageSign } from '../../dapp-connectors/dapp-controller';
 import { navigateDeepLink } from '../../utils/ExplorerUtils';
 import Loader from '../../common/loader/loader';
+import { listenForSignature } from '../../dapp-connectors/dapp-listener';
 
 const SignatureScreen = () => {
   const navigation = useNavigation<JobsScreenNavigationProp>();
@@ -18,11 +19,19 @@ const SignatureScreen = () => {
   const [isSigned, setIsSigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [allSigned, setAllSigned] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
 
+  // can use the data from the jouney object for addresses
   const onPress = async () => {
     setIsLoading(true);
+    console.log('packageSign');
+    await packageSign();
+    console.log('packageSign complete');
+    await allSignedCheck();
+  };
+  async function packageSign() {
     try {
       navigateDeepLink(universalLink, deepLink, wcURI);
       if (userType === 'customer') {
@@ -30,25 +39,46 @@ const SignatureScreen = () => {
       } else if (userType === 'driver') {
         await driverPackageSign(job.jobId);
       }
+      console.log('setIsSigned');
+      setIsLoading(false);
       setIsSigned(true);
       setRefetchDataFromAPI(true);
+      allSignedCheck();
     } catch (error) {
       setIsError(true);
       setErrorMessage('Error Signing off Package');
     } finally {
-      setIsLoading(false);
     }
-  };
-
+  }
+  async function allSignedCheck() {
+    console.log('calling listenForSignature');
+    setAllSigned(await listenForSignature(job.jobId));
+    setIsSigned(false);
+    //to do error handling modal for user
+  }
   return (
-    <Container styles={{ justifyContent: 'center', backgroundColor }}>
-      {isSigned ? (
+    <Container styles={{ justifyContent: 'center' }}>
+      {allSigned ? (
         <LottieView
           source={require('../../common/assets/animations/success.json')}
           autoPlay
           loop={false}
           onAnimationFinish={() => navigation.navigate('Jobs')}
         />
+      ) : isSigned ? (
+        <Container styles={{ justifyContent: 'center', height: '100%', width: '100%', alignItems: 'center', flex: 1 }}>
+          <View style={{ height: '35%', width: '70%' }}>
+            <LottieView
+              style={{}}
+              source={require('../../common/assets/animations/signing.json')}
+              autoPlay
+              loop={true}
+            />
+          </View>
+          <StyledText style={{ marginBottom: '30%' }} isDarkMode={isDarkMode}>
+            waiting for the other party to sign...
+          </StyledText>
+        </Container>
       ) : isLoading ? (
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (

@@ -44,9 +44,9 @@ const SignatureScreen = () => {
     try {
       const journey: Journey = await jobIdToJourney(job.jobId);
       navigateDeepLink(universalLink, deepLink, wcURI);
-      if (journey.currentStatus === 0) {
+      if (journey.currentStatus === JourneyStatus.PENDING) {
         const handOnSuccessful = await packageHandOn(journey.customer, journey.driver, journey.jobId);
-      } else if (journey.currentStatus === 1) {
+      } else if (journey.currentStatus === JourneyStatus.IN_PROGRESS) {
         const handOffSuccessful = await packageHandOff(journey.customer, journey.driver, journey.jobId);
       }
       console.log('Successfully resolved package handling');
@@ -118,10 +118,12 @@ const SignatureScreen = () => {
           </StyledText>
           <View style={{ marginTop: '20%' }}>
             <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700 }}>
-              Receiver's Address:
+              {job.currentStatus === JourneyStatus.PENDING ? `Customer's Address:` : `Receiver's Address`}
             </StyledText>
           </View>
-          <StyledText isDarkMode={isDarkMode}>{job?.parcelData.endName}</StyledText>
+          <StyledText isDarkMode={isDarkMode}>
+            {job.currentStatus === JourneyStatus.PENDING ? job.parcelData.startName : job.parcelData.endName}
+          </StyledText>
           <View style={{ marginTop: 50 }}>
             <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={onPress}>
               <ButtonText>Sign</ButtonText>

@@ -33,22 +33,25 @@ const SignatureScreen = () => {
   // can use the data from the jouney object for addresses
   const onPress = async () => {
     setIsLoading(true);
-    console.log('packageSign');
+    console.log('calling packageSign');
     await packageSign();
     console.log('packageSign complete');
     await allSignedCheck();
+    await resolvePackageHandling();
   };
 
   const resolvePackageHandling = async () => {
     try {
       const journey: Journey = await jobIdToJourney(job.jobId);
-      if (journey.currentStatus === JourneyStatus.PENDING) {
-        await packageHandOn(journey.customer, journey.driver, journey.jobId);
-      } else if (journey.currentStatus === JourneyStatus.IN_PROGRESS) {
-        await packageHandOff(journey.customer, journey.driver, journey.jobId);
+      navigateDeepLink(universalLink, deepLink, wcURI);
+      if (journey.currentStatus === 0) {
+        const handOnSuccessful = await packageHandOn(journey.customer, journey.driver, journey.jobId);
+      } else if (journey.currentStatus === 1) {
+        const handOffSuccessful = await packageHandOff(journey.customer, journey.driver, journey.jobId);
       }
       console.log('Successfully resolved package handling');
     } catch (error) {
+      console.log('Error in resolve package handling', error);
       setIsError(true);
       setErrorMessage('Error resolving package handling');
     }
@@ -66,8 +69,6 @@ const SignatureScreen = () => {
       setIsLoading(false);
       setIsSigned(true);
       setRefetchDataFromAPI(true);
-      await allSignedCheck();
-      await resolvePackageHandling();
     } catch (error) {
       setIsError(true);
       setErrorMessage('Error Signing off Package');

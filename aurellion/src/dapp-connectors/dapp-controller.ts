@@ -317,7 +317,7 @@ export const fetchDriverAssignedJourneys = async () => {
 export const packageHandOn = async (customerAddress: string, driverAddress: string, jobId: string) => {
   let signer: ethers.providers.JsonRpcSigner | undefined;
   let contract;
-  let handOnSuccessful: boolean;
+  let handOnSuccessful = false;
   try {
     signer = await getSigner();
   } catch (error) {
@@ -333,6 +333,7 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
   if (signer) {
     const walletAddress = await signer.getAddress();
     if (!walletAddress) {
+      console.error('Failed to get wallet address');
       throw new Error('Failed to get wallet address');
     }
   }
@@ -348,7 +349,7 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
 export const packageHandOff = async (customerAddress: string, driverAddress: string, jobId: string) => {
   let signer: ethers.providers.JsonRpcSigner | undefined;
   let contract;
-  let handOffSuccessful: boolean;
+  let handOffSuccessful = false;
   try {
     signer = await getSigner();
   } catch (error) {
@@ -364,6 +365,7 @@ export const packageHandOff = async (customerAddress: string, driverAddress: str
   if (signer) {
     const walletAddress = await signer.getAddress();
     if (!walletAddress) {
+      console.log('Failed to get wallet address');
       throw new Error('Failed to get wallet address');
     }
   }
@@ -379,7 +381,6 @@ export const packageHandOff = async (customerAddress: string, driverAddress: str
 export const jobIdToJourney = async (jobId: string) => {
   let signer: ethers.providers.JsonRpcSigner | undefined;
   let contract;
-  let handOffSuccessful: boolean;
   try {
     signer = await getSigner();
   } catch (error) {

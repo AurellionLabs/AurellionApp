@@ -36,6 +36,7 @@ contract locationContract {
         uint journeyEnd;
         uint bounty;
         uint ETA;
+        uint createdDateTime;
     }
 
     struct SubJourney {
@@ -281,7 +282,8 @@ contract locationContract {
             journeyStart: 0,
             journeyEnd: 0,
             bounty: bounty,
-            ETA: ETA
+            ETA: ETA,
+            createdDateTime: block.timestamp
         });
         jobIdToJourney[journey.jobId] = journey;
         jobToBox[journey.jobId] = jobIdCounter;

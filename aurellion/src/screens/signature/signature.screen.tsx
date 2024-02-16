@@ -49,6 +49,7 @@ const SignatureScreen = () => {
       } else if (journey.currentStatus === JourneyStatus.IN_PROGRESS) {
         const handOffSuccessful = await packageHandOff(journey.customer, journey.driver, journey.jobId);
       }
+      setIsSigned(false);
       console.log('Successfully resolved package handling');
     } catch (error) {
       console.log('Error in resolve package handling', error);
@@ -79,7 +80,6 @@ const SignatureScreen = () => {
     try {
       console.log('calling listenForSignature');
       setAllSigned(await listenForSignature(job.jobId));
-      setIsSigned(false);
     } catch (error) {
       //to do error handling modal for user
       setIsError(true);

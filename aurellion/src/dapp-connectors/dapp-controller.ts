@@ -2,6 +2,7 @@ import { BigNumber, ethers } from 'ethers';
 import { getSigner } from './wallet-utils';
 import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from '@env';
 import { ParcelData, Journey } from '../common/types/types';
+import { processJobObject } from '../common/utils/utils';
 
 const contractABI = require('./aurellion-abi.json');
 
@@ -108,8 +109,8 @@ export const fetchCustomerJobs = async () => {
 
     for (const jobId of jobIds) {
       try {
-        const job = await contract.jobIdToJourney(jobId);
-        jobs.push(job);
+        let job = await contract.jobIdToJourney(jobId);
+        jobs.push(processJobObject(job));
       } catch (err) {
         console.error(`Error fetching job object with ID ${jobId}:`, err);
       }
@@ -163,7 +164,7 @@ export const fetchReceiverJobs = async () => {
     for (const jobID of jobs) {
       try {
         const jobsObj = await contract.jobIdToJourney(jobID);
-        jobsObjList.push(jobsObj);
+        jobsObjList.push(processJobObject(jobsObj));
       } catch (err) {
         console.error(`Error fetching job object with jobId ${jobID}:`, err);
       }
@@ -254,7 +255,7 @@ export const fetchDriverUnassignedJourneys = async () => {
     if (journey) {
       const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
       if (!isAssigned) {
-        journeys.push(journey);
+        journeys.push(processJobObject(journey));
       }
     }
   }
@@ -305,7 +306,7 @@ export const fetchDriverAssignedJourneys = async () => {
     for (let i = 0; i < jobIds.length; i++) {
       try {
         journey = await contract.jobIdToJourney(jobIds[i]);
-        journeys.push(journey);
+        journeys.push(processJobObject(journey));
       } catch (error) {
         console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
       }

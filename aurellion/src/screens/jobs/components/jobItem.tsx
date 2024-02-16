@@ -27,7 +27,9 @@ const JobItem: React.FC<BoxProps> = ({ job }) => {
   };
   return (
     <SelectedBox onPress={onPress}>
-      <Text>{job.jobId}</Text>
+      {/* <Text>{job.jobId}</Text> */}
+      <Text>Created At</Text>
+      <Text>{job.createdDateTime}</Text>
     </SelectedBox>
   );
 };

@@ -4,6 +4,7 @@ import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SignatureScreenNavigationProp } from '../../../navigation/types';
 import { Journey } from '../../../common/types/types';
+import { BigNumber, ethers } from 'ethers';
 
 type BoxProps = {
   job: Journey;
@@ -20,6 +21,11 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
   }
 
   const onPress = () => {
+    // console.log(job);
+    // const dateVal = ethers.BigNumber.from(job.createdDateTime).toNumber();
+    // console.log("\n\nCreatedDateTime: " + dateVal + "\n\n");
+    // const date = new Date(dateVal * 1000);
+    // console.log("\n\nCreatedDateTime as Date: " + date.toLocaleString("en-GB") + "\n\n");
     if (handOn) {
       navigation.navigate('Signature', {
         heading: 'Sign to confirm package hand off to driver',
@@ -34,7 +40,10 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
   };
   return (
     <SelectedBox onPress={onPress}>
-      <Text>{job.jobId}</Text>
+      {/* <Text>{job.jobId}</Text> */}
+      {/* <Text>Created At</Text> */}
+      <Text>{job.createdDateTime}</Text>
+      {/* <Text>{job.journeyStart}</Text> */}
     </SelectedBox>
   );
 };

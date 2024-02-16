@@ -24,10 +24,11 @@ export type Journey = {
   customer: string;
   reciever: string;
   driver: string;
-  journeyStart: number;
-  journeyEnd: number;
+  journeyStart: string;
+  journeyEnd: string;
   bounty: number;
   ETA: number;
+  createdDateTime: string;
 };
 
 export type UserType = 'customer' | 'driver';

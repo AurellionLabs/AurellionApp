@@ -7,7 +7,7 @@ import {
   JobsScreenNavigationProp,
   LocationsScreenNavigationProp,
 } from '../../navigation/types';
-
+//Test
 const NavbarWrapper = styled.View`
   flex-direction: row;
   background-color: white;

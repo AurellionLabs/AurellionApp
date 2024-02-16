@@ -5,7 +5,7 @@ import { ParcelData, Journey } from '../common/types/types';
 
 const contractABI = require('./aurellion-abi.json');
 
-export const jobCreation = async (locationData: ParcelData) => {
+export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
   try {
     const signer = await getSigner();
     if (!signer) {
@@ -13,7 +13,7 @@ export const jobCreation = async (locationData: ParcelData) => {
     }
     const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
     const walletAddress = await signer.getAddress();
-    const jobTx = await contract.jobCreation(walletAddress, walletAddress, locationData, 1, 10);
+    const jobTx = await contract.jobCreation(walletAddress, recipientWalletAddress, locationData, 1, 10);
     const receipt = await jobTx.wait();
     console.log('Job Creation Transaction Hash:');
     console.log('Transaction Hash:', receipt.transactionHash);

@@ -42,7 +42,7 @@ const ConfirmationScreen: React.FC = () => {
 
     try {
       if (packageDeliveryData != undefined) {
-        await jobCreation(packageDeliveryData);
+        await jobCreation(packageDeliveryData, recipientWalletAddress);
       }
     } catch (error) {
       setIsError(true);

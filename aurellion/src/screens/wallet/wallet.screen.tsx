@@ -28,7 +28,6 @@ import { DarkTheme, LightTheme } from '../../common/constants/Colors';
 import { WalletScreenNavigationProp } from '../../navigation/types';
 import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
 import TypingText from '../../common/components/TypingText';
-import { UniversalProvider } from '@walletconnect/universal-provider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMainContext } from '../main.provider';
 function WalletScreen(): JSX.Element {
@@ -63,7 +62,12 @@ function WalletScreen(): JSX.Element {
         setWalletAddress(currentAddress);
       }
     } catch (err: unknown) {
-      Alert.alert('Error', 'Error getting the Address');
+      console.error('Error', `Error getting the Address${err}`);
+      createUniversalProviderSession({
+        onSuccess: onSessionCreated,
+        onFailure: onSessionError,
+      });
+      setModalVisible(true);
     }
   }, []);
 
@@ -202,7 +206,7 @@ function WalletScreen(): JSX.Element {
         {walletAddress ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {walletAddress}</Text>
-            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Locations')}>
+            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Jobs')}>
               <RedButtonText>Home Screen</RedButtonText>
             </RedButton>
 

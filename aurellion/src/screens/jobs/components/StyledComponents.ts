@@ -18,13 +18,6 @@ interface props {
   isDarkMode: boolean;
 }
 
-export const SelectedBoxOld = styled.TouchableOpacity<Props>`
-  width: 100%;
-  flex: 1;
-  border-bottom-width: 1px;
-  border-bottom-color: rgba(0, 0, 0, 0.2);
-`;
-
 export const SelectedBox = styled.TouchableOpacity<Props>`
   width: 100%;
   padding: 5px;
@@ -58,19 +51,6 @@ export const TextRow = styled.View`
   flex-direction: row;
   justify-content: flex-start;
   margin-bottom: 8px;
-`;
-
-export const LabelText = styled(StyledText)<props>`
-  width: 20%;
-  font-weight: bold;
-  color: #333; /* Set label text color */
-  margin-right: 8px;
-`;
-
-export const TextValue = styled(StyledText)<props>`
-  width: 80%;
-  color: #666; /* Set text value color */
-  word-wrap: break-word;
 `;
 
 export const UnSelectedBox = styled.View<Props>`

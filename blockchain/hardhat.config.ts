@@ -7,7 +7,11 @@ const config: HardhatUserConfig = {
   solidity: "0.8.17",
   networks: {
     // Other network configurations...
-
+      aurellion:{
+          url: "http://0.0.0.0:7545",
+            chainId: 1337,
+          accounts: [process.env.PRIVATE_KEY]
+      },
     // Polygon Mainnet configuration
     mumbai: {
       url: polygonMaticUrl,

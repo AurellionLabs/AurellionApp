@@ -78,7 +78,9 @@ const SignatureScreen = () => {
   async function allSignedCheck() {
     try {
       console.log('calling listenForSignature');
-      setAllSigned(await listenForSignature(job.jobId));
+      let result = await listenForSignature(job.jobId);
+      console.log('listener result', result);
+      setAllSigned(result);
       setIsSigned(false);
     } catch (error) {
       //to do error handling modal for user

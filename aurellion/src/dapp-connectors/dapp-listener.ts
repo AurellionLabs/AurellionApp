@@ -9,6 +9,7 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
     if (!signer) {
       throw new Error('Signer is undefined');
     }
+    const signerAddr = await signer.getAddress();
     const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
     const journey = await contract.jobIdToJourney(jobID);
     let driverSig;
@@ -39,6 +40,7 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
         console.log('Listening...');
         console.log(sigCount);
         var prevSig: string;
+        prevSig = signerAddr;
         const filteredSigs = contract.filters.emitSig(null, jobID);
         console.log('filteredSigs');
         const timeout = setTimeout(() => {
@@ -46,8 +48,13 @@ export async function listenForSignature(jobID: string): Promise<boolean> {
           reject(new Error('Timeout: No signature detected within the specified time.'));
         }, 120000);
 
-        const handler = (id: string, address: string) => {
+        const handler = (address: string, id: string) => {
+          console.log(jobID);
+          console.log('id', id);
+          console.log('address', address);
           if (id === jobID) {
+            console.log('job id matches', jobID);
+            console.log('prevSig', prevSig);
             if (prevSig !== address) {
               console.log(`Signature detected! From: ${address}, jobID: ${id}`);
               sigCount += 1;

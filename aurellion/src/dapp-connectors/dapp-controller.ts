@@ -13,7 +13,9 @@ export const jobCreation = async (locationData: ParcelData, recipientWalletAddre
     }
     const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
     const walletAddress = await signer.getAddress();
+    console.log('line before');
     const jobTx = await contract.jobCreation(walletAddress, recipientWalletAddress, locationData, 1, 10);
+    console.log(jobTx);
     const receipt = await jobTx.wait();
     console.log('Job Creation Transaction Hash:');
     console.log('Transaction Hash:', receipt.transactionHash);

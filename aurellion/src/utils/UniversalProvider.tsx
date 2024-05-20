@@ -58,7 +58,7 @@ export async function createUniversalProviderSession(callbacks?: {
       namespaces: {
         eip155: {
           methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
-          chains: ['eip155:80001'],
+          chains: ['eip155:80002'],
           events: ['chainChanged', 'accountsChanged'],
           rpcMap: {},
         },

@@ -1,0 +1,30 @@
+// Will be better used when Themeing is added
+export const DarkTheme = {
+  accent: '#BD2222',
+  foreground1: '#E4E7E7',
+  foreground2: '#949E9E',
+  foreground3: '#6E7777',
+  foregroundInverse: '#FFFFFF',
+  negative: '#F25A67',
+  background1: '#141414',
+  background2: '#272A2A',
+  background3: '#3B4040',
+  overlayThin: 'rgba(255, 255, 255, 0.1)',
+  overlayThick: 'rgba(255, 255, 255, 0.3)',
+  title: '#BD2222',
+};
+
+export const LightTheme = {
+  accent: '#BD2222',
+  foreground1: '#141414',
+  foreground2: '#D0A852',
+  foreground3: '#9EA9A9',
+  foregroundInverse: '#FFFFFF',
+  negative: '#F05142',
+  background1: '#FFFFFF',
+  background2: '#F1F3F3',
+  background3: '#E4E7E7',
+  overlayThin: 'rgba(0, 0, 0, 0.1)',
+  overlayThick: 'rgba(0, 0, 0, 0.3)',
+  title: 'black',
+};

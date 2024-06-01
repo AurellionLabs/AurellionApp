@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 
 export const Container = styled.View`
   flex: 1;
@@ -10,7 +10,7 @@ export const Container = styled.View`
 
 export const ScrollContent = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: { flexGrow: 1, minWidth: '100%' },
+  contentContainerStyle: {flexGrow: 1, minWidth: '100%'},
 })``;
 
 export const Heading = styled.Text`

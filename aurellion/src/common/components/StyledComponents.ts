@@ -1,8 +1,14 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../constants/Colors';
-import { Touchable, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
+import {DarkTheme, LightTheme} from '../constants/Colors';
+import {
+  Touchable,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
@@ -37,20 +43,21 @@ export const RedButton = styled.TouchableOpacity`
   height: 50px;
   border-width: 1px;
   border-color: ${LightTheme.overlayThin};
-  ${({ isDarkMode }: { isDarkMode: boolean }) =>
+  ${({isDarkMode}: {isDarkMode: boolean}) =>
     isDarkMode &&
     `
     background-color: ${DarkTheme.accent};
     border-color: ${DarkTheme.overlayThin};
   `}
-  ${({ styles }: RedButtonProps) => styles};
+  ${({styles}: RedButtonProps) => styles};
 `;
 export const RedButtonText = styled.Text`
   color: white;
   font-family: Inter-Regular;
 `;
 export const TitleText = styled.Text<props>`
-  color: ${(props: props) => (props.isDarkMode ? DarkTheme.title : LightTheme.title)};
+  color: ${(props: props) =>
+    props.isDarkMode ? DarkTheme.title : LightTheme.title};
   font-family: Inter-Regular;
   font-size: 40px;
 `;
@@ -66,7 +73,8 @@ export const Box = styled.View`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: ${(props: props) => (props.isDarkMode ? DarkTheme.background2 : LightTheme.background2)};
+  background-color: ${(props: props) =>
+    props.isDarkMode ? DarkTheme.background2 : LightTheme.background2};
 `;
 export const StyledText = styled.Text<props>`
   color: ${(props: props) => (props.isDarkMode ? 'white' : 'black')};
@@ -123,7 +131,7 @@ interface ContainerProps {
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  ${({ styles }: ContainerProps) => styles};
+  ${({styles}: ContainerProps) => styles};
 `;
 
 export const WhiteText = styled.Text`

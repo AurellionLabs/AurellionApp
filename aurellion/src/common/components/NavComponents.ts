@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../constants/Colors';
-import { View, ViewStyle } from 'react-native';
+import {DarkTheme, LightTheme} from '../constants/Colors';
+import {View, ViewStyle} from 'react-native';
 import Animated from 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
@@ -19,7 +19,7 @@ export const Shadow = styled.View`
   align-items: center;
   shadow-radius: 20;
 `;
-export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
+export const RedButton = styled.TouchableOpacity<{isDarkMode: boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +29,7 @@ export const RedButton = styled.TouchableOpacity<{ isDarkMode: boolean }>`
   height: 50px;
   border-width: 1px;
   border-color: ${LightTheme.overlayThin};
-  ${({ isDarkMode }: { isDarkMode: boolean }) =>
+  ${({isDarkMode}: {isDarkMode: boolean}) =>
     isDarkMode &&
     `
     background-color: ${DarkTheme.accent};
@@ -106,7 +106,7 @@ interface ContainerProps {
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  ${({ styles }: ContainerProps) => styles};
+  ${({styles}: ContainerProps) => styles};
 `;
 
 export const WhiteText = styled.Text`

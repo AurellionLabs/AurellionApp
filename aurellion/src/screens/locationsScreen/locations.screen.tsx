@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 
 import {
   ActivityIndicator,
@@ -13,17 +13,17 @@ import {
   Keyboard,
   Platform,
 } from 'react-native';
-import { Container } from '../../common/components/StyledComponents';
-import { DarkTheme, LightTheme } from '../../common/constants/Colors';
-import { useNavigation } from '@react-navigation/native';
-import MapView, { Marker, Region } from 'react-native-maps';
+import {Container} from '../../common/components/StyledComponents';
+import {DarkTheme, LightTheme} from '../../common/constants/Colors';
+import {useNavigation} from '@react-navigation/native';
+import MapView, {Marker, Region} from 'react-native-maps';
 import LocationsMenu from './components/locationsMenu';
 import Navbar from '../../common/components/NavBar';
-import { useMainContext } from '../main.provider';
+import {useMainContext} from '../main.provider';
 
 const LocationsScreen = () => {
   const navigation = useNavigation();
-  const { isDarkMode } = useMainContext();
+  const {isDarkMode} = useMainContext();
   const [region, setRegion] = useState<Region>({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -34,13 +34,19 @@ const LocationsScreen = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
 
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
 
     return () => {
       keyboardDidShowListener.remove();
@@ -50,7 +56,14 @@ const LocationsScreen = () => {
 
   return (
     <Container style={styles.container}>
-      {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
+      {!isKeyboardVisible && (
+        <MapView
+          style={styles.mapView}
+          showsUserLocation
+          region={region}
+          showsCompass
+        />
+      )}
       <LocationsMenu
         style={styles.locationsMenu}
         region={region}

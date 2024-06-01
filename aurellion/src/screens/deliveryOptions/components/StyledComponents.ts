@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import {DarkTheme, LightTheme} from '../../../common/constants/Colors';
 import Animated from 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 interface CustomProps {
   [key: string]: any;
@@ -23,16 +23,28 @@ export const SelectedBox = styled.TouchableOpacity<Props>`
   width: 100%;
   height: ${(props: Props) => (props.boxState ? '25%' : '60%')};
   border-color: ${(props: Props) =>
-    props.boxSelected ? LightTheme.foreground2 : props.isDarkMode ? DarkTheme.background2 : LightTheme.background2};
+    props.boxSelected
+      ? LightTheme.foreground2
+      : props.isDarkMode
+      ? DarkTheme.background2
+      : LightTheme.background2};
   border-top-color: ${(props: Props) =>
-    props.boxSelected ? LightTheme.foreground2 : props.isDarkMode ? LightTheme.background2 : 'rgba(0, 0, 0, 0.2)'};
+    props.boxSelected
+      ? LightTheme.foreground2
+      : props.isDarkMode
+      ? LightTheme.background2
+      : 'rgba(0, 0, 0, 0.2)'};
   justify-content: space-between;
-  display: ${(props: Props) => (props.boxState ? 'flex' : (props: Props) => (props.boxSelected ? 'flex' : 'none'))};
+  display: ${(props: Props) =>
+    props.boxState
+      ? 'flex'
+      : (props: Props) => (props.boxSelected ? 'flex' : 'none')};
 `;
 
 export const UnSelectedBox = styled.View<Props>`
   padding: 8px;
-  border-top-color: ${(props: Props) => (props.isDarkMode ? DarkTheme.accent : 'rgba(0, 0, 0, 0.2)')};
+  border-top-color: ${(props: Props) =>
+    props.isDarkMode ? DarkTheme.accent : 'rgba(0, 0, 0, 0.2)'};
   flex-direction: row;
   border-top-width: 1px;
   margin: 2%;
@@ -60,7 +72,8 @@ export const AnimatedBox = styled(Animated.View)<Props>`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: ${(props: Props) => (props.isDarkMode ? DarkTheme.background2 : LightTheme.background2)};
+  background-color: ${(props: Props) =>
+    props.isDarkMode ? DarkTheme.background2 : LightTheme.background2};
 `;
 
 interface AnimatedRootProps {

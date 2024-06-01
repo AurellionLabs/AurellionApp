@@ -1,6 +1,6 @@
-import { JsonRpcSigner } from '@ethersproject/providers';
-import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { ParcelData, UserType, DeliveryOption } from '../common/types/types';
+import {JsonRpcSigner} from '@ethersproject/providers';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import {ParcelData, UserType, DeliveryOption} from '../common/types/types';
 
 interface IMainContext {
   wallet: JsonRpcSigner | undefined;
@@ -56,17 +56,22 @@ interface MainProviderProps {
   children: React.ReactNode;
 }
 
-const MainProvider = ({ children }: MainProviderProps) => {
+const MainProvider = ({children}: MainProviderProps) => {
   const [wallet, setWallet] = useState<JsonRpcSigner | undefined>();
   const [walletAddress, setWalletAddress] = useState<string | undefined>('');
   const [universalLink, setUniversalLink] = useState<string>('');
   const [deepLink, setDeepLink] = useState<string>('');
   const [wcURI, setWcURI] = useState<string>('');
   const [userType, setUserType] = useState<UserType>('customer');
-  const [packageDeliveryData, setPackageDeliveryData] = useState<ParcelData | undefined>(undefined);
+  const [packageDeliveryData, setPackageDeliveryData] = useState<
+    ParcelData | undefined
+  >(undefined);
   const [refetchDataFromAPI, setRefetchDataFromAPI] = useState<boolean>(false);
-  const [recipientWalletAddress, setRecipientWalletAddress] = useState<string>('');
-  const [deliveryOption, setDeliveryOption] = useState<DeliveryOption | undefined>(undefined);
+  const [recipientWalletAddress, setRecipientWalletAddress] =
+    useState<string>('');
+  const [deliveryOption, setDeliveryOption] = useState<
+    DeliveryOption | undefined
+  >(undefined);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   return (
     <MainContext.Provider
@@ -93,8 +98,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
         setDeliveryOption,
         isDarkMode,
         setIsDarkMode,
-      }}
-    >
+      }}>
       {children}
     </MainContext.Provider>
   );

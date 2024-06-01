@@ -1,17 +1,17 @@
 import React from 'react';
-import { SelectedBox } from './StyledComponents';
-import { Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { SignatureScreenNavigationProp } from '../../../navigation/types';
-import { useMainContext } from '../../main.provider';
-import { Journey } from '../../../common/types/types';
+import {SelectedBox} from './StyledComponents';
+import {Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {SignatureScreenNavigationProp} from '../../../navigation/types';
+import {useMainContext} from '../../main.provider';
+import {Journey} from '../../../common/types/types';
 
 type BoxProps = {
   job: Journey;
 };
 
-const JobItem: React.FC<BoxProps> = ({ job }) => {
-  const { userType } = useMainContext();
+const JobItem: React.FC<BoxProps> = ({job}) => {
+  const {userType} = useMainContext();
   const navigation = useNavigation<SignatureScreenNavigationProp>();
   const onPress = () => {
     if (userType === 'customer') {

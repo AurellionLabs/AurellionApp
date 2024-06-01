@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import type { PropsWithChildren } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, LayoutAnimation, Image } from 'react-native';
-import { StyledText } from '../../../common/components/StyledComponents';
-import { useMainContext } from '../../main.provider';
+import React, {useState} from 'react';
+import type {PropsWithChildren} from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  LayoutAnimation,
+  Image,
+} from 'react-native';
+import {StyledText} from '../../../common/components/StyledComponents';
+import {useMainContext} from '../../main.provider';
 type AccordionData = {
   title: string;
   expanded: boolean;
@@ -10,8 +17,13 @@ type AccordionData = {
   children: React.ReactNode;
 };
 
-function AccordionItem({ children, title, expanded, onHeaderPress }: AccordionData): JSX.Element {
-  const { isDarkMode } = useMainContext();
+function AccordionItem({
+  children,
+  title,
+  expanded,
+  onHeaderPress,
+}: AccordionData): JSX.Element {
+  const {isDarkMode} = useMainContext();
   const body = <View style={styles.accordBody}>{children}</View>;
 
   return (
@@ -24,23 +36,23 @@ function AccordionItem({ children, title, expanded, onHeaderPress }: AccordionDa
           isDarkMode ? (
             <Image
               source={require('../../../common/assets/images/chevron-up-white.png')}
-              style={{ height: 24, width: 24 }}
+              style={{height: 24, width: 24}}
             />
           ) : (
             <Image
               source={require('../../../common/assets/images/chevron-up-black.png')}
-              style={{ height: 24, width: 24 }}
+              style={{height: 24, width: 24}}
             />
           )
         ) : isDarkMode ? (
           <Image
             source={require('../../../common/assets/images/chevron-down-white.png')}
-            style={{ height: 24, width: 24 }}
+            style={{height: 24, width: 24}}
           />
         ) : (
           <Image
             source={require('../../../common/assets/images/chevron-down-black.png')}
-            style={{ height: 24, width: 24 }}
+            style={{height: 24, width: 24}}
           />
         )}
       </TouchableOpacity>
@@ -58,7 +70,7 @@ type AccordionProps = PropsWithChildren<{
   data: AccordianDataItem[];
 }>;
 
-function Accordion({ data }: AccordionProps): JSX.Element {
+function Accordion({data}: AccordionProps): JSX.Element {
   const [expandedIndex, setExpandedIndex] = useState<null | number>(null);
 
   function handleHeaderPress(index: number) {
@@ -73,8 +85,7 @@ function Accordion({ data }: AccordionProps): JSX.Element {
           key={index}
           title={item.title}
           expanded={expandedIndex === index}
-          onHeaderPress={() => handleHeaderPress(index)}
-        >
+          onHeaderPress={() => handleHeaderPress(index)}>
           {item.content}
         </AccordionItem>
       ))}

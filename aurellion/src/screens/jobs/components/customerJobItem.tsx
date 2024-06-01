@@ -1,10 +1,10 @@
 import React from 'react';
-import { TextRow, StyledSelectedBox } from './StyledComponents';
-import { useNavigation } from '@react-navigation/native';
-import { SignatureScreenNavigationProp } from '../../../navigation/types';
-import { Journey, JourneyStatus } from '../../../common/types/types';
-import { StyledText } from '../../../common/components/StyledComponents';
-import { useMainContext } from '../../main.provider';
+import {TextRow, StyledSelectedBox} from './StyledComponents';
+import {useNavigation} from '@react-navigation/native';
+import {SignatureScreenNavigationProp} from '../../../navigation/types';
+import {Journey, JourneyStatus} from '../../../common/types/types';
+import {StyledText} from '../../../common/components/StyledComponents';
+import {useMainContext} from '../../main.provider';
 
 type BoxProps = {
   job: Journey;
@@ -12,12 +12,14 @@ type BoxProps = {
   handOff?: boolean;
 };
 
-const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
+const CustomerJobItem: React.FC<BoxProps> = ({job, handOn, handOff}) => {
   const navigation = useNavigation<SignatureScreenNavigationProp>();
-  const { setDeliveryOption, isDarkMode } = useMainContext();
+  const {setDeliveryOption, isDarkMode} = useMainContext();
 
   if (!handOn && !handOff) {
-    console.error("At least one of 'handOn' or 'handOff' prop must be provided");
+    console.error(
+      "At least one of 'handOn' or 'handOff' prop must be provided",
+    );
     return null;
   }
 
@@ -37,18 +39,30 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
   return (
     <StyledSelectedBox isDarkMode={isDarkMode} onPress={onPress}>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '20%', fontWeight: 'bold', marginRight: 8}}>
           Job ID:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '80%'}}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {job.jobId}
         </StyledText>
       </TextRow>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '20%', fontWeight: 'bold', marginRight: 8}}>
           Status:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '80%'}}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {job.currentStatus == JourneyStatus.PENDING
             ? 'Pending'
             : job.currentStatus == JourneyStatus.IN_PROGRESS
@@ -61,18 +75,30 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
         </StyledText>
       </TextRow>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '20%', fontWeight: 'bold', marginRight: 8}}>
           Start:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '80%'}}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {job.parcelData.startName}
         </StyledText>
       </TextRow>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '20%', fontWeight: 'bold', marginRight: 8}}>
           End:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{width: '80%'}}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {job.parcelData.endName}
         </StyledText>
       </TextRow>

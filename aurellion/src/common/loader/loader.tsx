@@ -1,8 +1,15 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useColorScheme,
+} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Button, ButtonText } from '../components/StyledComponents';
-import { LightTheme } from '../constants/Colors';
+import {Button, ButtonText} from '../components/StyledComponents';
+import {LightTheme} from '../constants/Colors';
 
 interface LoaderProps {
   isLoading?: boolean;
@@ -11,7 +18,13 @@ interface LoaderProps {
   setIsError?: Dispatch<SetStateAction<boolean>>;
   errorText?: string;
 }
-const Loader = ({ isLoading, spinnerText, isError, setIsError, errorText }: LoaderProps) => {
+const Loader = ({
+  isLoading,
+  spinnerText,
+  isError,
+  setIsError,
+  errorText,
+}: LoaderProps) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
@@ -27,16 +40,14 @@ const Loader = ({ isLoading, spinnerText, isError, setIsError, errorText }: Load
         visible={isError ?? false}
         onRequestClose={() => {
           setIsError && setIsError(false);
-        }}
-      >
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{errorText}</Text>
             <Button
               isDarkMode={isDarkMode}
               backgroundColor={LightTheme.accent}
-              onPress={() => setIsError && setIsError(false)}
-            >
+              onPress={() => setIsError && setIsError(false)}>
               <ButtonText>Close</ButtonText>
             </Button>
           </View>

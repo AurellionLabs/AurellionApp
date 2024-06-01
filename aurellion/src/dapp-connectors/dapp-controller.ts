@@ -1,20 +1,36 @@
-import { BigNumber, ethers } from 'ethers';
-import { getSigner } from './wallet-utils';
-import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from '@env';
-import { ParcelData, Journey } from '../common/types/types';
+import {BigNumber, ethers} from 'ethers';
+import {getSigner} from './wallet-utils';
+import {
+  REACT_APP_AUSYS_CONTRACT_ADDRESS,
+  REACT_APP_AURA_CONTRACT_ADDRESS,
+} from '@env';
+import {ParcelData, Journey} from '../common/types/types';
 
 const contractABI = require('./aurellion-abi.json');
 
-export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
+export const jobCreation = async (
+  locationData: ParcelData,
+  recipientWalletAddress: string,
+) => {
   try {
     const signer = await getSigner();
     if (!signer) {
       throw new Error('Signer is undefined');
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
     const walletAddress = await signer.getAddress();
     console.log('line before');
-    const jobTx = await contract.jobCreation(walletAddress, recipientWalletAddress, locationData, 1, 10);
+    const jobTx = await contract.jobCreation(
+      walletAddress,
+      recipientWalletAddress,
+      locationData,
+      1,
+      10,
+    );
     console.log(jobTx);
     const receipt = await jobTx.wait();
     console.log('Job Creation Transaction Hash:');
@@ -34,10 +50,18 @@ export const customerPackageSign = async (jobID: string) => {
     if (!signer) {
       throw new Error('Signer is undefined');
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
     const customerAddress = await signer.getAddress();
     const journey = await contract.jobIdToJourney(jobID);
-    const customerPackageSignTx = await contract.packageSign(journey.driver, customerAddress, jobID);
+    const customerPackageSignTx = await contract.packageSign(
+      journey.driver,
+      customerAddress,
+      jobID,
+    );
     const receipt = await customerPackageSignTx.wait();
     console.log(receipt);
   } catch (error) {
@@ -52,10 +76,18 @@ export const driverPackageSign = async (jobID: string) => {
     if (!signer) {
       throw new Error('Signer is undefined');
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
     const driverAddress = await signer.getAddress();
     const journey = await contract.jobIdToJourney(jobID);
-    const driverPackageSignTx = await contract.packageSign(driverAddress, journey.customer, jobID);
+    const driverPackageSignTx = await contract.packageSign(
+      driverAddress,
+      journey.customer,
+      jobID,
+    );
     const receipt = await driverPackageSignTx.wait();
     console.log(receipt);
   } catch (error) {
@@ -74,10 +106,14 @@ export const fetchCustomerJobs = async () => {
       throw new Error('Signer is undefined');
     }
     try {
-      contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+      contract = new ethers.Contract(
+        REACT_APP_AUSYS_CONTRACT_ADDRESS,
+        contractABI,
+        signer,
+      );
     } catch (error) {
       console.error(
-        `failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`
+        `failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`,
       );
       throw error;
     }
@@ -92,10 +128,19 @@ export const fetchCustomerJobs = async () => {
       jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
     } catch (error) {
       console.log(walletAddress);
-      console.error('Error fetching number of jobs created with walletAddress', walletAddress, 'Error:', error);
+      console.error(
+        'Error fetching number of jobs created with walletAddress',
+        walletAddress,
+        'Error:',
+        error,
+      );
       throw error;
     }
-    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
 
     jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
 
@@ -131,10 +176,14 @@ export const fetchReceiverJobs = async () => {
       throw new Error('Signer is undefined');
     }
     try {
-      contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+      contract = new ethers.Contract(
+        REACT_APP_AUSYS_CONTRACT_ADDRESS,
+        contractABI,
+        signer,
+      );
     } catch (error) {
       console.error(
-        `failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`
+        `failed to instantiate contract object at with Contract Address: ${REACT_APP_AUSYS_CONTRACT_ADDRESS} contractABI: ${contractABI} signer:${signer}`,
       );
       throw error;
     }
@@ -148,7 +197,12 @@ export const fetchReceiverJobs = async () => {
     try {
       jobNumber = await contract.numberOfJobsCreatedForReceiver(walletAddress);
     } catch (error) {
-      console.error('Error fetching number of jobs for receiver with wallet address', walletAddress, 'Error:', error);
+      console.error(
+        'Error fetching number of jobs for receiver with wallet address',
+        walletAddress,
+        'Error:',
+        error,
+      );
       throw error;
     }
     const jobs = [];
@@ -183,9 +237,14 @@ export const checkIfDriverAssignedToJobId = async (jobID: string) => {
     if (!signer) {
       throw new Error('Signer is undefined');
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
     const journey = await contract.jobIdToJourney(jobID);
-    const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
+    const isAssigned =
+      journey.driver === ethers.constants.AddressZero ? false : true;
     return isAssigned;
   } catch (error) {
     console.error('Error in checkIfDriverAssignedToJobId:', error);
@@ -199,9 +258,16 @@ export const assignDriverToJobId = async (jobID: string) => {
     if (!signer) {
       throw new Error('Signer is undefined');
     }
-    const contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    const contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
     const driverAddress = await signer.getAddress();
-    const assignDriverToJobIdTx = await contract.assignDriverToJobId(driverAddress, jobID);
+    const assignDriverToJobIdTx = await contract.assignDriverToJobId(
+      driverAddress,
+      jobID,
+    );
     const receipt = await assignDriverToJobIdTx.wait();
     console.log(receipt);
   } catch (error) {
@@ -225,7 +291,11 @@ export const fetchDriverUnassignedJourneys = async () => {
     throw error;
   }
   try {
-    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
   } catch (error) {
     console.error('Could not create Contract object');
     throw error;
@@ -254,7 +324,8 @@ export const fetchDriverUnassignedJourneys = async () => {
       console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
     }
     if (journey) {
-      const isAssigned = journey.driver === ethers.constants.AddressZero ? false : true;
+      const isAssigned =
+        journey.driver === ethers.constants.AddressZero ? false : true;
       if (!isAssigned) {
         journeys.push(journey);
       }
@@ -278,7 +349,11 @@ export const fetchDriverAssignedJourneys = async () => {
     throw error;
   }
   try {
-    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
   } catch (error) {
     console.error('Could not create Contract object');
     throw error;
@@ -289,7 +364,9 @@ export const fetchDriverAssignedJourneys = async () => {
       throw new Error('Failed to get wallet address');
     }
     try {
-      numberOfJobsAssignedForDriver = await contract.numberOfJobsAssigned(walletAddress);
+      numberOfJobsAssignedForDriver = await contract.numberOfJobsAssigned(
+        walletAddress,
+      );
     } catch (error) {
       console.error('Could not get number of jobs assigned to driver');
       throw error;
@@ -316,7 +393,11 @@ export const fetchDriverAssignedJourneys = async () => {
   return journeys;
 };
 
-export const packageHandOn = async (customerAddress: string, driverAddress: string, jobId: string) => {
+export const packageHandOn = async (
+  customerAddress: string,
+  driverAddress: string,
+  jobId: string,
+) => {
   let signer: ethers.providers.JsonRpcSigner | undefined;
   let contract;
   let handOnSuccessful = false;
@@ -327,7 +408,11 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
     throw error;
   }
   try {
-    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
   } catch (error) {
     console.error('Could not create Contract object');
     throw error;
@@ -340,7 +425,11 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
     }
   }
   try {
-    handOnSuccessful = await contract.handOn(driverAddress, customerAddress, jobId);
+    handOnSuccessful = await contract.handOn(
+      driverAddress,
+      customerAddress,
+      jobId,
+    );
   } catch (error) {
     console.error('Could not call contract handOn');
     throw error;
@@ -348,7 +437,11 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
   return handOnSuccessful;
 };
 
-export const packageHandOff = async (customerAddress: string, driverAddress: string, jobId: string) => {
+export const packageHandOff = async (
+  customerAddress: string,
+  driverAddress: string,
+  jobId: string,
+) => {
   let signer: ethers.providers.JsonRpcSigner | undefined;
   let contract;
   let handOffSuccessful = false;
@@ -359,7 +452,11 @@ export const packageHandOff = async (customerAddress: string, driverAddress: str
     throw error;
   }
   try {
-    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
   } catch (error) {
     console.error('Could not create Contract object');
     throw error;
@@ -372,7 +469,11 @@ export const packageHandOff = async (customerAddress: string, driverAddress: str
     }
   }
   try {
-    handOffSuccessful = await contract.handOff(driverAddress, customerAddress, jobId);
+    handOffSuccessful = await contract.handOff(
+      driverAddress,
+      customerAddress,
+      jobId,
+    );
   } catch (error) {
     console.error('Could not call contract handOff');
     throw error;
@@ -390,7 +491,11 @@ export const jobIdToJourney = async (jobId: string) => {
     throw error;
   }
   try {
-    contract = new ethers.Contract(REACT_APP_AUSYS_CONTRACT_ADDRESS, contractABI, signer);
+    contract = new ethers.Contract(
+      REACT_APP_AUSYS_CONTRACT_ADDRESS,
+      contractABI,
+      signer,
+    );
   } catch (error) {
     console.error('Could not create Contract object');
     throw error;

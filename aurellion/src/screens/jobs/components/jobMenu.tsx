@@ -1,38 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import SwitchSelector from 'react-native-switch-selector';
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { LightTheme, DarkTheme } from '../../../common/constants/Colors';
+import {ScrollView, StyleSheet, Text} from 'react-native';
+import {LightTheme, DarkTheme} from '../../../common/constants/Colors';
 import {
   fetchDriverUnassignedJourneys,
   fetchDriverAssignedJourneys,
   fetchCustomerJobs,
   fetchReceiverJobs,
 } from '../../../dapp-connectors/dapp-controller';
-import { useMainContext } from '../../main.provider';
-import { Journey } from '../../../common/types/types';
+import {useMainContext} from '../../main.provider';
+import {Journey} from '../../../common/types/types';
 import CustomerJobItem from './customerJobItem';
 import DriverJobItem from './driverJobItem';
-import { Container } from '../../../common/components/StyledComponents';
-import { UserType } from '../../../common/types/types';
+import {Container} from '../../../common/components/StyledComponents';
+import {UserType} from '../../../common/types/types';
 import Loader from '../../../common/loader/loader';
 import Accordion from './accordian';
 
 const Menu = () => {
-  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
+  const {
+    userType,
+    setUserType,
+    refetchDataFromAPI,
+    setRefetchDataFromAPI,
+    isDarkMode,
+  } = useMainContext();
   const [switchOption, setSwitchOption] = useState(0);
   const [createdJobs, setCreatedJobs] = useState<Journey[]>([]);
   const [receiverJobs, setReceiveJobs] = useState<Journey[]>([]);
-  const [unassignedDriverJobs, setUnassignedDriverJobs] = useState<Journey[]>([]);
+  const [unassignedDriverJobs, setUnassignedDriverJobs] = useState<Journey[]>(
+    [],
+  );
   const [assignedDriverJobs, setAssignedDriverJobs] = useState<Journey[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const options = [
-    { label: 'Customer', value: 'customer', accessibilityLabel: 'Customer' },
-    { label: 'Driver', value: 'driver', accessibilityLabel: 'Driver' },
+    {label: 'Customer', value: 'customer', accessibilityLabel: 'Customer'},
+    {label: 'Driver', value: 'driver', accessibilityLabel: 'Driver'},
   ];
 
-  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
+  const backgroundColor = isDarkMode
+    ? DarkTheme.background2
+    : LightTheme.background2;
 
   const fetchAndSetJourneys = async () => {
     let createdJourneys: Journey[] = [];
@@ -98,9 +108,14 @@ const Menu = () => {
   }, [refetchDataFromAPI]);
 
   return (
-    <Container styles={{ width: '100%', backgroundColor: backgroundColor }}>
+    <Container styles={{width: '100%', backgroundColor: backgroundColor}}>
       {isError || isLoading ? (
-        <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
+        <Loader
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        />
       ) : (
         <>
           <SwitchSelector
@@ -122,7 +137,7 @@ const Menu = () => {
                     title: 'Send Parcels',
                     content: (
                       <>
-                        {createdJobs.map((job) => (
+                        {createdJobs.map(job => (
                           <CustomerJobItem key={job.jobId} job={job} handOn />
                         ))}
                       </>
@@ -132,7 +147,7 @@ const Menu = () => {
                     title: 'Receive Parcels',
                     content: (
                       <>
-                        {receiverJobs.map((job) => (
+                        {receiverJobs.map(job => (
                           <CustomerJobItem key={job.jobId} job={job} handOff />
                         ))}
                       </>
@@ -150,7 +165,7 @@ const Menu = () => {
                     title: 'Assigned Jobs',
                     content: (
                       <>
-                        {assignedDriverJobs.map((job) => (
+                        {assignedDriverJobs.map(job => (
                           <DriverJobItem key={job.jobId} job={job} assigned />
                         ))}
                       </>
@@ -160,7 +175,7 @@ const Menu = () => {
                     title: 'Available Jobs',
                     content: (
                       <>
-                        {unassignedDriverJobs.map((job) => (
+                        {unassignedDriverJobs.map(job => (
                           <DriverJobItem key={job.jobId} job={job} available />
                         ))}
                       </>

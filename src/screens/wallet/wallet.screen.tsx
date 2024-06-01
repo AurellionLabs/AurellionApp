@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -11,13 +11,18 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {W3mButton} from '@web3modal/wagmi-react-native';
 
-import { DarkTheme, LightTheme } from '../../common/constants/Colors';
-import { WalletScreenNavigationProp } from '../../navigation/types';
-import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
+import {DarkTheme, LightTheme} from '../../common/constants/Colors';
+import {WalletScreenNavigationProp} from '../../navigation/types';
+import {
+  RedButton,
+  RedButtonText,
+} from '../../common/components/StyledComponents';
 import TypingText from '../../common/components/TypingText';
-import { useMainContext } from '../main.provider';
+import {useMainContext} from '../main.provider';
+
 function WalletScreen(): JSX.Element {
   const navigation = useNavigation<WalletScreenNavigationProp>();
 
@@ -39,33 +44,46 @@ function WalletScreen(): JSX.Element {
   const close = () => {
     setModalVisible(false);
   };
-  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
+  const backgroundColor = isDarkMode
+    ? DarkTheme.background2
+    : LightTheme.background2;
   const changeColourScheme = () => {
     if (isDarkMode) setIsDarkMode(false);
     else setIsDarkMode(true);
   };
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
-      <View style={[styles.container, { backgroundColor }]}>
-        <TouchableOpacity style={{ height: '4%', width: '8%', right: '40%' }} onPress={changeColourScheme}>
+    <SafeAreaView style={[styles.safeArea, {backgroundColor}]}>
+      <View style={[styles.container, {backgroundColor}]}>
+        <TouchableOpacity
+          style={{height: '4%', width: '8%', right: '40%'}}
+          onPress={changeColourScheme}>
           <ImageBackground
             source={require('../../common/assets/images/eclipse-alt.png')}
-            style={{ height: '100%', width: '100%', top: '30%' }}
+            style={{height: '100%', width: '100%', top: '30%'}}
             resizeMode="cover"
           />
         </TouchableOpacity>
         <Image
           source={require('../../common/assets/images/logo.png')}
-          style={{ width: 250, height: 250, marginBottom: '5%', marginTop: '20%' }}
+          style={{
+            width: 250,
+            height: 250,
+            marginBottom: '5%',
+            marginTop: '20%',
+          }}
         />
         <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} />
         {walletAddress ? (
           <View style={styles.container}>
-            <Text style={[styles.text, isDarkMode && styles.whiteText]}>Address: {walletAddress}</Text>
-            <RedButton style={{ marginTop: '7%' }} onPress={() => navigation.navigate('Locations')}>
+            <Text style={[styles.text, isDarkMode && styles.whiteText]}>
+              Address: {walletAddress}
+            </Text>
+            <RedButton
+              style={{marginTop: '7%'}}
+              onPress={() => navigation.navigate('Locations')}>
               <RedButtonText>Home Screen</RedButtonText>
             </RedButton>
-            
+
             {/* <RedButton style={{ marginTop: '5%', marginBottom: '0%' }} onPress={() => changeStoredWallet()}>
               <RedButtonText>Change Wallet</RedButtonText>
             </RedButton> */}
@@ -78,7 +96,9 @@ function WalletScreen(): JSX.Element {
           //     <ActivityIndicator size="small" color="white" />
           //   )}
           // </RedButton>
-          <></>
+          <>
+            <W3mButton />
+          </>
         )}
       </View>
     </SafeAreaView>

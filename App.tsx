@@ -4,7 +4,7 @@ import MainProvider from './src/screens/main.provider';
 
 import '@walletconnect/react-native-compat';
 import {WagmiConfig} from 'wagmi';
-import {mainnet, polygon, arbitrum} from 'viem/chains';
+import {polygonAmoy} from './src/utils/customChains'
 import {
   createWeb3Modal,
   defaultWagmiConfig,
@@ -26,7 +26,7 @@ const metadata = {
   },
 };
 
-const chains = [mainnet, polygon, arbitrum];
+const chains = [polygonAmoy];
 
 const wagmiConfig = defaultWagmiConfig({chains, projectId, metadata});
 

@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useMainContext } from '../main.provider';
-import { useNavigation } from '@react-navigation/native';
-import { JobsScreenNavigationProp } from '../../navigation/types';
-import { DeliverySpeedOption } from '../../common/types/types';
-import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
-import Loader from '../../common/loader/loader';
-import aurellionABI from '../../dapp-connectors/aurellion-abi.json';
-
 import {
   Container,
   ScrollContent,
@@ -20,30 +13,54 @@ import {
   ConfirmButton,
   ConfirmButtonText,
 } from './components/StyledComponents';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
-import { REACT_APP_AUSYS_CONTRACT_ADDRESS } from '@env';
+// import { navigateDeepLink } from '../../utils/ExplorerUtils';
+import { jobCreation } from '../../dapp-connectors/dapp-controller';
+import { useNavigation } from '@react-navigation/native';
+import { JobsScreenNavigationProp } from '../../navigation/types';
+import { DeliverySpeedOption } from '../../common/types/types';
+import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
+import Loader from '../../common/loader/loader';
 
 const ConfirmationScreen: React.FC = () => {
-  const { walletAddress, recipientWalletAddress, packageDeliveryData, deliveryOption } = useMainContext();
+  const { walletAddress, recipientWalletAddress, packageDeliveryData, universalLink, deepLink, wcURI, deliveryOption } =
+    useMainContext();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   const navigation = useNavigation<JobsScreenNavigationProp>();
 
-  const { config } = usePrepareContractWrite({
-    address: REACT_APP_AUSYS_CONTRACT_ADDRESS as `0x${string}`,
-    abi: aurellionABI,
-    functionName: 'jobCreation',
-    args: [walletAddress, recipientWalletAddress, packageDeliveryData, 1, 10],
-  })
+  const handleConfirm = () => {
+    createJob();
+  };
 
-  const { isLoading, isError, write, error } = useContractWrite(config)
-  
-  const handleConfirm = async () => {
-    write?.()
+  const createJob = async () => {
+    setIsLoading(true);
+    // navigateDeepLink(universalLink, deepLink, wcURI);
+    var errorState: boolean = false;
+
+    try {
+      if (packageDeliveryData != undefined) {
+        await jobCreation(packageDeliveryData, recipientWalletAddress);
+      }
+    } catch (error) {
+      setIsError(true);
+      setErrorMessage('Error Creating Job');
+      errorState = true;
+    } finally {
+      setIsLoading(false);
+    }
+
+    if (errorState === false) {
+      navigation.navigate('Jobs');
+    }
   };
 
   return (
     <>
       {isLoading || isError ? (
-        <Loader isLoading={isLoading} isError={isError} setIsError={() => {}} errorText={error?.message || 'Error Creating Job'} />
+        <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
       ) : (
         <Container>
           <Heading>Confirm Your Delivery</Heading>
@@ -69,9 +86,9 @@ const ConfirmationScreen: React.FC = () => {
               <Separator />
               <Section>
                 <Label>Delivery Option</Label>
-                {deliveryOption?.deliverySpeed === DeliverySpeedOption.FAST && <Value>Fast</Value>}
-                {deliveryOption?.deliverySpeed === DeliverySpeedOption.MEDIUM && <Value>Medium</Value>}
-                {deliveryOption?.deliverySpeed === DeliverySpeedOption.SLOW && <Value>Slow</Value>}
+                {deliveryOption?.deliverySpeed == DeliverySpeedOption.FAST && <Value>Fast</Value>}
+                {deliveryOption?.deliverySpeed == DeliverySpeedOption.MEDIUM && <Value>Medium</Value>}
+                {deliveryOption?.deliverySpeed == DeliverySpeedOption.SLOW && <Value>Slow</Value>}
               </Section>
               <Separator />
               <Section>

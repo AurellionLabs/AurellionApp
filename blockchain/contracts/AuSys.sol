@@ -1,6 +1,5 @@
 pragma solidity ^0.8.17;
 import "./Aura.sol" as AuraContract;
-
 // TO DO use smart contracct account pf the token for the treasury and create a private fuinctioion that auto mints
 contract locationContract {
     enum Status {
@@ -30,6 +29,7 @@ contract locationContract {
         bytes32 jobId;
         Status currentStatus;
         address customer;
+        address[] nodes;
         address reciever;
         address driver;
         uint journeyStart;
@@ -47,7 +47,6 @@ contract locationContract {
 
     // Keep count of which sub journey of a journey the parcel is on
     mapping(bytes32 => uint256) subJourneyCount;
-
     // Map the drivers address to a Journey/SubJourney, need to add address => uint => bytes32
     // need to map this to a list of bytes
     mapping(address => bytes32[]) public driverToJobId;
@@ -264,6 +263,7 @@ contract locationContract {
     function jobCreation(
         address customer,
         address reciever,
+        address[] memory nodes,
         ParcelData memory _data,
         uint bounty,
         uint ETA
@@ -275,6 +275,7 @@ contract locationContract {
             parcelData: _data,
             jobId: getHashedJobId(),
             currentStatus: Status.Pending,
+            nodes:nodes, 
             customer: customer,
             driver: address(0),
             reciever: reciever,

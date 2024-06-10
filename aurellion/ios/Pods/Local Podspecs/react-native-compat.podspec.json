@@ -1,0 +1,29 @@
+{
+  "name": "react-native-compat",
+  "version": "2.11.0",
+  "summary": "Shims for WalletConnect Protocol in React Native Projects",
+  "homepage": "https://github.com/walletconnect/walletconnect-monorepo/",
+  "license": "Apache-2.0",
+  "authors": "WalletConnect, Inc. <walletconnect.com>",
+  "platforms": {
+    "ios": "11.0"
+  },
+  "source": {
+    "git": "https://github.com/walletconnect/walletconnect-monorepo.git",
+    "tag": "2.11.0"
+  },
+  "source_files": "ios/**/*.{h,m,mm}",
+  "compiler_flags": "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32",
+  "dependencies": {
+    "React-Core": [
+
+    ],
+    "RCT-Folly": [
+      "2021.07.22.00"
+    ]
+  },
+  "pod_target_xcconfig": {
+    "HEADER_SEARCH_PATHS": "\"$(PODS_ROOT)/boost\"",
+    "CLANG_CXX_LANGUAGE_STANDARD": "c++17"
+  }
+}

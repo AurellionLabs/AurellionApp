@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-contract AuraGoat is ERC1155, Ownable, ERC1155Supply {
+contract AuraGoat is ERC1155, ERC1155Burnable, Ownable, ERC1155Supply {
     //@param _uri NFT metadata URI
     uint a5 = 5;
     uint a4 = 4;
@@ -38,8 +38,8 @@ contract AuraGoat is ERC1155, Ownable, ERC1155Supply {
     //* @param data additional data that will be used within the receiver's onERC1155Received method
     //A1->A5 goat tiers
     //A1W->A5W goat tiers
-    modifier validNode(address id) {
-        require(NodeManager.AllNodes(id).nodeAddress == msg.sender);
+    modifier validNode(address node) {
+        require(NodeManager.AllNodes[node].status == bytes1(1));
         _;
     }
 
@@ -94,7 +94,7 @@ contract AuraGoat is ERC1155, Ownable, ERC1155Supply {
         }
 
     }
-
+    
     /**
      * @dev A method for the owner to mint a batch of new ERC1155 tokens.
      * @param to The account for new tokens to be sent to.
@@ -110,7 +110,7 @@ contract AuraGoat is ERC1155, Ownable, ERC1155Supply {
     ) external onlyOwner {
         _mintBatch(to, ids, amounts, data);
     }
-
+    
     function _beforeTokenTransfer(
         address operator,
         address from,

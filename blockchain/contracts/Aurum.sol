@@ -22,10 +22,12 @@ contract AurumNodeManager {
     struct Node {
         string location;
         //stteal ausys location struct
+        bytes1 validNode;
         address owner;
         string[] supportedAssets;
         bytes1 status;
         uint capacity;
+        //capacity needs to be kept on an asset by asset basis
     }
     struct Item {
         string category;
@@ -46,6 +48,7 @@ contract AurumNodeManager {
     function registerNode(Node memory node) public returns (address id) {
         aurumNode NodeContract = new aurumNode(node.owner,ausys,auraGoat);
         AllNodes[address(NodeContract)] = node;
+        AllNodes[address(NodeContract)].validNode = bytes1(1);
         updateOwner(node.owner, id);
     }
 
@@ -117,7 +120,7 @@ contract aurumNode {
        ausys.handOn(driver, reciever, id);
     }
     function nodeSign(address node, address driver, bytes32 jobid) public {
-        ausys.packageSign(address driver,address node,bytes32 jobid)
+        ausys.packageSign(driver,node,jobid);
     }
     function addItem(
         address itemOwner,

@@ -24,9 +24,9 @@ contract AurumNodeManager {
         //stteal ausys location struct
         bytes1 validNode;
         address owner;
-        string[] supportedAssets;
+        uint[] supportedAssets;
         bytes1 status;
-        uint capacity;
+        uint[] capacity;
         //capacity needs to be kept on an asset by asset basis
     }
     struct Item {

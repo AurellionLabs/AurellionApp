@@ -28,11 +28,18 @@ contract locationContract {
     }
     struct Order {
         bytes32 id;
+        address token;
+        uint[] tokenId;
+        uint[] tokenQuantity;
+        uint price;
+        address amount;
+        uint txFee;
         address customer;
         bytes32[] journeys;
         address[] nodes;
         ParcelData locationData;
         Status currentStatus;
+        string contracatualAgreement;
     }
     struct Journey {
         ParcelData parcelData;
@@ -55,7 +62,7 @@ contract locationContract {
 
     // Keep count of which sub journey of a journey the parcel is on
     mapping(bytes32 => Order) idToOrder;
-    mapping(bytes32 => Order) journeyToOrder;
+    mapping(bytes32 => bytes32) journeyToOrderId;
     mapping(bytes32 => uint256) subJourneyCount;
     // Map the drivers address to a Journey/SubJourney, need to add address => uint => bytes32
     // need to map this to a list of bytes
@@ -65,7 +72,6 @@ contract locationContract {
     mapping(address => uint256) public numberOfJourneysCreatedForCustomer;
     // driver related mappings
     mapping(address => uint256) public numberOfJourneysAssigned;
-
     // maps a receiver to a journey
     mapping(address => bytes32[]) public receiverToJourneyId;
     mapping(address => uint256) public numberOfJourneysCreatedForReceiver;
@@ -244,7 +250,6 @@ contract locationContract {
         //pass 0x0 if addr not requred
         address token,
         uint quantity
-        
     )
         public
         isInProgress(id)
@@ -258,47 +263,58 @@ contract locationContract {
             journeyIdToJourney[id].currentStatus = Status.Completed;
             journeyIdToJourney[id].journeyEnd = block.timestamp;
             generateReward(id, driver);
-            
+
             return true;
         } else {
             return false;
         }
     }
+
+    // when specifying please specify quantity for a given tokenID at the same
+    // in the token qauntity list
+
     function nodeHandOff(
         address driver,
         address reciever,
         bytes32 id,
-        uint256 tokenId,
+        uint256[] memory tokenIds,
         address token,
-        uint quantity,
+        uint[] memory quantities,
         bytes memory data
+    ) public returns (bool) {
+        //APPROVE BEFORE CALLING
+        //perform the transfer per token
+        Order memory order = idToOrder[journeyToOrderId[id]];
+        if (
+            nodeManager.AllNodes[reciever].validNode == bytes(1) ||
+            reciever == order.customer
+        ) {
+            handOff();
+            (bool success, bytes memory result) = token.call(
+                abi.encodeWithSignature(
+                    "safeBatchTransferFrom(adress,address,uint256,uin256,bytes)",
+                    journeyIdToJourney[id].sender,
+                    journeyIdToJourney[id].reciever,
+                    tokenIds,
+                    quantities,
+                    data
+                )
+            );
+            require(success);
+            if (reciever == order.customer) {
+                order.currentStatus = Status.Completed;
+                for (
+                    uint i = 0;
+                    i > nodeManager.AllNodes[id].capacity.length;
+                    i++
+                ) nodeManager.AllNodes[id].capacity[i] -= quantities[i];
+                uint nodeReward = order.txFee / order;
 
-        
-    )
-        public
-        returns (bool)
-    {
-            //APPROVE BEFORE CALLING
-            //TASK: make this if into a modifier
-            if (nodeManager.AllNodes[reciever].validNode == bytes(1) || reciever == journeyToOrder[id].customer) {
-                handOff();
-                (bool success, bytes memory result) = token.call(
-                    abi.encodeWithSignature(
-                        "safeTransferFrom(adress,address,uint256,uin256,bytes)",
-                        journeyIdToJourney[id].sender,
-                        journeyIdToJourney[id].reciever,
-                        tokenId,
-                        quantity,
-                        data
-                    )
-                );
-                nodeManager.AllNodes[id].capacity -= quantity;
-                require(success);
-                
-            
-            return true;
+                for (uint i = 0; i > order.nodes.length; i++)
+                    auraToken.transfer(order.nodes[i],nodeReward);
             }
-         else {
+            return true;
+        } else {
             return false;
         }
     }
@@ -388,7 +404,7 @@ contract locationContract {
         numberToJourneyID[journeyIdCounter] = journey.journeyId;
         idToOrder[orderId].journeys.push(journey.journeyId);
         idToOrder[orderId].currentStatus = Status.Pending;
-        journeyToOrder[journey.journeyId];
+        journeyToOrderId[journey.journeyId] = idToOrder[orderId];
     }
 
     function orderCreation(Order memory order) public {
@@ -396,5 +412,6 @@ contract locationContract {
         idToOrder[id] = order;
         idToOrder[id].currentStatus = Status.Pending;
         idToOrder[id].id = id;
+        idToOrder[id].txFee = (idToOrder.price * 2) / 100;
     }
 }

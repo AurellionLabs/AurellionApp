@@ -1,4 +1,4 @@
-import { useWeb3Modal } from '@web3modal/ethers5-react-native'
+import { Web3Modal, useWeb3Modal } from '@web3modal/ethers5-react-native'
 import React, {useState, useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
@@ -106,6 +106,7 @@ function WalletScreen(): JSX.Element {
           </Pressable>
           </>
         )}
+      <Web3Modal />
       </View>
     </SafeAreaView>
   );

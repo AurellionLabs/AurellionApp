@@ -1,4 +1,52 @@
-import { useWeb3Modal } from '@web3modal/ethers5-react-native'
+// import { useWeb3Modal } from '@web3modal/ethers5-react-native'
+import '@walletconnect/react-native-compat'
+
+import { createWeb3Modal, defaultConfig, Web3Modal, W3mButton } from '@web3modal/ethers-react-native'
+
+// 1. Get projectId from https://cloud.walletconnect.com
+const projectId = '35338a6f79245a5b3f4db27235965e29'
+
+// 2. Create config
+const metadata = {
+  name: 'Web3Modal RN',
+  description: 'Web3Modal RN Example',
+  url: 'https://web3modal.com',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+  redirect: {
+    native: 'YOUR_APP_SCHEME://'
+  }
+}
+
+const config = defaultConfig({ metadata })
+
+// 3. Define your chains
+const mainnet = {
+  chainId: 1,
+  name: 'Ethereum',
+  currency: 'ETH',
+  explorerUrl: 'https://etherscan.io',
+  rpcUrl: 'https://cloudflare-eth.com'
+}
+
+const polygon = {
+  chainId: 137,
+  name: 'Polygon',
+  currency: 'MATIC',
+  explorerUrl: 'https://polygonscan.com',
+  rpcUrl: 'https://polygon-rpc.com'
+}
+
+const chains = [mainnet, polygon]
+
+// 4. Create modal
+createWeb3Modal({
+  projectId,
+  chains,
+  config,
+  enableAnalytics: true // Optional - defaults to your Cloud configuration
+})
+
+
 import React, {useState, useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
@@ -23,7 +71,6 @@ import {
 import {useMainContext} from '@/providers/main.provider';
 
 function WalletScreen(): JSX.Element {
-  const { open } = useWeb3Modal()
   const [modalVisible, setModalVisible] = useState(false);
   const [currentWCURI, setCurrentWCURI] = useState<string>();
 
@@ -95,17 +142,10 @@ function WalletScreen(): JSX.Element {
           //   )}
           // </RedButton>
           <>
-            {/* <W3mButton /> */}
-            <Pressable onPress={() => {
-              console.log("Opening")
-              open()
-              console.log("Opened")
-              
-              }}>
-            <Text>Open Connect Modal</Text>
-          </Pressable>
+            <W3mButton />
           </>
         )}
+         <Web3Modal />
       </View>
     </SafeAreaView>
   );

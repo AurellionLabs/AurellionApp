@@ -1,7 +1,7 @@
 {
   "name": "aurellion",
   "version": "1.0.0",
-  "main": "./App",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,14 +9,13 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@ethersproject/shims": "5.7.0",
     "@expo/vector-icons": "^14.0.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/netinfo": "11.3.1",
     "@react-navigation/native": "^6.0.2",
     "@walletconnect/react-native-compat": "^2.13.3",
-    "@web3modal/ethers5-react-native": "^1.4.1",
-    "ethers": "5.7.2",
+    "@web3modal/ethers-react-native": "^1.4.1",
+    "ethers": "^6.13.1",
     "expo": "~51.0.11",
     "expo-application": "~5.9.1",
     "expo-constants": "~16.0.2",
@@ -40,6 +39,9 @@
     "react-native-svg": "15.2.0",
     "react-native-web": "~0.19.10",
     "styled-components": "^6.1.11"
+  },
+  "overrides": {
+    "valtio": "1.10.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

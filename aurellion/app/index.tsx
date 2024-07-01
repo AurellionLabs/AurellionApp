@@ -20,9 +20,7 @@ import {
 } from '@/components/StyledComponents';
 // import TypingText from '../../common/components/TypingText';
 import { useMainContext } from '@/providers/main.provider';
-import { ConnectButton, useConnect } from 'thirdweb/react';
-import { createThirdwebClient } from 'thirdweb';
-import { inAppWallet } from 'thirdweb/wallets';
+import { W3mButton } from '@web3modal/ethers-react-native'
 
 function WalletScreen(): JSX.Element {
     const [modalVisible, setModalVisible] = useState(false);
@@ -49,69 +47,51 @@ function WalletScreen(): JSX.Element {
         if (isDarkMode) setIsDarkMode(false);
         else setIsDarkMode(true);
     };
-    const client = createThirdwebClient({
-        clientId: "0456f9a445788895eeb9d9cc69d15c95",
-    });
-    const { connect } = useConnect();
-    const wallet = inAppWallet();
-    const handleLogin = async () => {
-        await connect(async () => {
-            await wallet.connect({
-                client,
-                strategy: "google",
-            });
-            return wallet;
-        });
-    };
-    return (
-        <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
-            <View style={[styles.container, { backgroundColor }]}>
-                <TouchableOpacity
-                    style={{ height: '4%', width: '8%', right: '40%' }}
-                    onPress={changeColourScheme}>
-                    <ImageBackground
-                        source={require('@/assets/images/eclipse-alt.png')}
-                        style={{ height: '100%', width: '100%', top: '30%' }}
-                        resizeMode="cover"
-                    />
-                </TouchableOpacity>
-                <Image
-                    source={require('@/assets/images/logo.png')}
-                    style={{
-                        width: 250,
-                        height: 250,
-                        marginBottom: '5%',
-                        marginTop: '20%',
-                    }}
+return (
+    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
+        <View style={[styles.container, { backgroundColor }]}>
+            <TouchableOpacity
+                style={{ height: '4%', width: '8%', right: '40%' }}
+                onPress={changeColourScheme}>
+                <ImageBackground
+                    source={require('@/assets/images/eclipse-alt.png')}
+                    style={{ height: '100%', width: '100%', top: '30%' }}
+                    resizeMode="cover"
                 />
-                {/* <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} /> */}
-                {walletAddress ? (
-                    <View style={styles.container}>
-                        <Text style={[styles.text, isDarkMode && styles.whiteText]}>
-                            Address: {walletAddress}
-                        </Text>
-                        <RedButton
-                            style={{ marginTop: '7%' }}
-                            onPress={() => console.log("pressed")}>
-                            <RedButtonText>Home Screen</RedButtonText>
-                        </RedButton>
-
-                        {/* <RedButton style={{ marginTop: '5%', marginBottom: '0%' }} onPress={() => changeStoredWallet()}>
-              <RedButtonText>Change Wallet</RedButtonText>
-            </RedButton> */}
-                    </View>
-                ) : (
-                    <RedButton onPress={handleLogin} style={{ marginTop: '60%', bottom: '10%' }}>
-                        <RedButtonText>Connect Wallet</RedButtonText>
+            </TouchableOpacity>
+            <Image
+                source={require('@/assets/images/logo.png')}
+                style={{
+                    width: 250,
+                    height: 250,
+                    marginBottom: '5%',
+                    marginTop: '20%',
+                }}
+            />
+            {/* <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} /> */}
+            {walletAddress ? (
+                <View style={styles.container}>
+                    <Text style={[styles.text, isDarkMode && styles.whiteText]}>
+                        Address: {walletAddress}
+                    </Text>
+                    <RedButton
+                        style={{ marginTop: '7%' }}
+                        onPress={() => console.log("pressed")}>
+                        <RedButtonText>Home Screen</RedButtonText>
                     </RedButton>
 
+                    {/* <RedButton style={{ marginTop: '5%', marginBottom: '0%' }} onPress={() => changeStoredWallet()}>
+              <RedButtonText>Change Wallet</RedButtonText>
+            </RedButton> */}
+                </View>
+            ) : (
+      <W3mButton />
 
-                )}
-            </View>
-        </SafeAreaView>
-    );
+            )}
+        </View>
+    </SafeAreaView>
+);
 }
-
 export default WalletScreen;
 
 const styles = StyleSheet.create({

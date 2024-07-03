@@ -1,4 +1,3 @@
-// import { useWeb3Modal } from '@web3modal/ethers5-react-native'
 import "@walletconnect/react-native-compat";
 
 import {
@@ -65,7 +64,7 @@ import {
   ImageBackground,
   Pressable,
 } from "react-native";
-
+import { Link } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 // import TypingText from '../../common/components/TypingText';
@@ -146,6 +145,14 @@ function WalletScreen(): JSX.Element {
           // </RedButton>
           <>
             <W3mButton />
+            <Link href="/jobs" asChild>
+              <RedButton
+                style={{ marginTop: "7%" }}
+                onPress={() => console.log("pressed")}
+              >
+                <RedButtonText>Home Screen</RedButtonText>
+              </RedButton>
+            </Link>
           </>
         )}
         <Web3Modal />

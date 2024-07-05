@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Container, Button, ButtonText, BoldText, StyledText } from '../../common/components/StyledComponents';
-import { DarkTheme, LightTheme } from '../../common/constants/Colors';
+import { Container, Button, ButtonText, StyledText } from '@/components/common/StyledComponents';
+import { DarkTheme, LightTheme } from '@/constants/Colors';
 import LottieView from 'lottie-react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  AssignDriverScreenNavigationProp,
-  JobsScreenNavigationProp,
-  SignatureScreenRouteProp,
-} from '../../navigation/types';
-import { useMainContext } from '../main.provider';
-import { assignDriverToJobId } from '../../dapp-connectors/dapp-controller';
-import { navigateDeepLink } from '../../utils/ExplorerUtils';
-import Loader from '../../common/loader/loader';
+import { useMainContext } from '@/providers/main.provider';
+// import { assignDriverToJobId } from '../../dapp-connectors/dapp-controller';
+import Loader from '@/components/common/loader';
 
 const AssignDriverScreen = () => {
-  const navigation = useNavigation<JobsScreenNavigationProp>();
+  // const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
-  const route = useRoute<SignatureScreenRouteProp>();
-  const { job } = route.params;
+  // const route = useRoute<SignatureScreenRouteProp>();
+  // const { job } = route.params;
   const [isAssigned, setIsAssigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -28,8 +21,8 @@ const AssignDriverScreen = () => {
   const acceptJob = async () => {
     setIsLoading(true);
     try {
-      navigateDeepLink(universalLink, deepLink, wcURI);
-      await assignDriverToJobId(job.jobId);
+      // navigateDeepLink(universalLink, deepLink, wcURI);
+      // await assignDriverToJobId(job.jobId);
       setIsAssigned(true);
       setRefetchDataFromAPI(true);
     } catch (error) {
@@ -44,10 +37,10 @@ const AssignDriverScreen = () => {
     <Container styles={{ justifyContent: 'center', backgroundColor }}>
       {isAssigned ? (
         <LottieView
-          source={require('../../common/assets/animations/success.json')}
+          source={require('@/assets/animations/success.json')}
           autoPlay
           loop={false}
-          onAnimationFinish={() => navigation.navigate('Jobs')}
+          // onAnimationFinish={() => navigation.navigate('Jobs')}
         />
       ) : isLoading ? (
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
@@ -61,7 +54,7 @@ const AssignDriverScreen = () => {
               Receiver's Address
             </StyledText>
           </View>
-          <StyledText isDarkMode={isDarkMode}>{job?.parcelData.endName}</StyledText>
+          {/* <StyledText isDarkMode={isDarkMode}>{job?.parcelData.endName}</StyledText> */}
           <View style={{ marginTop: 50 }}>
             <Button isDarkMode={isDarkMode} backgroundColor={LightTheme.accent} onPress={acceptJob}>
               <ButtonText>Accept Job</ButtonText>

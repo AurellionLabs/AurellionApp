@@ -46,11 +46,9 @@ export const RedButton = styled.TouchableOpacity`
 `;
 export const RedButtonText = styled.Text`
   color: white;
-  font-family: Inter-Regular;
 `;
 export const TitleText = styled.Text<props>`
   color: ${(props: props) => (props.isDarkMode ? DarkTheme.title : LightTheme.title)};
-  font-family: Inter-Regular;
   font-size: 40px;
 `;
 export const Box = styled.View`
@@ -69,7 +67,6 @@ export const Box = styled.View`
 `;
 export const StyledText = styled.Text<props>`
   color: ${(props: props) => (props.isDarkMode ? 'white' : 'black')};
-  font-family: Inter-Regular;
 `;
 export const ButtonBox = styled.View`
   padding: 8px;

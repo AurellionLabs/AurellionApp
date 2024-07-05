@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { Dimensions, Text, useColorScheme, View, Image } from 'react-native';
-import { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { SelectedBox, BoxHeadingText, AnimatedBox, AnimatedRoot } from './StyledComponents';
+import React, { useState } from "react";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Dimensions, Text, useColorScheme, View, Image } from "react-native";
+import {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
+import {
+  SelectedBox,
+  BoxHeadingText,
+  AnimatedBox,
+  AnimatedRoot,
+} from "./StyledComponents";
 
-import { LightTheme } from '../../../common/constants/Colors';
-import { RedButton, RedButtonText, StyledText } from '../../../common/components/StyledComponents';
-import { jobCreation } from '../../../dapp-connectors/dapp-controller';
-import { useMainContext } from '../../main.provider';
-import { useNavigation } from '@react-navigation/native';
-import { ConfirmationScreenNavigationProp } from '../../../navigation/types';
-import { DeliverySpeedOption } from '../../../common/types/types';
-import Loader from '../../../common/loader/loader';
+import { LightTheme } from "@/constants/Colors";
+import {
+  RedButton,
+  RedButtonText,
+  StyledText,
+} from "@/components/common/StyledComponents";
+import { jobCreation } from "../../../dapp-connectors/dapp-controller";
+import { useMainContext } from "@/providers/main.provider";
+import { useNavigation } from "@react-navigation/native";
+import { DeliverySpeedOption } from "@/constants/Types";
+import Loader from "@/components/common/loader";
 const DeliveryMenu = () => {
-  const navigation = useNavigation<ConfirmationScreenNavigationProp>();
-  const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+  // const navigation = useNavigation<ConfirmationScreenNavigationProp>();
+  const { height: SCREEN_HEIGHT } = Dimensions.get("window");
   const defaultHeight = (70 / 100) * SCREEN_HEIGHT;
   const [rootPosition, setRootPosition] = useState<number>(defaultHeight);
   const [boxState, setBoxState] = useState<boolean>(true);
@@ -23,11 +35,12 @@ const DeliveryMenu = () => {
   const [selectedBox3, setSelectedBox3] = useState<boolean>(false);
   const { setDeliveryOption, isDarkMode } = useMainContext();
 
-  const [selectedDeliverOption, setSelectedDeliveryOption] = useState<DeliverySpeedOption>(DeliverySpeedOption.FAST);
+  const [selectedDeliverOption, setSelectedDeliveryOption] =
+    useState<DeliverySpeedOption>(DeliverySpeedOption.FAST);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const translateY = useSharedValue(0);
   const setJSHeight = (selectedheight: number) => {
@@ -72,14 +85,22 @@ const DeliveryMenu = () => {
   };
 
   const submitSelection = () => {
-    navigation.navigate('Confirmation');
-    setDeliveryOption((prevState) => ({ ...prevState, deliverySpeed: selectedDeliverOption }));
+    // navigation.navigate('Confirmation');
+    setDeliveryOption((prevState) => ({
+      ...prevState,
+      deliverySpeed: selectedDeliverOption,
+    }));
   };
 
   return (
     <>
       {isLoading || isError ? (
-        <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
+        <Loader
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        />
       ) : (
         <AnimatedRoot height={rootPosition}>
           <GestureDetector gesture={gesture}>
@@ -92,14 +113,25 @@ const DeliveryMenu = () => {
               >
                 <View>
                   <Image
-                    source={require('../../../common/assets/images/rabbit.png')}
+                    source={require("@/assets/images/rabbit.png")}
                     style={{ height: 20, width: 20 }}
                   />
-                  <StyledText style={{ color: 'green', fontWeight: '700', textAlign: 'left' }}>Fast</StyledText>
+                  <StyledText
+                    style={{
+                      color: "green",
+                      fontWeight: "700",
+                      textAlign: "left",
+                    }}
+                  >
+                    Fast
+                  </StyledText>
                   <StyledText isDarkMode={isDarkMode}>Same Day</StyledText>
                   <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
                 </View>
-                <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
+                <StyledText
+                  isDarkMode={isDarkMode}
+                  style={{ textAlign: "right", margin: 0, padding: 0 }}
+                >
                   100 AURA
                 </StyledText>
               </SelectedBox>
@@ -111,16 +143,25 @@ const DeliveryMenu = () => {
               >
                 <View>
                   <Image
-                    source={require('../../../common/assets/images/running.png')}
+                    source={require("@/assets/images/running.png")}
                     style={{ height: 20, width: 20 }}
                   />
-                  <StyledText style={{ color: LightTheme.foreground2, fontWeight: '700', textAlign: 'left' }}>
+                  <StyledText
+                    style={{
+                      color: LightTheme.foreground2,
+                      fontWeight: "700",
+                      textAlign: "left",
+                    }}
+                  >
                     Medium
                   </StyledText>
                   <StyledText isDarkMode={isDarkMode}>Next Day</StyledText>
                   <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
                 </View>
-                <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
+                <StyledText
+                  isDarkMode={isDarkMode}
+                  style={{ textAlign: "right", margin: 0, padding: 0 }}
+                >
                   100 AURA
                 </StyledText>
               </SelectedBox>
@@ -132,14 +173,17 @@ const DeliveryMenu = () => {
               >
                 <View>
                   <Image
-                    source={require('../../../common/assets/images/turtle.png')}
+                    source={require("@/assets/images/turtle.png")}
                     style={{ height: 20, width: 20 }}
                   />
                   <BoxHeadingText>Slow</BoxHeadingText>
                   <StyledText isDarkMode={isDarkMode}>Next 3 Days</StyledText>
                   <StyledText isDarkMode={isDarkMode}>Edit...</StyledText>
                 </View>
-                <StyledText isDarkMode={isDarkMode} style={{ textAlign: 'right', margin: 0, padding: 0 }}>
+                <StyledText
+                  isDarkMode={isDarkMode}
+                  style={{ textAlign: "right", margin: 0, padding: 0 }}
+                >
                   100 AURA
                 </StyledText>
               </SelectedBox>

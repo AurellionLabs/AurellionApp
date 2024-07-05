@@ -67,7 +67,7 @@ import {
 import { Link } from "expo-router";
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
-// import TypingText from '../../common/components/TypingText';
+import TypingText from '@/components/common/TypingText';
 import { useMainContext } from "@/providers/main.provider";
 
 function WalletScreen(): JSX.Element {
@@ -118,7 +118,7 @@ function WalletScreen(): JSX.Element {
             marginTop: "20%",
           }}
         />
-        {/* <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} /> */}
+        <TypingText isDarkMode={isDarkMode} text="Aurellion" speed={30} />
         {walletAddress ? (
           <View style={styles.container}>
             <Text style={[styles.text, isDarkMode && styles.whiteText]}>

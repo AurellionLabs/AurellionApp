@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '@/constants/Colors';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 

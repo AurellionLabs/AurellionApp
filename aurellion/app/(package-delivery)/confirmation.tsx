@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useMainContext } from '../main.provider';
+import { useMainContext } from '@/providers/main.provider';
 import {
   Container,
   ScrollContent,
@@ -10,16 +9,11 @@ import {
   Label,
   Value,
   Separator,
-  ConfirmButton,
-  ConfirmButtonText,
-} from './components/StyledComponents';
-import { navigateDeepLink } from '../../utils/ExplorerUtils';
-import { jobCreation } from '../../dapp-connectors/dapp-controller';
-import { useNavigation } from '@react-navigation/native';
-import { JobsScreenNavigationProp } from '../../navigation/types';
-import { DeliverySpeedOption } from '../../common/types/types';
-import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
-import Loader from '../../common/loader/loader';
+} from '@/components/screens/confirmation/StyledComponents';
+// import { jobCreation } from '../../dapp-connectors/dapp-controller';
+import { DeliverySpeedOption } from '@/constants/Types';
+import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
+import Loader from '@/components/common/loader';
 
 const ConfirmationScreen: React.FC = () => {
   const { walletAddress, recipientWalletAddress, packageDeliveryData, universalLink, deepLink, wcURI, deliveryOption } =
@@ -29,7 +23,7 @@ const ConfirmationScreen: React.FC = () => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const navigation = useNavigation<JobsScreenNavigationProp>();
+//   const navigation = useNavigation<JobsScreenNavigationProp>();
 
   const handleConfirm = () => {
     createJob();
@@ -37,12 +31,12 @@ const ConfirmationScreen: React.FC = () => {
 
   const createJob = async () => {
     setIsLoading(true);
-    navigateDeepLink(universalLink, deepLink, wcURI);
+    // navigateDeepLink(universalLink, deepLink, wcURI);
     var errorState: boolean = false;
 
     try {
       if (packageDeliveryData != undefined) {
-        await jobCreation(packageDeliveryData, recipientWalletAddress);
+        // await jobCreation(packageDeliveryData, recipientWalletAddress);
       }
     } catch (error) {
       setIsError(true);
@@ -53,7 +47,7 @@ const ConfirmationScreen: React.FC = () => {
     }
 
     if (errorState === false) {
-      navigation.navigate('Jobs');
+    //   navigation.navigate('Jobs');
     }
   };
 

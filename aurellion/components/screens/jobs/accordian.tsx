@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, LayoutAnimation, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, LayoutAnimation, Image } from 'react-native';
 import { StyledText } from '@/components/common/StyledComponents';
 import { useMainContext } from '@/providers/main.provider';
 type AccordionData = {

@@ -65,7 +65,7 @@ import {
   Pressable,
 } from "react-native";
 import { Link } from "expo-router";
-import { Colors } from "@/constants/Colors";
+import { DarkTheme, LightTheme } from "@/constants/Colors";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 // import TypingText from '../../common/components/TypingText';
 import { useMainContext } from "@/providers/main.provider";
@@ -90,8 +90,8 @@ function WalletScreen(): JSX.Element {
     setModalVisible(false);
   };
   const backgroundColor = isDarkMode
-    ? Colors.dark.background2
-    : Colors.light.background2;
+    ? DarkTheme.background2
+    : LightTheme.background2;
   const changeColourScheme = () => {
     if (isDarkMode) setIsDarkMode(false);
     else setIsDarkMode(true);
@@ -182,27 +182,27 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.light.accent,
+    backgroundColor: LightTheme.accent,
     borderRadius: 20,
     width: 150,
     height: 50,
     borderWidth: 1,
-    borderColor: Colors.light.overlayThin,
+    borderColor: LightTheme.overlayThin,
   },
   redButton: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.light.accent,
+    backgroundColor: LightTheme.accent,
     borderRadius: 20,
     width: 150,
     height: 50,
     borderWidth: 1,
-    borderColor: Colors.light.overlayThin,
+    borderColor: LightTheme.overlayThin,
   },
   blueButtonDark: {
-    backgroundColor: Colors.dark.accent,
-    borderColor: Colors.dark.overlayThin,
+    backgroundColor: DarkTheme.accent,
+    borderColor: DarkTheme.overlayThin,
   },
   blueButtonText: {
     color: "white",

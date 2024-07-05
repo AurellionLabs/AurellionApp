@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SwitchSelector from 'react-native-switch-selector';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import { Colors } from "@/constants/Colors";
+import { LightTheme, DarkTheme } from '@/constants/Colors';
 import {
   fetchDriverUnassignedJourneys,
   fetchDriverAssignedJourneys,
@@ -31,7 +31,7 @@ const Menu = () => {
     { label: 'Driver', value: 'driver', accessibilityLabel: 'Driver' },
   ];
 
-  const backgroundColor = isDarkMode ? Colors.dark.background2 : Colors.light.background2;
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : DarkTheme.background2;
 
   const fetchAndSetJourneys = async () => {
     let createdJourneys: Journey[] = [];
@@ -105,10 +105,10 @@ const Menu = () => {
           <SwitchSelector
             initial={switchOption}
             onPress={(value: UserType) => setUserType(value)}
-            textColor={Colors.light.foreground1}
-            selectedColor={Colors.light.accent}
-            buttonColor={Colors.light.background2}
-            borderColor={Colors.light.accent}
+            textColor={LightTheme.foreground1}
+            selectedColor={LightTheme.accent}
+            buttonColor={LightTheme.background2}
+            borderColor={LightTheme.accent}
             hasPadding
             options={options}
             accessibilityLabel="user-type-switch-selector"

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { Colors } from '@/constants/Colors';
+import { DarkTheme, LightTheme } from '@/constants/Colors';
+
 import { ViewStyle } from 'react-native';
 
 export const SafeArea = styled.SafeAreaView`
@@ -8,7 +9,7 @@ export const SafeArea = styled.SafeAreaView`
 
 export const Shadow = styled.View`
   elevation: 3;
-  shadow-color: ${Colors.light.foreground2};
+  shadow-color: ${LightTheme.foreground2};
   outline-provider: bounds;
   shadow-opacity: 0.8;
   width: 100%;
@@ -29,17 +30,17 @@ export const RedButton = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${Colors.light.accent};
+  background-color: ${LightTheme.accent};
   border-radius: 20px;
   width: 150px;
   height: 50px;
   border-width: 1px;
-  border-color: ${Colors.light.overlayThin};
+  border-color: ${LightTheme.overlayThin};
   ${({ isDarkMode }: { isDarkMode: boolean }) =>
     isDarkMode &&
     `
-    background-color: ${Colors.dark.accent};
-    border-color: ${Colors.dark.overlayThin};
+    background-color: ${DarkTheme.accent};
+    border-color: ${DarkTheme.overlayThin};
   `}
   ${({ styles }: RedButtonProps) => styles};
 `;
@@ -48,7 +49,7 @@ export const RedButtonText = styled.Text`
   font-family: Inter-Regular;
 `;
 export const TitleText = styled.Text<props>`
-  color: ${(props: props) => (props.isDarkMode ? Colors.dark.title : Colors.light.title)};
+  color: ${(props: props) => (props.isDarkMode ? DarkTheme.title : LightTheme.title)};
   font-family: Inter-Regular;
   font-size: 40px;
 `;
@@ -64,7 +65,7 @@ export const Box = styled.View`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: ${(props: props) => (props.isDarkMode ? Colors.dark.background2 : Colors.light.background2)};
+  background-color: ${(props: props) => (props.isDarkMode ? DarkTheme.background2 : LightTheme.background2)};
 `;
 export const StyledText = styled.Text<props>`
   color: ${(props: props) => (props.isDarkMode ? 'white' : 'black')};
@@ -95,12 +96,12 @@ export const Button = styled.TouchableOpacity`
   width: 150px;
   height: 50px;
   border-width: 1px;
-  border-color: ${Colors.light.overlayThin};
+  border-color: ${LightTheme.overlayThin};
   ${(props: ButtonProps) =>
     props.isDarkMode &&
     `
-    background-color: ${Colors.dark.accent};
-    border-color: ${Colors.dark.overlayThin};
+    background-color: ${DarkTheme.accent};
+    border-color: ${DarkTheme.overlayThin};
   `}
 `;
 

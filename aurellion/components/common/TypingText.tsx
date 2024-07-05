@@ -1,7 +1,4 @@
-import { DarkTheme } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
-import { LightTheme } from '../constants/Colors';
 import { TitleText } from './StyledComponents';
 
 function TypingText({ text, speed, isDarkMode }) {

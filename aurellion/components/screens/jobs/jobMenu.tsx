@@ -31,7 +31,7 @@ const Menu = () => {
     { label: 'Driver', value: 'driver', accessibilityLabel: 'Driver' },
   ];
 
-  const backgroundColor = isDarkMode ? DarkTheme.background2 : DarkTheme.background2;
+  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
 
   const fetchAndSetJourneys = async () => {
     let createdJourneys: Journey[] = [];

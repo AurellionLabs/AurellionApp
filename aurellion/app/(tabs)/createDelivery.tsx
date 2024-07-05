@@ -13,16 +13,12 @@ import {
   Keyboard,
   Platform,
 } from 'react-native';
-import { Container } from '../../common/components/StyledComponents';
-import { DarkTheme, LightTheme } from '../../common/constants/Colors';
-import { useNavigation } from '@react-navigation/native';
+import { Container, StyledText } from '@/components/common/StyledComponents';
 import MapView, { Marker, Region } from 'react-native-maps';
-import LocationsMenu from './components/locationsMenu';
-import Navbar from '../../common/components/NavBar';
-import { useMainContext } from '../main.provider';
+import LocationsMenu from '@/components/screens/createDelivery/locationsMenu';
+import { useMainContext } from '@/providers/main.provider';
 
 const LocationsScreen = () => {
-  const navigation = useNavigation();
   const { isDarkMode } = useMainContext();
   const [region, setRegion] = useState<Region>({
     latitude: 37.78825,
@@ -51,13 +47,15 @@ const LocationsScreen = () => {
   return (
     <Container style={styles.container}>
       {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
-      <LocationsMenu
+      <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
+            Create Delivery Screen
+      </StyledText>
+      {/* <LocationsMenu
         style={styles.locationsMenu}
         region={region}
         setRegion={setRegion}
         isKeyboardVisible={isKeyboardVisible}
-      />
-      {!isKeyboardVisible && <Navbar />}
+      /> */}
     </Container>
   );
 };

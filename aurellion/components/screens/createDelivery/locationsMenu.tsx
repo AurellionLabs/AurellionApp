@@ -14,12 +14,11 @@ import {
 import Geolocation from '@react-native-community/geolocation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Region } from 'react-native-maps';
-import { RedButton, RedButtonText } from '../../../common/components/StyledComponents';
+import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
 import { useNavigation } from '@react-navigation/native';
-import { useMainContext } from '../../main.provider';
-import { RecipientWalletAddrScreenNavigationProp } from '../../../navigation/types';
-import { PackageDeliveryData } from '../../../common/types/types';
-import { LightTheme } from '../../../common/constants/Colors';
+import { useMainContext } from '@/providers/main.provider';
+import { PackageDeliveryData } from '@/constants/Types';
+import { LightTheme } from '@/constants/Colors';
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA';
 interface LocationMenuProps {
   region: Region;
@@ -48,7 +47,7 @@ type AutocompleteState = {
 };
 
 const LocationsMenu = ({ region, setRegion, isKeyboardVisible, style }: LocationMenuProps) => {
-  const navigation = useNavigation<RecipientWalletAddrScreenNavigationProp>();
+  // const navigation = useNavigation<RecipientWalletAddrScreenNavigationProp>();
   const { setPackageDeliveryData } = useMainContext();
   const [currentAddress, setCurrentAddress] = useState<string>('');
   const [sendingAddress, setSendingAddress] = useState('Enter sending address');
@@ -183,7 +182,7 @@ const LocationsMenu = ({ region, setRegion, isKeyboardVisible, style }: Location
           console.log('packageDeliveryData');
           console.log(packageDeliveryData);
 
-          navigation.navigate('RecipientWalletAddress');
+          // navigation.navigate('RecipientWalletAddress');
         })
         .catch((error) => {
           console.error('Error geocoding addresses:', error);

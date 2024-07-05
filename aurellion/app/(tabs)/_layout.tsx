@@ -1,14 +1,23 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: 'black' }}>
+      <Tabs.Screen
+        name="createDelivery"
+        options={{
+          title: 'Create Delivery',
+          tabBarIcon: ({ color }) => <FontAwesome5 name="box-open" size={28} color={color} />,
+          headerShown: false
+        }}
+      />
       <Tabs.Screen
         name="jobs"
         options={{
           title: 'Jobs',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="truck-delivery" size={28} color={color} />,
           headerShown: false
         }}
       />

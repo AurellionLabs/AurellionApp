@@ -145,10 +145,9 @@ function WalletScreen(): JSX.Element {
           // </RedButton>
           <>
             <W3mButton />
-            <Link href="/jobs" asChild>
+            <Link href="/createDelivery" asChild>
               <RedButton
                 style={{ marginTop: "7%" }}
-                onPress={() => console.log("pressed")}
               >
                 <RedButtonText>Home Screen</RedButtonText>
               </RedButton>

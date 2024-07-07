@@ -1,10 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useMainContext } from '../main.provider';
+import { useMainContext } from '@/providers/main.provider';
 import { useNavigation } from '@react-navigation/native';
-import { DeliveryOptionsScreenNavigationProp } from '../../navigation/types';
-import { RedButton, RedButtonText } from '../../common/components/StyledComponents';
-import styled from 'styled-components/native';
+import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
 import {
   Container,
   Heading,
@@ -15,15 +13,15 @@ import {
   ConfirmButtonText,
   Section,
   ConfirmedAddr,
-} from './components/StyledComponents';
+} from '@/components/screens/recipientWalletAddress/StyledComponents';
 import { TextInput } from 'react-native-gesture-handler';
 
 const RecipientWalletAddressScreen: React.FC = () => {
   const { recipientWalletAddress, setRecipientWalletAddress } = useMainContext();
-  const navigation = useNavigation<DeliveryOptionsScreenNavigationProp>();
+//   const navigation = useNavigation<DeliveryOptionsScreenNavigationProp>();
 
   const handleConfirm = () => {
-    navigation.navigate('DeliveryOptions');
+    // navigation.navigate('DeliveryOptions');
   };
 
   return (

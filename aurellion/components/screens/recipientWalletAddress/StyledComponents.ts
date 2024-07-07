@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '../../../common/constants/Colors';
+import { DarkTheme, LightTheme } from '@/constants/Colors';
 
 export const Container = styled.View`
   display: flex;

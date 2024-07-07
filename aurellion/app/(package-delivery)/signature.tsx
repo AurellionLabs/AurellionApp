@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Container, Button, ButtonText, StyledText } from '../../common/components/StyledComponents';
-import { LightTheme, DarkTheme } from '../../common/constants/Colors';
+import { Container, Button, ButtonText, StyledText } from '@/components/common/StyledComponents';
+import { LightTheme, DarkTheme } from '@/constants/Colors';
 import LottieView from 'lottie-react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { JobsScreenNavigationProp, SignatureScreenRouteProp } from '../../navigation/types';
-import { useMainContext } from '../main.provider';
+import { useMainContext } from '@/providers/main.provider';
 import {
   customerPackageSign,
   driverPackageSign,
   jobIdToJourney,
   packageHandOff,
   packageHandOn,
-} from '../../dapp-connectors/dapp-controller';
-import { navigateDeepLink } from '../../utils/ExplorerUtils';
-import Loader from '../../common/loader/loader';
+} from '@/dapp-connectors/dapp-controller';
+import Loader from '@/components/common/loader';
 import { listenForSignature } from '../../dapp-connectors/dapp-listener';
-import { Journey, JourneyStatus } from '../../common/types/types';
+import { Journey, JourneyStatus } from '@/constants/Types';
 
 const SignatureScreen = () => {
-  const navigation = useNavigation<JobsScreenNavigationProp>();
+//   const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, userType, setRefetchDataFromAPI, isDarkMode } = useMainContext();
-  const route = useRoute<SignatureScreenRouteProp>();
-  const { heading, job } = route.params;
+//   const route = useRoute<SignatureScreenRouteProp>();
+//   const { heading, job } = route.params;
   const [isSigned, setIsSigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -43,7 +41,7 @@ const SignatureScreen = () => {
   const resolvePackageHandling = async () => {
     try {
       const journey: Journey = await jobIdToJourney(job.jobId);
-      navigateDeepLink(universalLink, deepLink, wcURI);
+    //   navigateDeepLink(universalLink, deepLink, wcURI);
       if (journey.currentStatus === JourneyStatus.PENDING) {
         const handOnSuccessful = await packageHandOn(journey.customer, journey.driver, journey.jobId);
       } else if (journey.currentStatus === JourneyStatus.IN_PROGRESS) {
@@ -59,7 +57,7 @@ const SignatureScreen = () => {
 
   async function packageSign() {
     try {
-      navigateDeepLink(universalLink, deepLink, wcURI);
+    //   navigateDeepLink(universalLink, deepLink, wcURI);
       if (userType === 'customer') {
         await customerPackageSign(job.jobId);
       } else if (userType === 'driver') {
@@ -90,7 +88,7 @@ const SignatureScreen = () => {
     <Container styles={{ justifyContent: 'center' }}>
       {allSigned ? (
         <LottieView
-          source={require('../../common/assets/animations/success.json')}
+          source={require('@/assets/animations/success.json')}
           autoPlay
           loop={false}
           onAnimationFinish={() => navigation.navigate('Jobs')}
@@ -100,7 +98,7 @@ const SignatureScreen = () => {
           <View style={{ height: '35%', width: '70%' }}>
             <LottieView
               style={{}}
-              source={require('../../common/assets/animations/signing.json')}
+              source={require('@/assets/animations/signing.json')}
               autoPlay
               loop={true}
             />

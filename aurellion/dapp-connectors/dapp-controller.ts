@@ -345,9 +345,9 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
 //     throw error;
 //   }
 //   return handOnSuccessful;
-// };
+};
 
-// export const packageHandOff = async (customerAddress: string, driverAddress: string, jobId: string) => {
+export const packageHandOff = async (customerAddress: string, driverAddress: string, jobId: string) => {
 //   let signer: ethers.providers.JsonRpcSigner | undefined;
 //   let contract;
 //   let handOffSuccessful = false;
@@ -377,9 +377,9 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
 //     throw error;
 //   }
 //   return handOffSuccessful;
-// };
+};
 
-// export const jobIdToJourney = async (jobId: string) => {
+export const jobIdToJourney = async (jobId: string) => {
 //   let signer: ethers.providers.JsonRpcSigner | undefined;
 //   let contract;
 //   try {
@@ -403,4 +403,4 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
 //       throw error;
 //     }
 //   }
-};
+}

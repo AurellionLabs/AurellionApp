@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
-import { getSigner } from './wallet-utils';
-import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from '@env';
+// import { getSigner } from './wallet-utils';
+// import { REACT_APP_AUSYS_CONTRACT_ADDRESS, REACT_APP_AURA_CONTRACT_ADDRESS } from '@env';
 
 const contractABI = require('./aurellion-abi.json');
 export async function listenForSignature(jobID: string): Promise<boolean> {

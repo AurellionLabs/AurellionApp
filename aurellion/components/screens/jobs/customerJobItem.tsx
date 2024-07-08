@@ -1,20 +1,23 @@
 import React from 'react';
 import { TextRow, StyledSelectedBox } from './StyledComponents';
-import { useNavigation } from '@react-navigation/native';
-// import { SignatureScreenNavigationProp } from '../../../navigation/types';
 import { Journey, JourneyStatus } from '@/constants/Types';
 import { StyledText } from '@/components/common/StyledComponents';
+import { useDeliveryContext } from '@/providers/delivery.provider';
 import { useMainContext } from '@/providers/main.provider'
+import { useRouter } from 'expo-router';
+import { SCREEN_TEXT } from '@/constants/ScreenText';
 
 type BoxProps = {
-  job: Journey;
+  journey: Journey;
   handOn?: boolean;
   handOff?: boolean;
 };
 
-const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
+const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
   // const navigation = useNavigation<SignatureScreenNavigationProp>();
-  const { setDeliveryOption, isDarkMode } = useMainContext();
+  const router = useRouter();
+  const { isDarkMode } = useMainContext();
+  const {setSelectedJourney, setSignatureScreenHeading} = useDeliveryContext();
 
   if (!handOn && !handOff) {
     console.error("At least one of 'handOn' or 'handOff' prop must be provided");
@@ -22,16 +25,13 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
   }
 
   const onPress = () => {
+    setSelectedJourney(journey)
     if (handOn) {
-      // navigation.navigate('Signature', {
-      //   heading: 'Sign to confirm package hand off to driver',
-      //   job: job,
-      // });
+      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON)
+      router.push({pathname: '/signature'})
     } else if (handOff) {
-      // navigation.navigate('Signature', {
-      //   heading: 'Sign to confirm package received from driver',
-      //   job: job,
-      // });
+      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF)
+      router.push({pathname: '/signature'})
     }
   };
   return (
@@ -41,7 +41,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
           Job ID:
         </StyledText>
         <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
-          {job.jobId}
+          {journey.jobId}
         </StyledText>
       </TextRow>
       <TextRow>
@@ -49,13 +49,13 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
           Status:
         </StyledText>
         <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
-          {job.currentStatus == JourneyStatus.PENDING
+          {journey.currentStatus == JourneyStatus.PENDING
             ? 'Pending'
-            : job.currentStatus == JourneyStatus.IN_PROGRESS
+            : journey.currentStatus == JourneyStatus.IN_PROGRESS
             ? 'InProgress'
-            : job.currentStatus == JourneyStatus.COMPLETED
+            : journey.currentStatus == JourneyStatus.COMPLETED
             ? 'Completed'
-            : job.currentStatus == JourneyStatus.CANCELED
+            : journey.currentStatus == JourneyStatus.CANCELED
             ? 'Canceled'
             : 'Unknown Status'}
         </StyledText>
@@ -65,7 +65,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
           Start:
         </StyledText>
         <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
-          {job.parcelData.startName}
+          {journey.parcelData.startName}
         </StyledText>
       </TextRow>
       <TextRow>
@@ -73,7 +73,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({ job, handOn, handOff }) => {
           End:
         </StyledText>
         <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
-          {job.parcelData.endName}
+          {journey.parcelData.endName}
         </StyledText>
       </TextRow>
     </StyledSelectedBox>

@@ -22,7 +22,7 @@ const metadata = {
 };
 
 const config = defaultConfig({ metadata });
-
+console.log(process.env.EXPO_PUBLIC_RPC_URL)
 // 3. Define your chains
 const mainnet = {
   chainId: 1,
@@ -40,7 +40,14 @@ const polygon = {
   rpcUrl: "https://polygon-rpc.com",
 };
 
-const chains = [mainnet, polygon];
+const amoy = {
+  chainId: 80002,
+  name: "Amoy",
+  currency: "MATIC",
+  explorerUrl: "https://polygonscan.com",
+  rpcUrl: process.env.EXPO_PUBLIC_RPC_URL,
+};
+const chains = [mainnet, polygon, amoy];
 
 // 4. Create modal
 createWeb3Modal({

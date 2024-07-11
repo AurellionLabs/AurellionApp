@@ -4,7 +4,7 @@ import { Journey, JourneyStatus } from '@/constants/Types';
 import { StyledText } from '@/components/common/StyledComponents';
 import { useDeliveryContext } from '@/providers/delivery.provider';
 import { useMainContext } from '@/providers/main.provider'
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { SCREEN_TEXT } from '@/constants/ScreenText';
 
 type BoxProps = {
@@ -14,8 +14,6 @@ type BoxProps = {
 };
 
 const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
-  // const navigation = useNavigation<SignatureScreenNavigationProp>();
-  const router = useRouter();
   const { isDarkMode } = useMainContext();
   const {setSelectedJourney, setSignatureScreenHeading} = useDeliveryContext();
 

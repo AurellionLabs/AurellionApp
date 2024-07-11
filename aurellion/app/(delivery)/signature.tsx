@@ -8,7 +8,7 @@ import {
 } from "@/components/common/StyledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import LottieView from "lottie-react-native";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { useMainContext } from "@/providers/main.provider";
 import {
   customerPackageSign,
@@ -22,8 +22,6 @@ import { Journey, JourneyStatus } from "@/constants/Types";
 import { useDeliveryContext } from "@/providers/delivery.provider";
 
 const SignatureScreen = () => {
-  const router = useRouter() 
-  
   const { userType, setRefetchDataFromAPI, isDarkMode } = useMainContext();
   const { selectedJourney, signatureScreenHeading } = useDeliveryContext();
   const [isSigned, setIsSigned] = useState(false);

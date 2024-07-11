@@ -5,7 +5,7 @@ import { StyledText } from '@/components//common/StyledComponents';
 import { useMainContext } from '@/providers/main.provider'
 import { useDeliveryContext } from '@/providers/delivery.provider';
 import { SCREEN_TEXT } from '@/constants/ScreenText';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 
 type BoxProps = {
   journey: Journey;
@@ -14,7 +14,6 @@ type BoxProps = {
 };
 
 const CustomerJobItem: React.FC<BoxProps> = ({ journey, assigned, available }) => {
-  const router = useRouter();
   const { isDarkMode } = useMainContext();
   const {setSelectedJourney, setSignatureScreenHeading} = useDeliveryContext();
 

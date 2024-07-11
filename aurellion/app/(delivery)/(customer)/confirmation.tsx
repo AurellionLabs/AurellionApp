@@ -14,6 +14,7 @@ import {
 import { DeliverySpeedOption } from '@/constants/Types';
 import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
 import Loader from '@/components/common/loader';
+import { router } from 'expo-router';
 
 const ConfirmationScreen: React.FC = () => {
   const { walletAddress, recipientWalletAddress, packageDeliveryData, universalLink, deepLink, wcURI, deliveryOption } =
@@ -35,8 +36,9 @@ const ConfirmationScreen: React.FC = () => {
     var errorState: boolean = false;
 
     try {
-      if (packageDeliveryData != undefined) {
+      if (packageDeliveryData) {
         // await jobCreation(packageDeliveryData, recipientWalletAddress);
+        router.push({pathname: '/jobs'})
       }
     } catch (error) {
       setIsError(true);
@@ -44,10 +46,6 @@ const ConfirmationScreen: React.FC = () => {
       errorState = true;
     } finally {
       setIsLoading(false);
-    }
-
-    if (errorState === false) {
-    //   navigation.navigate('Jobs');
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Dimensions, Text, useColorScheme, View, Image } from "react-native";
+import { Dimensions, View, Image } from "react-native";
 import {
   runOnJS,
   useAnimatedStyle,
@@ -21,11 +21,10 @@ import {
 } from "@/components/common/StyledComponents";
 import { jobCreation } from "../../../dapp-connectors/dapp-controller";
 import { useMainContext } from "@/providers/main.provider";
-import { useNavigation } from "@react-navigation/native";
 import { DeliverySpeedOption } from "@/constants/Types";
 import Loader from "@/components/common/loader";
+import { router } from "expo-router";
 const DeliveryMenu = () => {
-  // const navigation = useNavigation<ConfirmationScreenNavigationProp>();
   const { height: SCREEN_HEIGHT } = Dimensions.get("window");
   const defaultHeight = (70 / 100) * SCREEN_HEIGHT;
   const [rootPosition, setRootPosition] = useState<number>(defaultHeight);
@@ -85,11 +84,11 @@ const DeliveryMenu = () => {
   };
 
   const submitSelection = () => {
-    // navigation.navigate('Confirmation');
     setDeliveryOption((prevState) => ({
       ...prevState,
       deliverySpeed: selectedDeliverOption,
     }));
+    router.push({pathname: '/delivery/customer/confirmation'})
   };
 
   return (

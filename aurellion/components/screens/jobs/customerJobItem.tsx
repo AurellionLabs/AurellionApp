@@ -26,11 +26,10 @@ const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
     setSelectedJourney(journey)
     if (handOn) {
       setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON)
-      router.push({pathname: '/signature'})
     } else if (handOff) {
       setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF)
-      router.push({pathname: '/signature'})
     }
+    router.push({pathname: '/delivery/signature'})
   };
   return (
     <StyledSelectedBox isDarkMode={isDarkMode} onPress={onPress}>

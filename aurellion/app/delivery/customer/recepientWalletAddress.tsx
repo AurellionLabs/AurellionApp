@@ -1,27 +1,23 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useMainContext } from '@/providers/main.provider';
-import { useNavigation } from '@react-navigation/native';
 import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
 import {
   Container,
   Heading,
   DetailsContainer,
-  Label,
-  Value,
-  ConfirmButton,
-  ConfirmButtonText,
   Section,
   ConfirmedAddr,
 } from '@/components/screens/recipientWalletAddress/StyledComponents';
 import { TextInput } from 'react-native-gesture-handler';
+import { router } from 'expo-router';
 
 const RecipientWalletAddressScreen: React.FC = () => {
   const { recipientWalletAddress, setRecipientWalletAddress } = useMainContext();
 //   const navigation = useNavigation<DeliveryOptionsScreenNavigationProp>();
 
   const handleConfirm = () => {
-    // navigation.navigate('DeliveryOptions');
+    router.push({pathname: '/delivery/customer/deliveryOptions'})
   };
 
   return (

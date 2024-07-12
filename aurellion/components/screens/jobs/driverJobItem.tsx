@@ -32,10 +32,10 @@ const CustomerJobItem: React.FC<BoxProps> = ({ journey, assigned, available }) =
     } else if (assigned) {
       if (journey.currentStatus == JourneyStatus.PENDING) {
         setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON)
-        router.push({pathname: '/signature'})
+        router.push({pathname: '/delivery/signature'})
       } else if (journey.currentStatus == JourneyStatus.IN_PROGRESS) {
         setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_OFF)
-        router.push({pathname: '/signature'})
+        router.push({pathname: '/delivery/signature'})
       }
     }
   };

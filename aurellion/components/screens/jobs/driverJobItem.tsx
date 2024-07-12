@@ -26,9 +26,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({ journey, assigned, available }) =
   const onPress = () => {
     if (available) {
       setSelectedJourney(journey)
-      // navigation.navigate('AssignDriver', {
-      //   job: job,
-      // });
+      router.push({pathname: '/delivery/driver/assignDriver'})
     } else if (assigned) {
       if (journey.currentStatus == JourneyStatus.PENDING) {
         setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON)

@@ -6,12 +6,10 @@ import LottieView from 'lottie-react-native';
 import { useMainContext } from '@/providers/main.provider';
 // import { assignDriverToJobId } from '../../dapp-connectors/dapp-controller';
 import Loader from '@/components/common/loader';
+import { router } from 'expo-router';
 
 const AssignDriverScreen = () => {
-  // const navigation = useNavigation<JobsScreenNavigationProp>();
   const { universalLink, deepLink, wcURI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
-  // const route = useRoute<SignatureScreenRouteProp>();
-  // const { job } = route.params;
   const [isAssigned, setIsAssigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -40,7 +38,7 @@ const AssignDriverScreen = () => {
           source={require('@/assets/animations/success.json')}
           autoPlay
           loop={false}
-          // onAnimationFinish={() => navigation.navigate('Jobs')}
+          onAnimationFinish={() => router.push({pathname: '/jobs'})}
         />
       ) : isLoading ? (
         <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />

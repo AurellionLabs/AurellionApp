@@ -17,6 +17,7 @@ export type HomeStackNavigatorParamList = {
   };
   Confirmation: undefined;
   RecipientWalletAddress: undefined;
+  NodeRegistration: undefined;
 };
 
 export type DeliveryOptionsScreenNavigationProp = StackNavigationProp<HomeStackNavigatorParamList, 'DeliveryOptions'>;
@@ -43,3 +44,5 @@ export type RecipientWalletAddrScreenNavigationProp = StackNavigationProp<
   HomeStackNavigatorParamList,
   'RecipientWalletAddress'
 >;
+
+export type NodeRegistrationScreenNavigationProp = StackNavigationProp<HomeStackNavigatorParamList, 'NodeRegistration'>;

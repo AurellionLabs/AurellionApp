@@ -10,12 +10,14 @@ import JobScreen from '../screens/jobs/jobs.screen';
 import AssignDriverScreen from '../screens/assignDriver/assignDriver.screen';
 import ConfirmationScreen from '../screens/confirmationScreen/confirmation.screen';
 import RecipientWalletAddressScreen from '../screens/recipientWalletAddressScreen/recipientWalletAddress.screen';
+import NodeRegistrationScreen from '../screens/nodeRegistration/nodeRegistration.screen';
 
 const HomeStack = createStackNavigator<HomeStackNavigatorParamList>();
 
 const HomeStackNavigator = () => {
   return (
-    <HomeStack.Navigator initialRouteName="Wallet">
+    <HomeStack.Navigator initialRouteName="NodeRegistration">
+      <HomeStack.Screen options={{ headerShown: false }} name="NodeRegistration" component={NodeRegistrationScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="DeliveryOptions" component={DeliveryOptions} />
       <HomeStack.Screen options={{ headerShown: false }} name="Wallet" component={WalletScreen} />
       <HomeStack.Screen options={{ headerShown: false }} name="Signature" component={SignatureScreen} />

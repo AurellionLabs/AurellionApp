@@ -21,6 +21,7 @@ export const jobCreation = async (locationData: ParcelData, recipientWalletAddre
         console.log(typeof (walletAddress))
         console.log('line before');
         console.log(locationData)
+        console.log(recipientWalletAddress)
         const jobTx = await contract.jobCreation(
             walletAddress,
             recipientWalletAddress,

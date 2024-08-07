@@ -52,7 +52,7 @@ const ConfirmationScreen: React.FC = () => {
         try {
             if (parcel) {
                 // await jobCreation(packageDeliveryData, recipientWalletAddress);
-                await jobCreation(parcel, recipientWalletAddress)
+                await jobCreation(parcel, "0x97F5Aab4c5D492E22483476446a45C313BE6B3E9")
                 router.push({ pathname: '/jobs' })
             }
         } catch (error) {

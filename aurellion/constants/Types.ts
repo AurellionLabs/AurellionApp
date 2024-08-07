@@ -19,7 +19,7 @@ export type Location = {
   
   export type Journey = {
     parcelData: ParcelData;
-    jobId: string;
+    journeyId: string;
     currentStatus: JourneyStatus;
     customer: string;
     reciever: string;

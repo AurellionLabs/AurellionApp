@@ -1,14 +1,11 @@
-import { BrowserProvider, JsonRpcSigner, Signer, ethers } from 'ethers';
-import { ParcelData, Journey } from '@/constants/Types';
-import { type Provider, type Address } from '@web3modal/scaffold-utils-react-native';
-import { useEffect } from 'react';
+import { BrowserProvider, Signer, ethers } from 'ethers'; import { ParcelData, Journey } from '@/constants/Types';
 const contractABI = require('./aurellion-abi.json');
 var ethersProvider: BrowserProvider | undefined;
-const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS 
+const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 export const setWalletProvider = (_ethersProvider: BrowserProvider) => {
     ethersProvider = _ethersProvider;
 }
-export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
+export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string ) => {
     console.log("here")
     var signer: Signer | undefined;
     if (ethersProvider)
@@ -21,15 +18,15 @@ export const jobCreation = async (locationData: ParcelData, recipientWalletAddre
         const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
         const walletAddress = await signer.getAddress();
         console.log(walletAddress)
-        console.log(typeof(walletAddress))
+        console.log(typeof (walletAddress))
         console.log('line before');
         console.log(locationData)
         const jobTx = await contract.jobCreation(
-        walletAddress, 
-        "0x97F5Aab4c5D492E22483476446a45C313BE6B3E9", 
-        locationData, 
-        1, 
-        10);
+            walletAddress,
+            recipientWalletAddress,
+            locationData,
+            1,
+            10);
         console.log(jobTx);
         const receipt = await jobTx.wait();
         console.log('Job Creation Transaction Hash:');
@@ -43,7 +40,7 @@ export const jobCreation = async (locationData: ParcelData, recipientWalletAddre
     }
 };
 
-export const useCustomerPackageSign = async (jobID: string) => {
+export const customerPackageSign = async (journeyId: string) => {
     var signer: Signer | undefined;
     if (ethersProvider)
         signer = await ethersProvider.getSigner();
@@ -54,8 +51,8 @@ export const useCustomerPackageSign = async (jobID: string) => {
         }
         const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
         const customerAddress = await signer.getAddress();
-        const journey = await contract.jobIdToJourney(jobID);
-        const customerPackageSignTx = await contract.packageSign(journey.driver, customerAddress, jobID);
+        const journey = await contract.jobIdToJourney(journeyId);
+        const customerPackageSignTx = await contract.packageSign(journey.driver, customerAddress, journeyId);
         const receipt = await customerPackageSignTx.wait();
         console.log(receipt);
     } catch (error) {
@@ -64,7 +61,7 @@ export const useCustomerPackageSign = async (jobID: string) => {
     }
 };
 
-export const useDriverPackageSign = async (jobID: string) => {
+export const driverPackageSign = async (journeyId: string) => {
     var signer: Signer | undefined;
     if (ethersProvider)
         signer = await ethersProvider.getSigner();
@@ -75,8 +72,8 @@ export const useDriverPackageSign = async (jobID: string) => {
         }
         const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
         const driverAddress = await signer.getAddress();
-        const journey = await contract.jobIdToJourney(jobID);
-        const driverPackageSignTx = await contract.packageSign(driverAddress, journey.customer, jobID);
+        const journey = await contract.jobIdToJourney(journeyId);
+        const driverPackageSignTx = await contract.packageSign(driverAddress, journey.customer, journeyId);
         const receipt = await driverPackageSignTx.wait();
         console.log(receipt);
     } catch (error) {
@@ -85,8 +82,8 @@ export const useDriverPackageSign = async (jobID: string) => {
     }
 };
 
-export const useFetchCustomerJobs = async () => {
-    const jobIds = [];
+export const fetchCustomerJobs = async () => {
+    const journeyIds = [];
     const jobs: Journey[] = [];
     let contract;
     var signer: Signer | undefined;
@@ -125,19 +122,19 @@ export const useFetchCustomerJobs = async () => {
 
         for (let i = 0; i < jobNumber; i++) {
             try {
-                const jobId = await contract.customerToJobId(walletAddress, i);
-                jobIds.push(jobId);
+                const journeyId = await contract.customerToJobId(walletAddress, i);
+                journeyIds.push(journeyId);
             } catch (err) {
                 console.error(`Error fetching job with index ${i}:`, err);
             }
         }
 
-        for (const jobId of jobIds) {
+        for (const journeyId of journeyIds) {
             try {
-                const job = await contract.jobIdToJourney(jobId);
+                const job = await contract.jobIdToJourney(journeyId);
                 jobs.push(job);
             } catch (err) {
-                console.error(`Error fetching job object with ID ${jobId}:`, err);
+                console.error(`Error fetching job object with ID ${journeyId}:`, err);
             }
         }
         return jobs;
@@ -147,7 +144,7 @@ export const useFetchCustomerJobs = async () => {
     }
 };
 
-export const useFetchReceiverJobs = async () => {
+export const fetchReceiverJobs = async () => {
     let contract;
     var signer: Signer | undefined;
     if (ethersProvider)
@@ -166,7 +163,7 @@ export const useFetchReceiverJobs = async () => {
             throw error;
         }
 
-        const walletAddress =await signer.getAddress(); 
+        const walletAddress = await signer.getAddress();
         if (!walletAddress) {
             throw new Error('Failed to get wallet address');
         }
@@ -185,16 +182,16 @@ export const useFetchReceiverJobs = async () => {
                 const job = await contract.receiverToJobId(walletAddress, i);
                 jobs.push(job);
             } catch (err) {
-                console.error(`Error fetching jobId with index ${i}:`, err);
+                console.error(`Error fetching journeyId with index ${i}:`, err);
             }
         }
 
-        for (const jobID of jobs) {
+        for (const journeyId of jobs) {
             try {
-                const jobsObj = await contract.jobIdToJourney(jobID);
+                const jobsObj = await contract.jobIdToJourney(journeyId);
                 jobsObjList.push(jobsObj);
             } catch (err) {
-                console.error(`Error fetching job object with jobId ${jobID}:`, err);
+                console.error(`Error fetching job object with journeyId ${journeyId}:`, err);
             }
         }
         return jobsObjList;
@@ -204,7 +201,7 @@ export const useFetchReceiverJobs = async () => {
     }
 };
 
-export const useCheckIfDriverAssignedToJobId = async (jobID: string) => {
+export const checkIfDriverAssignedToJobId = async (journeyId: string) => {
     var signer: Signer | undefined;
     if (ethersProvider)
         signer = await ethersProvider.getSigner();
@@ -214,7 +211,7 @@ export const useCheckIfDriverAssignedToJobId = async (jobID: string) => {
             throw new Error('Signer is undefined');
         }
         const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        const journey = await contract.jobIdToJourney(jobID);
+        const journey = await contract.jobIdToJourney(journeyId);
         const isAssigned = journey.driver === ethers.ZeroAddress ? false : true;
         return isAssigned;
     } catch (error) {
@@ -223,7 +220,7 @@ export const useCheckIfDriverAssignedToJobId = async (jobID: string) => {
     }
 };
 
-export const useAssignDriverToJobId = async (jobID: string) => {
+export const assignDriverToJobId = async (journeyId: string) => {
     var signer: Signer | undefined;
     var ethersProvider: BrowserProvider | undefined;
     if (ethersProvider)
@@ -235,7 +232,7 @@ export const useAssignDriverToJobId = async (jobID: string) => {
         }
         const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
         const driverAddress = await signer.getAddress();
-        const assignDriverToJobIdTx = await contract.assignDriverToJobId(driverAddress, jobID);
+        const assignDriverToJobIdTx = await contract.assignDriverToJobId(driverAddress, journeyId);
         const receipt = await assignDriverToJobIdTx.wait();
         console.log(receipt);
     } catch (error) {
@@ -244,12 +241,12 @@ export const useAssignDriverToJobId = async (jobID: string) => {
     }
 };
 
-export const useFetchDriverUnassignedJourneys = async () => {
-    const jobIds: string[] = [];
+export const fetchDriverUnassignedJourneys = async () => {
+    const journeyIds: string[] = [];
     const journeys: Journey[] = [];
     let contract;
     let totalJobsCount;
-    let jobId: string | null = null;
+    let journeyId: string | null = null;
     var signer: Signer | undefined;
     if (ethersProvider)
         signer = await ethersProvider.getSigner();
@@ -267,22 +264,22 @@ export const useFetchDriverUnassignedJourneys = async () => {
         console.error('Could not get total jobs count from blockchain');
         throw error;
     }
-    // Index starts with 1 because smart contract jobIdCounter starts at 1
+    // Index starts with 1 beca  smart contract jobIdCounter starts at 1
     for (let i = 1; i <= totalJobsCount; i++) {
         try {
-            jobId = await contract.numberToJobID(i);
+            journeyId = await contract.numberToJobID(i);
         } catch (error) {
-            console.error(`No jobId exists at index ${i}`);
+            console.error(`No journeyId exists at index ${i}`);
         }
-        if (jobId) {
-            jobIds.push(jobId);
+        if (journeyId) {
+            journeyIds.push(journeyId);
         }
     }
-    for (let i = 0; i < jobIds.length; i++) {
+    for (let i = 0; i < journeyIds.length; i++) {
         try {
-            journey = await contract.jobIdToJourney(jobIds[i]);
+            journey = await contract.jobIdToJourney(journeyIds[i]);
         } catch (error) {
-            console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
+            console.error(`Error retrieving journey from journeyId ${journeyIds[i]}`);
         }
         if (journey) {
             const isAssigned = journey.driver === ethers.ZeroAddress ? false : true;
@@ -294,11 +291,11 @@ export const useFetchDriverUnassignedJourneys = async () => {
     return journeys;
 };
 
-export const useFetchDriverAssignedJourneys = async () => {
-    const jobIds: string[] = [];
+export const fetchDriverAssignedJourneys = async () => {
+    const journeyIds: string[] = [];
     const journeys: Journey[] = [];
     let contract;
-    let jobId: string | null = null;
+    let journeyId: string | null = null;
     let journey: Journey;
     var signer: Signer | undefined;
     if (ethersProvider)
@@ -324,27 +321,27 @@ export const useFetchDriverAssignedJourneys = async () => {
         }
         for (let i = 0; i < numberOfJobsAssignedForDriver; i++) {
             try {
-                jobId = await contract.driverToJobId(walletAddress, i);
+                journeyId = await contract.driverToJobId(walletAddress, i);
             } catch (error) {
-                console.error(`No jobId exists at index ${i} for driver`);
+                console.error(`No journeyId exists at index ${i} for driver`);
             }
-            if (jobId) {
-                jobIds.push(jobId);
+            if (journeyId) {
+                journeyIds.push(journeyId);
             }
         }
-        for (let i = 0; i < jobIds.length; i++) {
+        for (let i = 0; i < journeyIds.length; i++) {
             try {
-                journey = await contract.jobIdToJourney(jobIds[i]);
+                journey = await contract.jobIdToJourney(journeyIds[i]);
                 journeys.push(journey);
             } catch (error) {
-                console.error(`Error retrieving journey from jobId ${jobIds[i]}`);
+                console.error(`Error retrieving journey from journeyId ${journeyIds[i]}`);
             }
         }
     }
     return journeys;
 };
 
-export const usePackageHandOn = async (customerAddress: string, driverAddress: string, jobId: string) => {
+export const packageHandOn = async (customerAddress: string, driverAddress: string, journeyId: string) => {
     let contract;
     let handOnSuccessful = false;
     var signer: Signer | undefined;
@@ -365,7 +362,7 @@ export const usePackageHandOn = async (customerAddress: string, driverAddress: s
         }
     }
     try {
-        handOnSuccessful = await contract.handOn(driverAddress, customerAddress, jobId);
+        handOnSuccessful = await contract.handOn(driverAddress, customerAddress, journeyId);
     } catch (error) {
         console.error('Could not call contract handOn');
         throw error;
@@ -373,7 +370,7 @@ export const usePackageHandOn = async (customerAddress: string, driverAddress: s
     return handOnSuccessful;
 };
 
-export const usePackageHandOff = async (customerAddress: string, driverAddress: string, jobId: string) => {
+export const packageHandOff = async (customerAddress: string, driverAddress: string, journeyId: string) => {
     let contract;
     let handOffSuccessful = false;
     var signer: Signer | undefined;
@@ -395,7 +392,7 @@ export const usePackageHandOff = async (customerAddress: string, driverAddress: 
         }
     }
     try {
-        handOffSuccessful = await contract.handOff(driverAddress, customerAddress, jobId);
+        handOffSuccessful = await contract.handOff(driverAddress, customerAddress, journeyId);
     } catch (error) {
         console.error('Could not call contract handOff');
         throw error;
@@ -403,7 +400,7 @@ export const usePackageHandOff = async (customerAddress: string, driverAddress: 
     return handOffSuccessful;
 };
 
-export const useJobIdToJourney = async (jobId: string) => {
+export const jobIdToJourney = async (journeyId: string) => {
     let contract;
     var signer: Signer | undefined;
     if (ethersProvider)
@@ -417,7 +414,7 @@ export const useJobIdToJourney = async (jobId: string) => {
     }
     if (signer) {
         try {
-            const journey = await contract.jobIdToJourney(jobId);
+            const journey = await contract.jobIdToJourney(journeyId);
             return journey;
         } catch (error) {
             console.error('Could not fetch journey object');

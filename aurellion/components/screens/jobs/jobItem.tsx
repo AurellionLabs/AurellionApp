@@ -27,7 +27,7 @@ const JobItem: React.FC<BoxProps> = ({ journey }) => {
   };
   return (
     <SelectedBox onPress={onPress}>
-      <Text>{job.jobId}</Text>
+      <Text>{journey.journeyId}</Text>
     </SelectedBox>
   );
 };

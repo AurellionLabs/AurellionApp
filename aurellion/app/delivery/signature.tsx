@@ -56,13 +56,13 @@ const SignatureScreen = () => {
         const handOnSuccessful = await packageHandOn(
           journey.customer,
           journey.driver,
-          journey.jobId
+          journey.journeyId
         );
       } else if (journey.currentStatus === JourneyStatus.IN_PROGRESS) {
         const handOffSuccessful = await packageHandOff(
           journey.customer,
           journey.driver,
-          journey.jobId
+          journey.journeyId
         );
       }
       console.log("Successfully resolved package handling");
@@ -77,9 +77,9 @@ const SignatureScreen = () => {
     try {
       //   navigateDeepLink(universalLink, deepLink, wcURI);
       if (userType === "customer") {
-        await customerPackageSign(journey.jobId);
+        await customerPackageSign(journey.journeyId);
       } else if (userType === "driver") {
-        await driverPackageSign(journey.jobId);
+        await driverPackageSign(journey.journeyId);
       }
       console.log("setIsSigned");
       setIsLoading(false);
@@ -94,7 +94,7 @@ const SignatureScreen = () => {
   async function allSignedCheck(journey: Journey) {
     try {
       console.log("calling listenForSignature");
-      setAllSigned(await listenForSignature(journey.jobId));
+      setAllSigned(await listenForSignature(journey.journeyId));
       setIsSigned(false);
     } catch (error) {
       //to do error handling modal for user

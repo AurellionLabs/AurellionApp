@@ -38,7 +38,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
           Job ID:
         </StyledText>
         <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
-          {journey.jobId}
+          {journey.journeyId}
         </StyledText>
       </TextRow>
       <TextRow>

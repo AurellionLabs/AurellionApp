@@ -12,8 +12,11 @@ import {
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import { useMainContext } from "@/providers/main.provider";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddAsset() {
+  const { isDarkMode } = useMainContext();
+
   const [assetType, setAssetType] = useState("");
   const [assetClass, setAssetClass] = useState("");
   const [quantity, setQuantity] = useState<string>("");
@@ -30,7 +33,6 @@ export default function AddAsset() {
     { label: "Grade B", value: "Grade B" },
     { label: "Grade C", value: "Grade C" },
   ]);
-  const { isDarkMode } = useMainContext();
 
   const handleSubmit = () => {
     let parsedQuantity = parseInt(quantity, 10);
@@ -53,66 +55,68 @@ export default function AddAsset() {
   };
 
   return (
-    <Container isDarkMode={isDarkMode}>
-      <Heading isDarkMode={isDarkMode}> Add Asset</Heading>
-      <ImageContainer>
-        <Image
-          source={require("@/assets/images/goat.png")}
-          style={{ height: 200, width: 200 }}
-        />
-      </ImageContainer>
-      <Section>
-        <Label isDarkMode={isDarkMode}>Asset Type</Label>
-        <DropDownPicker
-          zIndex={2}
-          open={assetTypeOpen}
-          onOpen={onAssetTypeOpen}
-          value={assetType}
-          items={assetTypeItems}
-          setOpen={setAssetTypeOpen}
-          setValue={setAssetType}
-          setItems={() => {}}
-          style={{ marginBottom: 10 }}
-          theme={isDarkMode ? "DARK" : "LIGHT"}
-        />
-      </Section>
+    <SafeAreaView>
+      <Container isDarkMode={isDarkMode}>
+        <Heading isDarkMode={isDarkMode}> Add Asset</Heading>
+        <ImageContainer>
+          <Image
+            source={require("@/assets/images/goat.png")}
+            style={{ height: 200, width: 200 }}
+          />
+        </ImageContainer>
+        <Section>
+          <Label isDarkMode={isDarkMode}>Asset Type</Label>
+          <DropDownPicker
+            zIndex={2}
+            open={assetTypeOpen}
+            onOpen={onAssetTypeOpen}
+            value={assetType}
+            items={assetTypeItems}
+            setOpen={setAssetTypeOpen}
+            setValue={setAssetType}
+            setItems={() => {}}
+            style={{ marginBottom: 10 }}
+            theme={isDarkMode ? "DARK" : "LIGHT"}
+          />
+        </Section>
 
-      <Section>
-        <Label isDarkMode={isDarkMode}>Asset Class</Label>
-        <DropDownPicker
-          zIndex={1}
-          open={assetClassOpen}
-          onOpen={onAssetClassOpen}
-          value={assetClass}
-          items={assetClassItems}
-          setOpen={setAssetClassOpen}
-          setValue={setAssetClass}
-          setItems={() => {}}
-          style={{ marginBottom: 10 }}
-          theme={isDarkMode ? "DARK" : "LIGHT"}
-        />
-      </Section>
+        <Section>
+          <Label isDarkMode={isDarkMode}>Asset Class</Label>
+          <DropDownPicker
+            zIndex={1}
+            open={assetClassOpen}
+            onOpen={onAssetClassOpen}
+            value={assetClass}
+            items={assetClassItems}
+            setOpen={setAssetClassOpen}
+            setValue={setAssetClass}
+            setItems={() => {}}
+            style={{ marginBottom: 10 }}
+            theme={isDarkMode ? "DARK" : "LIGHT"}
+          />
+        </Section>
 
-      <Section>
-        <Label isDarkMode={isDarkMode}>Quantity</Label>
-        <Input
-          value={quantity}
-          onChangeText={setQuantity}
-          keyboardType="numeric"
-          placeholder="Enter Quantity"
-          isDarkMode={isDarkMode}
-          placeholderTextColor={
-            isDarkMode ? DarkTheme.foreground2 : LightTheme.foreground1
-          }
-        />
-      </Section>
+        <Section>
+          <Label isDarkMode={isDarkMode}>Quantity</Label>
+          <Input
+            value={quantity}
+            onChangeText={setQuantity}
+            keyboardType="numeric"
+            placeholder="Enter Quantity"
+            isDarkMode={isDarkMode}
+            placeholderTextColor={
+              isDarkMode ? DarkTheme.foreground2 : LightTheme.foreground1
+            }
+          />
+        </Section>
 
-      <RedButton
-        onPress={handleSubmit}
-        style={{ alignSelf: "center", marginTop: "7%" }}
-      >
-        <RedButtonText>Add Asset</RedButtonText>
-      </RedButton>
-    </Container>
+        <RedButton
+          onPress={handleSubmit}
+          style={{ alignSelf: "center", marginTop: "7%" }}
+        >
+          <RedButtonText>Add Asset</RedButtonText>
+        </RedButton>
+      </Container>
+    </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { ParcelData, UserType, DeliveryOption } from '@/constants/Types';
+import { ParcelData, UserType, DeliveryOption, RoleType } from '@/constants/Types';
 
 interface IMainContext {
 //   wallet: JsonRpcSigner | undefined;
@@ -24,6 +24,8 @@ interface IMainContext {
   setRecipientWalletAddress: Dispatch<SetStateAction<string>>;
   deliveryOption: DeliveryOption | undefined;
   setDeliveryOption: Dispatch<SetStateAction<DeliveryOption | undefined>>;
+  role: RoleType,
+  setRole: Dispatch<SetStateAction<RoleType>>
 }
 
 export const MainContext = React.createContext<IMainContext>({
@@ -49,6 +51,8 @@ export const MainContext = React.createContext<IMainContext>({
   setDeliveryOption: () => {},
   isDarkMode: false,
   setIsDarkMode: () => {},
+  role: RoleType.Customer,
+  setRole: () => {}
 });
 
 interface MainProviderProps {
@@ -67,6 +71,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
   const [recipientWalletAddress, setRecipientWalletAddress] = useState<string>('');
   const [deliveryOption, setDeliveryOption] = useState<DeliveryOption | undefined>(undefined);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [role, setRole] = useState<RoleType>(RoleType.Customer)
   return (
     <MainContext.Provider
       value={{
@@ -92,6 +97,8 @@ const MainProvider = ({ children }: MainProviderProps) => {
         setDeliveryOption,
         isDarkMode,
         setIsDarkMode,
+        role,
+        setRole
       }}
     >
       {children}

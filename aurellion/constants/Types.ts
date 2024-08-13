@@ -37,6 +37,12 @@ export type Location = {
     SLOW,
     MEDIUM,
   }
+
+  export enum RoleType {
+    Customer,
+    Driver,
+    Node
+  }
   
   export type DeliveryOption = {
     deliverySpeed?: DeliverySpeedOption;

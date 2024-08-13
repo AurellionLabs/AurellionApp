@@ -13,22 +13,8 @@ export const Container = styled.View<ThemedProps>`
     isDarkMode ? DarkTheme.background1 : LightTheme.background1};
 `;
 
-export const ImageContainer = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const Section = styled.View<ViewProps>`
   margin-bottom: 10px;
-`;
-
-export const Heading = styled.Text<ThemedProps & TextProps>`
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: ${({ isDarkMode }) =>
-    isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1};
 `;
 
 export const Label = styled.Text<ThemedProps & TextProps>`

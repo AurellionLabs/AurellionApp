@@ -1,10 +1,20 @@
 import { ethers } from "hardhat";
 import { BigNumber } from "ethers";
 import { expect } from "chai";
-import { PackageDeliveryData } from "./TestTypes";
+import { AurumNode, PackageDeliveryData } from "./TestTypes";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Contract } from "hardhat/internal/hardhat-network/stack-traces/model";
 
-describe("Ausys", function () {
-    let customer, receiver, driver, ausys, aura, balanceBefore;
+describe("Ausys", function() {
+    let customer: SignerWithAddress,
+        receiver: SignerWithAddress,
+        driver: SignerWithAddress,
+        ausys: any,
+        aura: any,
+        auraGoat: any,
+        aurumNodeManager: any,
+        aurumNode: any,
+        balanceBefore: any;
 
     // Setup for the tests
     before(async () => {
@@ -13,9 +23,14 @@ describe("Ausys", function () {
 
         const Aura = await ethers.getContractFactory("Aura");
         const Ausys = await ethers.getContractFactory("locationContract");
-
+        const AuraGoat = await ethers.getContractFactory("AuraGoat")
+        const AurumNodeManager = await ethers.getContractFactory("AuraNodeManager")
+        const AurumNode = await ethers.getContractFactory("AuraNodeManager")
+        aurumNodeManager = await AurumNodeManager.deploy()
+        auraGoat = await AuraGoat.deploy(aurumNodeManager.getAddress())
         aura = await Aura.deploy();
         ausys = await Ausys.deploy(aura.getAddress());
+        aurumNode = await AurumNode.deploy(ausys.getAddress());
 
         console.log(`Deployed Ausys at ${ausys.getAddress()} and Aura at ${aura.getAddress()}`);
 
@@ -36,7 +51,7 @@ describe("Ausys", function () {
         balanceBefore = await aura.balanceOf(customer);
     });
 
-    describe("Job Creation", function () {
+    describe("Job Creation", function() {
         const packageDeliveryData: PackageDeliveryData = {
             startLocation: { lat: "1", lng: "1" },
             endLocation: { lat: "1", lng: "1" },
@@ -48,18 +63,36 @@ describe("Ausys", function () {
             await ausys.jobCreation(customer, receiver, packageDeliveryData, 1, 1);
         });
 
-        it("Job counter went up", async function () {
+        it("Job counter went up", async function() {
             expect(await ausys.jobIdCounter()).to.equal(1);
         });
 
-        it("Number of jobs created for customer went up", async function () {
+        it("Number of jobs created for customer went up", async function() {
             expect(await ausys.numberOfJobsCreatedForCustomer(customer)).to.equal(1);
         });
 
-        it("Balance went down by 1", async function () {
+        it("Balance went down by 1", async function() {
             const balanceAfter = await aura.balanceOf(customer);
             expect(balanceBefore - BigInt(1 * 10 ** 18)).to.equal(balanceAfter);
         });
     });
+    describe("Node Registration", () => {
+        var node: AurumNode;
+        node = {
+            location: { lat: "1", lng: "1" },
+            //stteal ausys location struct
+            validNode: new Uint8Array(1),
+            owner: customer.address,
+            supportedAssets: [1],
+            status: new Uint8Array(1),
+            capacity: [100]
+            //capacity needs to be kept on an asset by asset basis
+        }
+        it("Node is Created", async () => {
+            let nodeAddress = await aurumNode.registerNode(node)
+            console.log(nodeAddress)
+            expect(nodeAddress).to.be.string
+        })
+    })
 });
 

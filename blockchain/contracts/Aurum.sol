@@ -2,7 +2,7 @@
 import "./Aura.sol";
 import "./AuSys.sol";
 import "./AuraGoat.sol";
-pragma solidity 0.8.17;
+pragma solidity 0.8.26;
 
 contract AurumNodeManager {
     struct Location {
@@ -47,8 +47,9 @@ contract AurumNodeManager {
 
     function registerNode(Node memory node) public returns (address id) {
         aurumNode NodeContract = new aurumNode(node.owner,ausys,auraGoat);
-        AllNodes[address(NodeContract)] = node;
-        AllNodes[address(NodeContract)].validNode = bytes1(1);
+        id  = address(NodeContract);
+        AllNodes[id] = node;
+        AllNodes[id].validNode = bytes1(1);
         updateOwner(node.owner, id);
     }
 

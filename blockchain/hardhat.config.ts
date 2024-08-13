@@ -9,10 +9,10 @@ const config: HardhatUserConfig = {
     // Other network configurations...
 
     // Polygon Mainnet configuration
-    mumbai: {
+    Amoy: {
       url: polygonMaticUrl,
       accounts: [process.env.PRIVATE_KEY],
-      chainId: 80001,
+      chainId: 80002,
       // Example gas price, you can adjust this value
     },
   },

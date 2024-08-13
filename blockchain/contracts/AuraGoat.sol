@@ -1,5 +1,5 @@
 //SPDX-LICENSE: MIT
-pragma solidity ^0.8.15;
+pragma solidity ^0.8.26;
 import "./Aurum.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -39,7 +39,7 @@ contract AuraGoat is ERC1155, ERC1155Burnable, Ownable, ERC1155Supply {
     //A1->A5 goat tiers
     //A1W->A5W goat tiers
     modifier validNode(address node) {
-        require(NodeManager.AllNodes[node].status == bytes1(1));
+        require(NodeManager.AllNodes(node).status == bytes1(1));
         _;
     }
 

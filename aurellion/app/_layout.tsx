@@ -10,6 +10,8 @@ export default function RootLayout() {
         {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
         {/* <Stack.Screen name="delivery" options={{ headerShown: false }} /> */}
         <Stack.Screen name="node" options={{ headerShown: false }} />
+        <Stack.Screen name="driver" options={{ headerShown: false }} />
+        <Stack.Screen name="customer" options={{ headerShown: false }} />
       </Stack>
     </MainProvider>
   );

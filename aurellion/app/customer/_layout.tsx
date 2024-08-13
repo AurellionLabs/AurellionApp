@@ -1,6 +1,6 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Foundation from '@expo/vector-icons/Foundation';
-import Octicons from '@expo/vector-icons/Octicons';
+import Entypo from '@expo/vector-icons/Entypo';
+import Feather from '@expo/vector-icons/Feather';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 
@@ -8,18 +8,26 @@ export default function NodeLayout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: 'black' }}>
       <Tabs.Screen
-        name="addAsset"
+        name="sendPackage"
         options={{
-          title: 'Add Asset',
-          tabBarIcon: ({ color }) => <AntDesign name="plussquareo" size={24} color={color} />,
+          title: 'Send Package',
+          tabBarIcon: ({ color }) => <Feather name="package" size={24} color={color} />,
           headerShown: false
         }}
       />
       <Tabs.Screen
-        name="acceptOrder"
+        name="makeOrder"
         options={{
-          title: 'Accept Order',
-          tabBarIcon: ({ color }) => <Foundation name="clipboard-notes" size={24} color={color} />,
+          title: 'Make Order',
+          tabBarIcon: ({ color }) => <Entypo name="list" size={24} color={color} />,
+          headerShown: false
+        }}
+      />
+       <Tabs.Screen
+        name="yourPackages"
+        options={{
+          title: 'Your Packages',
+          tabBarIcon: ({ color }) => <Feather name="box" size={24} color={color} />,
           headerShown: false
         }}
       />
@@ -27,7 +35,7 @@ export default function NodeLayout() {
         name="yourOrders"
         options={{
           title: 'Your Orders',
-          tabBarIcon: ({ color }) => <Octicons name="checklist" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="list-alt" size={24} color={color} />,
           headerShown: false
         }}
       />

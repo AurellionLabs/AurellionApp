@@ -1,33 +1,24 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Foundation from '@expo/vector-icons/Foundation';
-import Octicons from '@expo/vector-icons/Octicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Foundation from '@expo/vector-icons/Foundation';
 import { Tabs } from 'expo-router';
 
 export default function NodeLayout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: 'black' }}>
       <Tabs.Screen
-        name="addAsset"
+        name="acceptJourney"
         options={{
-          title: 'Add Asset',
-          tabBarIcon: ({ color }) => <AntDesign name="plussquareo" size={24} color={color} />,
+          title: 'Accept Journey',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="truck-delivery-outline" size={24} color={color} />,
           headerShown: false
         }}
       />
       <Tabs.Screen
-        name="acceptOrder"
+        name="yourJourneys"
         options={{
-          title: 'Accept Order',
+          title: 'Your Journeys',
           tabBarIcon: ({ color }) => <Foundation name="clipboard-notes" size={24} color={color} />,
-          headerShown: false
-        }}
-      />
-      <Tabs.Screen
-        name="yourOrders"
-        options={{
-          title: 'Your Orders',
-          tabBarIcon: ({ color }) => <Octicons name="checklist" size={24} color={color} />,
           headerShown: false
         }}
       />

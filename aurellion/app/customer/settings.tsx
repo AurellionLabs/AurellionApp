@@ -1,16 +1,19 @@
-import { Container, Label, Section } from "@/components/screens/settings/styledComponents";
-import { View, Text } from "react-native";
+import {
+  Container,
+  Label,
+  Section,
+} from "@/components/screens/settings/styledComponents";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMainContext } from "@/providers/main.provider";
-import DropDownPicker from "react-native-dropdown-picker";
-import { useEffect, useState } from "react";
+import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
+import { useState } from "react";
 import { RoleType } from "@/constants/Types";
-import { router } from 'expo-router';
+import { router } from "expo-router";
 
 export default function Settings() {
   const { isDarkMode, role, setRole } = useMainContext();
 
-  const [changeRoleOpen, setChangeRoleOpen] = useState(false)
+  const [changeRoleOpen, setChangeRoleOpen] = useState(false);
 
   const [roleItems, setRoleItems] = useState([
     { label: "Customer", value: RoleType.Customer },
@@ -18,14 +21,33 @@ export default function Settings() {
     { label: "Node", value: RoleType.Node },
   ]);
 
+  const onChangeRole = (item: ItemType<RoleType>) => {
+    switch (item.value) {
+      case RoleType.Customer:
+        setRole(RoleType.Customer)
+        router.replace("/customer/sendPackage");
+        break;
+      case RoleType.Driver:
+        setRole(RoleType.Driver)
+        router.replace("/driver/acceptJourney");
+        break;
+      case RoleType.Node:
+        setRole(RoleType.Node)
+        router.replace("/node/addAsset");
+        break;
+      default:
+        console.error("Unknown Role");
+    }
+  };
+
   const onChangeRoleOpen = () => {
     // close all other drop downs
-  }
-  
+  };
+
   return (
     <SafeAreaView>
       <Container isDarkMode={isDarkMode}>
-      <Section>
+        <Section>
           <Label isDarkMode={isDarkMode}>User Role</Label>
           <DropDownPicker
             open={changeRoleOpen}
@@ -36,6 +58,7 @@ export default function Settings() {
             setValue={setRole}
             style={{ marginBottom: 10 }}
             theme={isDarkMode ? "DARK" : "LIGHT"}
+            onSelectItem={onChangeRole}
           />
         </Section>
       </Container>

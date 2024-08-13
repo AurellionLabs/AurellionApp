@@ -8,6 +8,7 @@ export const DarkTheme = {
   background1: '#141414',
   background2: '#272A2A',
   background3: '#3B4040',
+  background4: '#292d3e',
   overlayThin: 'rgba(255, 255, 255, 0.1)',
   overlayThick: 'rgba(255, 255, 255, 0.3)',
   title: '#BD2222',

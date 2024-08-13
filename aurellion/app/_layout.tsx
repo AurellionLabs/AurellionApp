@@ -6,6 +6,7 @@ export default function RootLayout() {
     <MainProvider>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        {/* TODO: These 2 stacks will be removed */}
         {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
         {/* <Stack.Screen name="delivery" options={{ headerShown: false }} /> */}
         <Stack.Screen name="node" options={{ headerShown: false }} />

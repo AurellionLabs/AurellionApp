@@ -145,7 +145,7 @@ function WalletScreen(): JSX.Element {
           // </RedButton>
           <>
             <W3mButton />
-            <Link href="/createDelivery" asChild>
+            <Link href="/node/addAsset" asChild>
               <RedButton
                 style={{ marginTop: "7%" }}
               >

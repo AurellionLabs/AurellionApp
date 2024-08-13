@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
+import { Image } from "react-native";
 import {
   Container,
   Heading,
   Section,
   Label,
   Input,
+  ImageContainer,
 } from "@/components/screens/addAsset/StyledComponents";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
+import { useMainContext } from "@/providers/main.provider";
 
 export default function AddAsset() {
   const [assetType, setAssetType] = useState("");
@@ -16,8 +19,18 @@ export default function AddAsset() {
   const [quantity, setQuantity] = useState<string>("");
 
   const [assetTypeOpen, setAssetTypeOpen] = useState(false);
+  const [assetTypeItems, setAssetTypeItems] = useState([
+    { label: "Goat", value: "Goat" },
+    { label: "Sheep", value: "Sheep" },
+    { label: "Cow", value: "Cow" },
+  ]);
   const [assetClassOpen, setAssetClassOpen] = useState(false);
-  const isDarkMode = false;
+  const [assetClassItems, setAssetClassItems] = useState([
+    { label: "Grade A", value: "Grade A" },
+    { label: "Grade B", value: "Grade B" },
+    { label: "Grade C", value: "Grade C" },
+  ]);
+  const { isDarkMode } = useMainContext();
 
   const handleSubmit = () => {
     let parsedQuantity = parseInt(quantity, 10);
@@ -42,7 +55,12 @@ export default function AddAsset() {
   return (
     <Container isDarkMode={isDarkMode}>
       <Heading isDarkMode={isDarkMode}> Add Asset</Heading>
-
+      <ImageContainer>
+        <Image
+          source={require("@/assets/images/goat.png")}
+          style={{ height: 200, width: 200 }}
+        />
+      </ImageContainer>
       <Section>
         <Label isDarkMode={isDarkMode}>Asset Type</Label>
         <DropDownPicker
@@ -50,11 +68,7 @@ export default function AddAsset() {
           open={assetTypeOpen}
           onOpen={onAssetTypeOpen}
           value={assetType}
-          items={[
-            { label: "Goat", value: "Goat" },
-            { label: "Sheep", value: "Sheep" },
-            { label: "Cow", value: "Cow" },
-          ]}
+          items={assetTypeItems}
           setOpen={setAssetTypeOpen}
           setValue={setAssetType}
           setItems={() => {}}
@@ -70,11 +84,7 @@ export default function AddAsset() {
           open={assetClassOpen}
           onOpen={onAssetClassOpen}
           value={assetClass}
-          items={[
-            { label: "Grade A", value: "Grade A" },
-            { label: "Grade B", value: "Grade B" },
-            { label: "Grade C", value: "Grade C" },
-          ]}
+          items={assetClassItems}
           setOpen={setAssetClassOpen}
           setValue={setAssetClass}
           setItems={() => {}}

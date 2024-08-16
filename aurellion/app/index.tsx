@@ -70,35 +70,28 @@ import { DarkTheme, LightTheme } from "@/constants/Colors";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import TypingText from '@/components/common/TypingText';
 import { useMainContext } from "@/providers/main.provider";
-import { setWalletProvider } from "@/dapp-connectors/dapp-controller";
 import { BrowserProvider } from "ethers";
 
 function WalletScreen(): JSX.Element {
     const [modalVisible, setModalVisible] = useState(false);
     const [currentWCURI, setCurrentWCURI] = useState<string>();
     const { walletProvider } = useWeb3ModalProvider()
-    useEffect(() => {
-            console.log("setting provider to ",walletProvider)
-            if(walletProvider){
-            var ethersProvider = new BrowserProvider(walletProvider)
-            setWalletProvider(ethersProvider)
-            }
-    }, [walletProvider])
     const {
         setIsDarkMode,
         isDarkMode,
-        setUniversalLink,
-        setDeepLink,
-        setWcURI,
-        universalLink,
-        wcURI,
-        deepLink,
         walletAddress,
-        setWalletAddress,
+        setEthersProvider,
     } = useMainContext();
     const close = () => {
         setModalVisible(false);
     };
+    useEffect(() => {
+        console.log("setting provider to ", walletProvider)
+        if (walletProvider) {
+            var ethersProvider = new BrowserProvider(walletProvider)
+            setEthersProvider(ethersProvider);
+        }
+    }, [walletProvider])
     const backgroundColor = isDarkMode
         ? DarkTheme.background2
         : LightTheme.background2;

@@ -10,18 +10,25 @@ import {
     Value,
     Separator,
 } from '@/components/screens/confirmation/StyledComponents';
-// import { jobCreation } from '../../dapp-connectors/dapp-controller';
 import { DeliverySpeedOption, ParcelData } from '@/constants/Types';
 import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
 import Loader from '@/components/common/loader';
 import { router } from 'expo-router';
 import { jobCreation } from '@/dapp-connectors/dapp-controller';
-import { BrowserProvider, Signer } from 'ethers';
+import { BrowserProvider, Signer, ethers } from 'ethers';
 import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers-react-native';
-
+const contractABI = require('../../../aurellion-abi.json');
+const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const ConfirmationScreen: React.FC = () => {
-    const { walletAddress, recipientWalletAddress, packageDeliveryData, universalLink, deepLink, wcURI, deliveryOption } =
-        useMainContext();
+    const { walletAddress,
+        recipientWalletAddress,
+        packageDeliveryData,
+        universalLink,
+        deepLink,
+        wcURI,
+        deliveryOption,
+        ethersProvider 
+        } = useMainContext();
 
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -64,6 +71,52 @@ const ConfirmationScreen: React.FC = () => {
             setIsLoading(false);
         }
     };
+
+    const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
+
+        console.log("here")
+        var signer: Signer | undefined;
+
+        try {
+            if (ethersProvider)
+                try {
+                    signer = await ethersProvider.getSigner();
+                } catch (e) {
+                    throw new Error("getSigner failed with " + e)
+                }
+            else console.error("ethersProvider is underfined")
+            if (!signer)
+                throw new Error('Signer is undefined');
+            if (!AUSYS_ADDRESS)
+                throw new Error("AUSYS_ADDRESS is undefined")
+            const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
+            console.log("Ausys Address", AUSYS_ADDRESS)
+            const walletAddress = await signer.getAddress();
+            console.log(walletAddress)
+            console.log(recipientWalletAddress)
+            console.log(locationData)
+            console.log("calling function")
+            const jobTx = await contract.jobCreation(
+                walletAddress,
+                recipientWalletAddress,
+                locationData,
+                1,
+                10);
+            console.log("called function")
+            console.log(jobTx);
+            const receipt = await jobTx.wait();
+            console.log('Job Creation Transaction Hash:');
+            console.log('Transaction Hash:', receipt.transactionHash);
+            console.log('Block Number:', receipt.blockNumber);
+            console.log('Gas Used:', receipt.gasUsed.toString());
+            console.log('success');
+        } catch (error) {
+            console.error('Error in jobCreation:', error);
+            throw error;
+        }
+    };
+
+
 
     return (
         <>

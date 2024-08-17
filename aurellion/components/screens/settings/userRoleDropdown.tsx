@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   Label,
   Section,
 } from "@/components/screens/settings/styledComponents";
@@ -45,7 +44,6 @@ export default function UserRoleDropdown({ onChangeRoleOpen }: UserRoleDropdownP
   };
 
   return (
-      <Container isDarkMode={isDarkMode}>
         <Section>
           <Label isDarkMode={isDarkMode}>User Role</Label>
           <DropDownPicker
@@ -60,6 +58,5 @@ export default function UserRoleDropdown({ onChangeRoleOpen }: UserRoleDropdownP
             onSelectItem={onChangeRole}
           />
         </Section>
-      </Container>
   );
 }

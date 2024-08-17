@@ -1,18 +1,21 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useMainContext } from "@/providers/main.provider";
 import UserRoleDropdown from "@/components/screens/settings/userRoleDropdown";
+import { Container } from "@/components/screens/settings/styledComponents";
+import { useMainContext } from "@/providers/main.provider";
 
 export default function Settings() {
-  const { isDarkMode, role, setRole } = useMainContext();
+  const {isDarkMode} = useMainContext()
 
   const onChangeRoleOpen = () => {
-    console.log("opened")
+    console.log("opened");
     // close all other drop downs
   };
 
   return (
     <SafeAreaView>
-      <UserRoleDropdown onChangeRoleOpen={onChangeRoleOpen}/>
+      <Container isDarkMode={isDarkMode}>
+        <UserRoleDropdown onChangeRoleOpen={onChangeRoleOpen} />
+      </Container>
     </SafeAreaView>
   );
 }

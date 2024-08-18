@@ -18,7 +18,7 @@ import {
   RedButton,
   RedButtonText,
   StyledText,
-} from "@/components/common/StyledComponents";
+} from "@/components/common/styledComponents";
 import { jobCreation } from "../../../dapp-connectors/dapp-controller";
 import { useMainContext } from "@/providers/main.provider";
 import { DeliverySpeedOption } from "@/constants/Types";
@@ -88,7 +88,7 @@ const DeliveryMenu = () => {
       ...prevState,
       deliverySpeed: selectedDeliverOption,
     }));
-    router.push({pathname: '/delivery/customer/confirmation'})
+    router.push({ pathname: "/delivery/customer/confirmation" });
   };
 
   return (

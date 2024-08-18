@@ -1,11 +1,11 @@
-import React from 'react';
-import { TextRow, StyledSelectedBox } from './StyledComponents';
-import { Journey, JourneyStatus } from '@/constants/Types';
-import { StyledText } from '@/components/common/StyledComponents';
-import { useDeliveryContext } from '@/providers/delivery.provider';
-import { useMainContext } from '@/providers/main.provider'
-import { router } from 'expo-router';
-import { SCREEN_TEXT } from '@/constants/ScreenText';
+import React from "react";
+import { TextRow, StyledSelectedBox } from "./StyledComponents";
+import { Journey, JourneyStatus } from "@/constants/Types";
+import { StyledText } from "@/components/common/styledComponents";
+import { useDeliveryContext } from "@/providers/delivery.provider";
+import { useMainContext } from "@/providers/main.provider";
+import { router } from "expo-router";
+import { SCREEN_TEXT } from "@/constants/ScreenText";
 
 type BoxProps = {
   journey: Journey;
@@ -15,61 +15,96 @@ type BoxProps = {
 
 const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
   const { isDarkMode } = useMainContext();
-  const {setSelectedJourney, setSignatureScreenHeading} = useDeliveryContext();
+  const { setSelectedJourney, setSignatureScreenHeading } =
+    useDeliveryContext();
 
   if (!handOn && !handOff) {
-    console.error("At least one of 'handOn' or 'handOff' prop must be provided");
+    console.error(
+      "At least one of 'handOn' or 'handOff' prop must be provided"
+    );
     return null;
   }
 
   const onPress = () => {
-    setSelectedJourney(journey)
+    setSelectedJourney(journey);
     if (handOn) {
-      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON)
+      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON);
     } else if (handOff) {
-      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF)
+      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF);
     }
-    router.push({pathname: '/delivery/signature'})
+    router.push({ pathname: "/delivery/signature" });
   };
   return (
     <StyledSelectedBox isDarkMode={isDarkMode} onPress={onPress}>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "20%", fontWeight: "bold", marginRight: 8 }}
+        >
           Job ID:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "80%" }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {journey.jobId}
         </StyledText>
       </TextRow>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "20%", fontWeight: "bold", marginRight: 8 }}
+        >
           Status:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "80%" }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {journey.currentStatus == JourneyStatus.PENDING
-            ? 'Pending'
+            ? "Pending"
             : journey.currentStatus == JourneyStatus.IN_PROGRESS
-            ? 'InProgress'
+            ? "InProgress"
             : journey.currentStatus == JourneyStatus.COMPLETED
-            ? 'Completed'
+            ? "Completed"
             : journey.currentStatus == JourneyStatus.CANCELED
-            ? 'Canceled'
-            : 'Unknown Status'}
+            ? "Canceled"
+            : "Unknown Status"}
         </StyledText>
       </TextRow>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "20%", fontWeight: "bold", marginRight: 8 }}
+        >
           Start:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "80%" }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {journey.parcelData.startName}
         </StyledText>
       </TextRow>
       <TextRow>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '20%', fontWeight: 'bold', marginRight: 8 }}>
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "20%", fontWeight: "bold", marginRight: 8 }}
+        >
           End:
         </StyledText>
-        <StyledText isDarkMode={isDarkMode} style={{ width: '80%' }} numberOfLines={1} ellipsizeMode="tail">
+        <StyledText
+          isDarkMode={isDarkMode}
+          style={{ width: "80%" }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {journey.parcelData.endName}
         </StyledText>
       </TextRow>

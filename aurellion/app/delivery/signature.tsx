@@ -5,7 +5,7 @@ import {
   Button,
   ButtonText,
   StyledText,
-} from "@/components/common/StyledComponents";
+} from "@/components/common/styledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import LottieView from "lottie-react-native";
 import { router } from "expo-router";
@@ -109,7 +109,7 @@ const SignatureScreen = () => {
           source={require("@/assets/animations/success.json")}
           autoPlay
           loop={false}
-          onAnimationFinish={() => router.push({pathname: '/jobs'})}
+          onAnimationFinish={() => router.push({ pathname: "/jobs" })}
         />
       ) : isSigned ? (
         <Container

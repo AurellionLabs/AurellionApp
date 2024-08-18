@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { TitleText } from './StyledComponents';
+import React, { useState, useEffect } from "react";
+import { TitleText } from "./styledComponents";
 
 function TypingText({ text, speed, isDarkMode }) {
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState("");
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

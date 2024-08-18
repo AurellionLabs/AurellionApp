@@ -1,37 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import SwitchSelector from 'react-native-switch-selector';
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { LightTheme, DarkTheme } from '@/constants/Colors';
+import React, { useEffect, useState } from "react";
+import SwitchSelector from "react-native-switch-selector";
+import { ScrollView, StyleSheet, Text } from "react-native";
+import { LightTheme, DarkTheme } from "@/constants/Colors";
 import {
   fetchDriverUnassignedJourneys,
   fetchDriverAssignedJourneys,
   fetchCustomerJobs,
   fetchReceiverJobs,
-} from '../../../dapp-connectors/dapp-controller';
-import { useMainContext } from '@/providers/main.provider';
-import { Journey, UserType } from '@/constants/Types';
-import CustomerJobItem from './customerJobItem';
-import DriverJobItem from './driverJobItem';
-import { Container } from '@/components/common/StyledComponents';
-import Loader from '@/components/common/loader';
-import Accordion from './accordian';
+} from "../../../dapp-connectors/dapp-controller";
+import { useMainContext } from "@/providers/main.provider";
+import { Journey, UserType } from "@/constants/Types";
+import CustomerJobItem from "./customerJobItem";
+import DriverJobItem from "./driverJobItem";
+import { Container } from "@/components/common/styledComponents";
+import Loader from "@/components/common/loader";
+import Accordion from "./accordian";
 
 const Menu = () => {
-  const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
+  const {
+    userType,
+    setUserType,
+    refetchDataFromAPI,
+    setRefetchDataFromAPI,
+    isDarkMode,
+  } = useMainContext();
   const [switchOption, setSwitchOption] = useState(0);
   const [createdJobs, setCreatedJobs] = useState<Journey[]>([]);
   const [receiverJobs, setReceiveJobs] = useState<Journey[]>([]);
-  const [unassignedDriverJobs, setUnassignedDriverJobs] = useState<Journey[]>([]);
+  const [unassignedDriverJobs, setUnassignedDriverJobs] = useState<Journey[]>(
+    []
+  );
   const [assignedDriverJobs, setAssignedDriverJobs] = useState<Journey[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const options = [
-    { label: 'Customer', value: 'customer', accessibilityLabel: 'Customer' },
-    { label: 'Driver', value: 'driver', accessibilityLabel: 'Driver' },
+    { label: "Customer", value: "customer", accessibilityLabel: "Customer" },
+    { label: "Driver", value: "driver", accessibilityLabel: "Driver" },
   ];
 
-  const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
+  const backgroundColor = isDarkMode
+    ? DarkTheme.background2
+    : LightTheme.background2;
 
   const fetchAndSetJourneys = async () => {
     let createdJourneys: Journey[] = [];
@@ -40,13 +50,13 @@ const Menu = () => {
     let assignedDriverJourneys: Journey[] = [];
     setIsLoading(true);
     try {
-      if (userType === 'customer') {
+      if (userType === "customer") {
         setSwitchOption(0);
         // createdJourneys = await fetchCustomerJobs();
         // setCreatedJobs(createdJourneys);
         // receiveJourneys = await fetchReceiverJobs();
         // setReceiveJobs(receiveJourneys);
-      } else if (userType === 'driver') {
+      } else if (userType === "driver") {
         setSwitchOption(1);
         // unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
         // setUnassignedDriverJobs(unassignedDriverJourneys);
@@ -55,7 +65,7 @@ const Menu = () => {
       }
     } catch (error) {
       setIsError(true);
-      setErrorMessage('Error Fetching Jobs');
+      setErrorMessage("Error Fetching Jobs");
     } finally {
       setIsLoading(false);
     }
@@ -67,13 +77,13 @@ const Menu = () => {
     let unassignedDriverJourneys: Journey[] = [];
     let assignedDriverJourneys: Journey[] = [];
     try {
-      if (userType === 'customer') {
+      if (userType === "customer") {
         setSwitchOption(0);
         // createdJourneys = await fetchCustomerJobs();
         // setCreatedJobs(createdJourneys);
         // receiveJourneys = await fetchReceiverJobs();
         // setReceiveJobs(receiveJourneys);
-      } else if (userType === 'driver') {
+      } else if (userType === "driver") {
         setSwitchOption(1);
         // unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
         // setUnassignedDriverJobs(unassignedDriverJourneys);
@@ -81,7 +91,7 @@ const Menu = () => {
         // setAssignedDriverJobs(assignedDriverJourneys);
       }
     } catch (error) {
-      console.log('Error Fetching Jobs');
+      console.log("Error Fetching Jobs");
     }
   };
 
@@ -97,9 +107,14 @@ const Menu = () => {
   }, [refetchDataFromAPI]);
 
   return (
-    <Container styles={{ width: '100%', backgroundColor: backgroundColor }}>
+    <Container styles={{ width: "100%", backgroundColor: backgroundColor }}>
       {isError || isLoading ? (
-        <Loader isLoading={isLoading} isError={isError} setIsError={setIsError} errorText={errorMessage} />
+        <Loader
+          isLoading={isLoading}
+          isError={isError}
+          setIsError={setIsError}
+          errorText={errorMessage}
+        />
       ) : (
         <>
           <SwitchSelector
@@ -113,12 +128,12 @@ const Menu = () => {
             options={options}
             accessibilityLabel="user-type-switch-selector"
           />
-          {userType === 'customer' && (
+          {userType === "customer" && (
             <ScrollView style={styles.container}>
               <Accordion
                 data={[
                   {
-                    title: 'Send Parcels',
+                    title: "Send Parcels",
                     content: (
                       <>
                         {createdJobs.map((job) => (
@@ -128,7 +143,7 @@ const Menu = () => {
                     ),
                   },
                   {
-                    title: 'Receive Parcels',
+                    title: "Receive Parcels",
                     content: (
                       <>
                         {receiverJobs.map((job) => (
@@ -141,12 +156,12 @@ const Menu = () => {
               />
             </ScrollView>
           )}
-          {userType === 'driver' && (
+          {userType === "driver" && (
             <ScrollView style={styles.container}>
               <Accordion
                 data={[
                   {
-                    title: 'Assigned Jobs',
+                    title: "Assigned Jobs",
                     content: (
                       <>
                         {assignedDriverJobs.map((job) => (
@@ -156,7 +171,7 @@ const Menu = () => {
                     ),
                   },
                   {
-                    title: 'Available Jobs',
+                    title: "Available Jobs",
                     content: (
                       <>
                         {unassignedDriverJobs.map((job) => (
@@ -177,7 +192,7 @@ const Menu = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
   },
 });
 

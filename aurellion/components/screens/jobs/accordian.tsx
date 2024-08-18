@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import type { PropsWithChildren } from 'react';
-import { StyleSheet, TouchableOpacity, View, LayoutAnimation, Image } from 'react-native';
-import { StyledText } from '@/components/common/StyledComponents';
-import { useMainContext } from '@/providers/main.provider';
+import React, { useState } from "react";
+import type { PropsWithChildren } from "react";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  LayoutAnimation,
+  Image,
+} from "react-native";
+import { StyledText } from "@/components/common/styledComponents";
+import { useMainContext } from "@/providers/main.provider";
 type AccordionData = {
   title: string;
   expanded: boolean;
@@ -10,7 +16,12 @@ type AccordionData = {
   children: React.ReactNode;
 };
 
-function AccordionItem({ children, title, expanded, onHeaderPress }: AccordionData): JSX.Element {
+function AccordionItem({
+  children,
+  title,
+  expanded,
+  onHeaderPress,
+}: AccordionData): JSX.Element {
   const { isDarkMode } = useMainContext();
   const body = <View style={styles.accordBody}>{children}</View>;
 
@@ -23,23 +34,23 @@ function AccordionItem({ children, title, expanded, onHeaderPress }: AccordionDa
         {expanded ? (
           isDarkMode ? (
             <Image
-              source={require('@/assets/images/chevron-up-white.png')}
+              source={require("@/assets/images/chevron-up-white.png")}
               style={{ height: 24, width: 24 }}
             />
           ) : (
             <Image
-              source={require('@/assets/images/chevron-up-black.png')}
+              source={require("@/assets/images/chevron-up-black.png")}
               style={{ height: 24, width: 24 }}
             />
           )
         ) : isDarkMode ? (
           <Image
-            source={require('@/assets/images/chevron-down-white.png')}
+            source={require("@/assets/images/chevron-down-white.png")}
             style={{ height: 24, width: 24 }}
           />
         ) : (
           <Image
-            source={require('@/assets/images/chevron-down-black.png')}
+            source={require("@/assets/images/chevron-down-black.png")}
             style={{ height: 24, width: 24 }}
           />
         )}
@@ -85,14 +96,14 @@ function Accordion({ data }: AccordionProps): JSX.Element {
 const styles = StyleSheet.create({
   accordContainer: {
     paddingBottom: 4,
-    width: '100%',
+    width: "100%",
   },
   accordHeader: {
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 12,
     paddingVertical: 7,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   accordTitle: {
     fontSize: 17,

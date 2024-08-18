@@ -66,8 +66,8 @@ import {
 } from "react-native";
 import { Link } from "expo-router";
 import { DarkTheme, LightTheme } from "@/constants/Colors";
-import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
-import TypingText from '@/components/common/TypingText';
+import { RedButton, RedButtonText } from "@/components/common/styledComponents";
+import TypingText from "@/components/common/typingText";
 import { useMainContext } from "@/providers/main.provider";
 
 function WalletScreen(): JSX.Element {
@@ -146,9 +146,7 @@ function WalletScreen(): JSX.Element {
           <>
             <W3mButton />
             <Link href="/customer/sendPackage" asChild>
-              <RedButton
-                style={{ marginTop: "7%" }}
-              >
+              <RedButton style={{ marginTop: "7%" }}>
                 <RedButtonText>Home Screen</RedButtonText>
               </RedButton>
             </Link>

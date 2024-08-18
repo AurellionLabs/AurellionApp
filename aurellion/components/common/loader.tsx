@@ -1,10 +1,8 @@
-import React, { Dispatch, SetStateAction} from 'react';
-import { Modal, StyleSheet, Text, View, useColorScheme } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { Button, ButtonText } from '@/components/common/StyledComponents';
-import { LightTheme } from '@/constants/Colors';
-
-
+import React, { Dispatch, SetStateAction } from "react";
+import { Modal, StyleSheet, Text, View, useColorScheme } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
+import { Button, ButtonText } from "@/components/common/styledComponents";
+import { LightTheme } from "@/constants/Colors";
 
 interface LoaderProps {
   isLoading?: boolean;
@@ -13,14 +11,20 @@ interface LoaderProps {
   setIsError?: Dispatch<SetStateAction<boolean>>;
   errorText?: string;
 }
-const Loader = ({ isLoading, spinnerText, isError, setIsError, errorText }: LoaderProps) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const Loader = ({
+  isLoading,
+  spinnerText,
+  isError,
+  setIsError,
+  errorText,
+}: LoaderProps) => {
+  const isDarkMode = useColorScheme() === "dark";
 
   return (
     <>
       <Spinner
         visible={isLoading ?? false}
-        textContent={spinnerText ?? 'Loading...'}
+        textContent={spinnerText ?? "Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
       <Modal
@@ -50,31 +54,31 @@ const Loader = ({ isLoading, spinnerText, isError, setIsError, errorText }: Load
 
 const styles = StyleSheet.create({
   spinnerTextStyle: {
-    color: '#FFF',
+    color: "#FFF",
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 10,
   },
   instructions: {
-    textAlign: 'center',
-    color: '#333333',
+    textAlign: "center",
+    color: "#333333",
     marginBottom: 5,
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -89,19 +93,19 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 

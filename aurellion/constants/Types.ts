@@ -43,6 +43,11 @@ export type Location = {
     Driver,
     Node
   }
+
+  export enum NodeStatus {
+    Active,
+    Inactive
+  }
   
   export type DeliveryOption = {
     deliverySpeed?: DeliverySpeedOption;

@@ -7,9 +7,12 @@ import {
   Section,
   Label,
   Input,
+} from "@/components/screens/addAsset/styledComponents";
+import {
   ImageContainer,
-} from "@/components/screens/addAsset/StyledComponents";
-import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
+  RedButton,
+  RedButtonText,
+} from "@/components/common/styledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import { useMainContext } from "@/providers/main.provider";
 import { SafeAreaView } from "react-native-safe-area-context";

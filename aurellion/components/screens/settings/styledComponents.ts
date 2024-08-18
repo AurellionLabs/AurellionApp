@@ -8,6 +8,7 @@ interface ThemedProps {
 
 export const Container = styled.View<ThemedProps>`
   padding-horizontal: 15px;
+  padding-vertical: 25px;
   height: 100%;
   background-color: ${({ isDarkMode }) =>
     isDarkMode ? DarkTheme.background1 : LightTheme.background1};

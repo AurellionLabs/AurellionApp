@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Label,
-  Section,
-} from "@/components/screens/settings/styledComponents";
+import { Label, Section } from "@/components/screens/settings/styledComponents";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import { useState } from "react";
 import { RoleType } from "@/constants/Types";
@@ -11,12 +8,16 @@ import { useMainContext } from "@/providers/main.provider";
 
 type UserRoleDropdownProps = {
   onChangeRoleOpen: () => void;
+  changeRoleOpen: boolean;
+  setChangeRoleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function UserRoleDropdown({ onChangeRoleOpen }: UserRoleDropdownProps) {
+export default function UserRoleDropdown({
+  onChangeRoleOpen,
+  changeRoleOpen,
+  setChangeRoleOpen,
+}: UserRoleDropdownProps) {
   const { isDarkMode, role, setRole } = useMainContext();
-
-  const [changeRoleOpen, setChangeRoleOpen] = useState(false);
 
   const [roleItems, setRoleItems] = useState([
     { label: "Customer", value: RoleType.Customer },
@@ -44,19 +45,21 @@ export default function UserRoleDropdown({ onChangeRoleOpen }: UserRoleDropdownP
   };
 
   return (
-        <Section>
-          <Label isDarkMode={isDarkMode}>User Role</Label>
-          <DropDownPicker
-            open={changeRoleOpen}
-            onOpen={onChangeRoleOpen}
-            value={role}
-            items={roleItems}
-            setOpen={setChangeRoleOpen}
-            setValue={setRole}
-            style={{ marginBottom: 10 }}
-            theme={isDarkMode ? "DARK" : "LIGHT"}
-            onSelectItem={onChangeRole}
-          />
-        </Section>
+    <Section>
+      <Label isDarkMode={isDarkMode}>User Role</Label>
+      <DropDownPicker
+        open={changeRoleOpen}
+        onOpen={onChangeRoleOpen}
+        value={role}
+        items={roleItems}
+        setOpen={setChangeRoleOpen}
+        setValue={setRole}
+        style={{ marginBottom: 10 }}
+        theme={isDarkMode ? "DARK" : "LIGHT"}
+        onSelectItem={onChangeRole}
+        listMode="SCROLLVIEW"
+        zIndex={100}
+      />
+    </Section>
   );
 }

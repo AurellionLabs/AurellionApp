@@ -134,3 +134,9 @@ export const Logo = styled.Image`
   width: 250px;
   height: 250px;
 `;
+
+export const ImageContainer = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

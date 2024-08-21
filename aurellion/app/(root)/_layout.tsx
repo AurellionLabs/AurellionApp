@@ -5,9 +5,9 @@ export default function DeliveryLayout() {
   return (
     <DeliveryProvider>
       <Stack>
-        <Stack.Screen name="customer" options={{ headerShown: false }} />
+        <Stack.Screen name="node" options={{ headerShown: false }} />
         <Stack.Screen name="driver" options={{ headerShown: false }} />
-        <Stack.Screen name="signature" options={{ headerShown: false }} />
+        <Stack.Screen name="customer" options={{ headerShown: false }} />
       </Stack>
     </DeliveryProvider>
   );

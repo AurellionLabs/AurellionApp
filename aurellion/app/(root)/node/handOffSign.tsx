@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function AddAsset() {
   return (
     <SafeAreaView>
-      <Text>Accept Order Tab</Text>
+      <Text>Node handoff sign</Text>
     </SafeAreaView>
   );
 }

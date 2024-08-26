@@ -10,13 +10,18 @@ import {
 } from "@/components/screens/signature/styledComponents";
 import { useMainContext } from "@/providers/main.provider";
 import { useNodeContext } from "@/providers/node.provider";
+import { useLocalSearchParams } from "expo-router";
 import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddAsset() {
   const { isDarkMode } = useMainContext();
-  const { selectedAvailableOrder } = useNodeContext();
+  const { availableOrders } = useNodeContext();
+  const { id } = useLocalSearchParams<{ id: string }>();
 
+  // TODO: Hack - need to implement finding order from list of orders by id.
+  const orderId = parseInt(id as string, 10)
+  
   const acceptOrder = () => {
     console.log("Accepted order");
   };
@@ -37,16 +42,16 @@ export default function AddAsset() {
         </ImageContainer>
         <TextContainer>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Buyer Name: {selectedAvailableOrder?.buyerName}
+            Buyer Name: {availableOrders[orderId]?.buyerName}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Asset Type: {selectedAvailableOrder?.assetType}
+            Asset Type: {availableOrders[orderId]?.assetType}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Asset Class: {selectedAvailableOrder?.assetClass}
+            Asset Class: {availableOrders[orderId]?.assetClass}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Quantity: {selectedAvailableOrder?.quantity}
+            Quantity: {availableOrders[orderId]?.quantity}
           </StyledText>
         </TextContainer>
         <RedButton

@@ -6,10 +6,6 @@ interface INodeContext {
   setAvailableOrders: Dispatch<SetStateAction<Order[] | []>>;
   yourOrders: Order[] | [];
   setYourOrders: Dispatch<SetStateAction<Order[] | []>>;
-  selectedAvailableOrder: Order | undefined;
-  setSelectedAvailableOrder: Dispatch<SetStateAction<Order | undefined>>;
-  selectedYourOrder: Order | undefined;
-  setSelectedYourOrder: Dispatch<SetStateAction<Order | undefined>>;
 }
 
 export const NodeContext = React.createContext<INodeContext>({
@@ -17,10 +13,6 @@ export const NodeContext = React.createContext<INodeContext>({
   setAvailableOrders: () => {},
   yourOrders: [],
   setYourOrders: () => {},
-  selectedAvailableOrder: undefined,
-  setSelectedAvailableOrder: () => {},
-  selectedYourOrder: undefined,
-  setSelectedYourOrder: () => {},
 });
 
 interface NodeProviderProps {
@@ -30,12 +22,7 @@ interface NodeProviderProps {
 const NodeProvider = ({ children }: NodeProviderProps) => {
   const [availableOrders, setAvailableOrders] = useState<Order[] | []>([]);
   const [yourOrders, setYourOrders] = useState<Order[] | []>([]);
-  const [selectedAvailableOrder, setSelectedAvailableOrder] = useState<
-    Order | undefined
-  >(undefined);
-  const [selectedYourOrder, setSelectedYourOrder] = useState<Order | undefined>(
-    undefined
-  );
+
   return (
     <NodeContext.Provider
       value={{
@@ -43,10 +30,6 @@ const NodeProvider = ({ children }: NodeProviderProps) => {
         setAvailableOrders,
         yourOrders,
         setYourOrders,
-        selectedAvailableOrder,
-        setSelectedAvailableOrder,
-        selectedYourOrder,
-        setSelectedYourOrder,
       }}
     >
       {children}

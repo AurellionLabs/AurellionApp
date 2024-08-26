@@ -8,13 +8,13 @@ import { useEffect } from "react";
 
 export default function AddAsset() {
   const { isDarkMode } = useMainContext();
-  const { availableOrders, setAvailableOrders, setSelectedAvailableOrder } =
-    useNodeContext();
+  const { availableOrders, setAvailableOrders } = useNodeContext();
 
   useEffect(() => {
     // TODO: load and set available orders from chain
     setAvailableOrders([
       {
+        id: "0",
         buyerName: "Oman Meat Distributor Ltd.",
         assetClass: "Goat",
         assetType: "Grade A",
@@ -24,8 +24,9 @@ export default function AddAsset() {
   }, []);
 
   const onPress = () => {
-    setSelectedAvailableOrder(availableOrders[0])
-    router.push({ pathname: "/node/acceptOrderSign" });
+    router.push({
+      pathname: `/node/acceptOrderSign/${availableOrders[0]?.id}`,
+    });
   };
 
   return (

@@ -56,6 +56,7 @@ export type Location = {
   };
 
   export type Order = {
+    id: string,
     buyerName: string,
     assetType: string,
     assetClass: string,

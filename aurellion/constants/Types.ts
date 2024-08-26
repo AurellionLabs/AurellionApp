@@ -54,4 +54,11 @@ export type Location = {
     price?: number;
     eta?: number;
   };
+
+  export type Order = {
+    buyerName: string,
+    assetType: string,
+    assetClass: string,
+    quantity: number
+  }
   

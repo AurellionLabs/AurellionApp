@@ -60,7 +60,7 @@ export default function AddAsset() {
   return (
     <SafeAreaView>
       <Container isDarkMode={isDarkMode}>
-        <Heading isDarkMode={isDarkMode}> Add Asset</Heading>
+        <Heading isDarkMode={isDarkMode}>Add Asset</Heading>
         <ImageContainer>
           <Image
             source={require("@/assets/images/goat.png")}

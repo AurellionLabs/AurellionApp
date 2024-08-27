@@ -4,7 +4,7 @@ export default function NodeLayout() {
   return (
     <Stack screenOptions={{headerShown: false}}>
       <Stack.Screen name="acceptOrderSign/[id]" />
-      <Stack.Screen name="handOffSign" />
+      <Stack.Screen name="handOffSign/[id]" />
     </Stack>
   );
 }

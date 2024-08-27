@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text } from "react-native";
+import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OrderItem } from "@/components/screens/orders/styledComponents";
 import { useMainContext } from "@/providers/main.provider";
@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import { useNodeContext } from "@/providers/node.provider";
 import { useEffect } from "react";
 
-export default function AddAsset() {
+export default function AcceptOrder() {
   const { isDarkMode } = useMainContext();
   const { availableOrders, setAvailableOrders } = useNodeContext();
 
@@ -24,6 +24,7 @@ export default function AddAsset() {
   }, []);
 
   const onPress = () => {
+    // pass id as search param to access it in signature screen
     router.push({
       pathname: `/node/acceptOrderSign/${availableOrders[0]?.id}`,
     });

@@ -14,16 +14,16 @@ import { useLocalSearchParams } from "expo-router";
 import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function AcceptOrderSign() {
+export default function HandOffSign() {
   const { isDarkMode } = useMainContext();
-  const { availableOrders } = useNodeContext();
+  const { yourOrders } = useNodeContext();
   const { id } = useLocalSearchParams<{ id: string }>();
 
   // TODO: Hack - need to implement finding order object from list of orders by id.
   const orderId = parseInt(id as string, 10)
   
-  const acceptOrder = () => {
-    console.log("Accepted order");
+  const handOffOrder = () => {
+    console.log("Hand off order");
   };
   return (
     <SafeAreaView>
@@ -32,7 +32,7 @@ export default function AcceptOrderSign() {
           isDarkMode={isDarkMode}
           style={{ marginBottom: 80, fontSize: 18, textAlign: "center" }}
         >
-          Please confirm you have liquidity to fulfill order
+          Please confirm order hand off to driver
         </StyledText>
         <ImageContainer style={{ marginBottom: 30 }}>
           <Image
@@ -42,23 +42,23 @@ export default function AcceptOrderSign() {
         </ImageContainer>
         <TextContainer>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Buyer Name: {availableOrders[orderId]?.buyerName}
+            Buyer Name: {yourOrders[orderId]?.buyerName}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Asset Type: {availableOrders[orderId]?.assetType}
+            Asset Type: {yourOrders[orderId]?.assetType}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Asset Class: {availableOrders[orderId]?.assetClass}
+            Asset Class: {yourOrders[orderId]?.assetClass}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Quantity: {availableOrders[orderId]?.quantity}
+            Quantity: {yourOrders[orderId]?.quantity}
           </StyledText>
         </TextContainer>
         <RedButton
-          onPress={acceptOrder}
+          onPress={handOffOrder}
           style={{ alignSelf: "center", marginTop: "7%" }}
         >
-          <RedButtonText>Accept Order</RedButtonText>
+          <RedButtonText>Handoff Order</RedButtonText>
         </RedButton>
       </Container>
     </SafeAreaView>

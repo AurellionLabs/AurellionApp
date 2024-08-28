@@ -1,6 +1,5 @@
 import { Container } from "@/components/screens/jobs/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
-import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DriverJobItem from "@/components/screens/jobs/driverJobItem";
 import { useDriverContext } from "@/providers/driver.provider";

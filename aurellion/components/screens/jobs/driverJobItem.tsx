@@ -29,14 +29,12 @@ const CustomerJobItem: React.FC<BoxProps> = ({
 
   const onPress = () => {
     if (available) {
-      router.push({ pathname: `/driver/acceptJourney/${journey.jobId}` });
+      router.push({ pathname: `/driver/acceptJourneySign/${journey.jobId}` });
     } else if (assigned) {
       if (journey.currentStatus == JourneyStatus.PENDING) {
-        setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON);
-        router.push({ pathname: "/delivery/signature" });
+        router.push({ pathname: `/driver/handOnSign/${journey.jobId}` });
       } else if (journey.currentStatus == JourneyStatus.IN_PROGRESS) {
-        setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_OFF);
-        router.push({ pathname: "/delivery/signature" });
+        router.push({ pathname: `/driver/handOffSign/${journey.jobId}` });
       }
     }
   };

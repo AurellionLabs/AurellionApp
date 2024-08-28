@@ -1,42 +1,34 @@
-import {
-  Button,
-  ButtonText,
-  ImageContainer,
-  StyledText,
-} from "@/components/common/styledComponents";
-import {
-  Container,
-  TextContainer,
-} from "@/components/screens/signature/styledComponents";
+import { Button, ButtonText, ImageContainer, StyledText } from "@/components/common/styledComponents";
+import { Container, TextContainer } from "@/components/screens/signature/styledComponents";
 import { LightTheme } from "@/constants/Colors";
 import { Journey } from "@/constants/Types";
-import { useDriverContext } from "@/providers/driver.provider";
+import { useCustomerContext } from "@/providers/customer.provider";
 import { useMainContext } from "@/providers/main.provider";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const handOnSign = () => {
+const handOffSign = () => {
   const { isDarkMode } = useMainContext();
   const { journeyId } = useLocalSearchParams<{ journeyId: string }>();
-  const { yourJourneys } = useDriverContext();
+  const { receivingPackages } = useCustomerContext();
 
   const [journey, setJourney] = useState<Journey | undefined>(undefined);
 
   useEffect(() => {
     if (journeyId) {
       // TODO: journey.jobId needs to be renamed to journey.id for consistency
-      const foundOrder = yourJourneys.find(
+      const foundOrder = receivingPackages.find(
         (journey) => journey.jobId === journeyId
       );
       setJourney(foundOrder);
     }
-  }, [journeyId, yourJourneys]);
+  }, [journeyId, receivingPackages]);
 
-  const pickupPackage = () => {
-    console.log("Dropoff package");
-  };
+  const receivedPackage = () => {
+    console.log("Received package")
+  }
   return (
     <SafeAreaView>
       <Container isDarkMode={isDarkMode}>
@@ -49,7 +41,7 @@ const handOnSign = () => {
             fontWeight: 700,
           }}
         >
-          Please confirm package pickup
+          Please confirm you received your package
         </StyledText>
         <ImageContainer style={{ marginBottom: 30 }}>
           <Image
@@ -75,9 +67,9 @@ const handOnSign = () => {
           <Button
             isDarkMode={isDarkMode}
             backgroundColor={LightTheme.accent}
-            onPress={pickupPackage}
+            onPress={receivedPackage}
           >
-            <ButtonText>Pickup Package</ButtonText>
+            <ButtonText>Received Package</ButtonText>
           </Button>
         </View>
       </Container>
@@ -85,4 +77,4 @@ const handOnSign = () => {
   );
 };
 
-export default handOnSign;
+export default handOffSign;

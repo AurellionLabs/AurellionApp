@@ -9,6 +9,14 @@ export default function CustomerLayout() {
         name="recepientWalletAddress"
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="package/handOnSign/[journeyId]"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="package/handOffSign/[journeyId]"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

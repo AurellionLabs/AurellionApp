@@ -14,8 +14,6 @@ type BoxProps = {
 
 const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
   const { isDarkMode } = useMainContext();
-  // const { setSelectedJourney, setSignatureScreenHeading } =
-  //   useDeliveryContext();
 
   if (!handOn && !handOff) {
     console.error(
@@ -25,13 +23,15 @@ const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
   }
 
   const onPress = () => {
-    // setSelectedJourney(journey);
-    // if (handOn) {
-    //   setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON);
-    // } else if (handOff) {
-    //   setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF);
-    // }
-    router.push({ pathname: "/delivery/signature" });
+    if (handOn) {
+      router.push({
+        pathname: `customer/package/handOnSign/${journey.jobId}`,
+      });
+    } else if (handOff) {
+      router.push({
+        pathname: `customer/package/handOffSign/${journey.jobId}`,
+      });
+    }
   };
   return (
     <StyledSelectedBox isDarkMode={isDarkMode} onPress={onPress}>

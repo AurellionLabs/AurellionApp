@@ -88,7 +88,7 @@ const AssignDriverScreen = () => {
             </StyledText>
             <ImageContainer style={{ marginBottom: 30 }}>
               <Image
-                source={require("@/assets/images/goat.png")}
+                source={require("@/assets/images/delivery-truck.png")}
                 style={{ height: 200, width: 200 }}
               />
             </ImageContainer>
@@ -112,7 +112,7 @@ const AssignDriverScreen = () => {
                 backgroundColor={LightTheme.accent}
                 onPress={acceptJob}
               >
-                <ButtonText>Accept Job</ButtonText>
+                <ButtonText>Accept Journey</ButtonText>
               </Button>
             </View>
           </>

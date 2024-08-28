@@ -19,8 +19,6 @@ const CustomerJobItem: React.FC<BoxProps> = ({
   available,
 }) => {
   const { isDarkMode } = useMainContext();
-  // const { setSelectedJourney, setSignatureScreenHeading } =
-  //   useDeliveryContext();
 
   if (!assigned && !available) {
     console.error(
@@ -31,7 +29,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({
 
   const onPress = () => {
     if (available) {
-      router.push({ pathname: `/driver/assignDriver/${journey.jobId}` });
+      router.push({ pathname: `/driver/acceptJourney/${journey.jobId}` });
     } else if (assigned) {
       if (journey.currentStatus == JourneyStatus.PENDING) {
         setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON);

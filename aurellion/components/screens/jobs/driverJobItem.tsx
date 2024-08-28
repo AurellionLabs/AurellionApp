@@ -3,8 +3,6 @@ import { TextRow, StyledSelectedBox } from "./StyledComponents";
 import { Journey, JourneyStatus } from "@/constants/Types";
 import { StyledText } from "@/components/common/styledComponents";
 import { useMainContext } from "@/providers/main.provider";
-import { useDeliveryContext } from "@/providers/delivery.provider";
-import { SCREEN_TEXT } from "@/constants/ScreenText";
 import { router } from "expo-router";
 
 type BoxProps = {
@@ -39,10 +37,7 @@ const CustomerJobItem: React.FC<BoxProps> = ({
     }
   };
   return (
-    <StyledSelectedBox
-      isDarkMode={isDarkMode}
-      onPress={onPress}
-    >
+    <StyledSelectedBox isDarkMode={isDarkMode} onPress={onPress}>
       <TextRow>
         <StyledText
           isDarkMode={isDarkMode}

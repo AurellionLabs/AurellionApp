@@ -1,13 +1,21 @@
 import Accordion from "@/components/screens/jobs/accordian";
 import CustomerJobItem from "@/components/screens/jobs/customerJobItem";
+import { Container } from "@/components/screens/jobs/StyledComponents";
 import { JourneyStatus } from "@/constants/Types";
 import { useCustomerContext } from "@/providers/customer.provider";
+import { useMainContext } from "@/providers/main.provider";
 import { useEffect } from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function YourPackages() {
-  const { sendingPackages, receivingPackages, setSendingPackages, setReceivingPackages } = useCustomerContext();
+  const { isDarkMode } = useMainContext();
+  const {
+    sendingPackages,
+    receivingPackages,
+    setSendingPackages,
+    setReceivingPackages,
+  } = useCustomerContext();
 
   useEffect(() => {
     // TODO: load and set available orders from chain
@@ -85,9 +93,10 @@ export default function YourPackages() {
       },
     ]);
   }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <Container isDarkMode={isDarkMode}>
         <Accordion
           data={[
             {
@@ -95,7 +104,11 @@ export default function YourPackages() {
               content: (
                 <>
                   {sendingPackages.map((journey) => (
-                    <CustomerJobItem key={journey.jobId} journey={journey} handOn />
+                    <CustomerJobItem
+                      key={journey.jobId}
+                      journey={journey}
+                      handOn
+                    />
                   ))}
                 </>
               ),
@@ -105,14 +118,18 @@ export default function YourPackages() {
               content: (
                 <>
                   {receivingPackages.map((journey) => (
-                    <CustomerJobItem key={journey.jobId} journey={journey} handOff />
+                    <CustomerJobItem
+                      key={journey.jobId}
+                      journey={journey}
+                      handOff
+                    />
                   ))}
                 </>
               ),
             },
           ]}
         />
-      </ScrollView>
+      </Container>
     </SafeAreaView>
   );
 }

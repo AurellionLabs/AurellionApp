@@ -19,32 +19,35 @@ const CustomerJobItem: React.FC<BoxProps> = ({
   available,
 }) => {
   const { isDarkMode } = useMainContext();
-  const { setSelectedJourney, setSignatureScreenHeading } =
-    useDeliveryContext();
+  // const { setSelectedJourney, setSignatureScreenHeading } =
+  //   useDeliveryContext();
 
   if (!assigned && !available) {
     console.error(
-      "At least one of 'handOn' or 'handOff' prop must be provided"
+      "At least one of 'assigned' or 'available' prop must be provided"
     );
     return null;
   }
 
   const onPress = () => {
-    if (available) {
-      setSelectedJourney(journey);
-      router.push({ pathname: "/delivery/driver/assignDriver" });
-    } else if (assigned) {
-      if (journey.currentStatus == JourneyStatus.PENDING) {
-        setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON);
-        router.push({ pathname: "/delivery/signature" });
-      } else if (journey.currentStatus == JourneyStatus.IN_PROGRESS) {
-        setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_OFF);
-        router.push({ pathname: "/delivery/signature" });
-      }
-    }
+    // if (available) {
+    //   setSelectedJourney(journey);
+    //   router.push({ pathname: "/delivery/driver/assignDriver" });
+    // } else if (assigned) {
+    //   if (journey.currentStatus == JourneyStatus.PENDING) {
+    //     setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON);
+    //     router.push({ pathname: "/delivery/signature" });
+    //   } else if (journey.currentStatus == JourneyStatus.IN_PROGRESS) {
+    //     setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_OFF);
+    //     router.push({ pathname: "/delivery/signature" });
+    //   }
+    // }
   };
   return (
-    <StyledSelectedBox isDarkMode={isDarkMode} onPress={onPress}>
+    <StyledSelectedBox
+      isDarkMode={isDarkMode}
+      onPress={onPress}
+    >
       <TextRow>
         <StyledText
           isDarkMode={isDarkMode}

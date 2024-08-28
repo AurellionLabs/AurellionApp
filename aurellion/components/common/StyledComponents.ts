@@ -1,7 +1,11 @@
 import styled from 'styled-components/native';
 import { DarkTheme, LightTheme } from '@/constants/Colors';
 
-import { ViewStyle } from 'react-native';
+import { TextProps, ViewStyle } from 'react-native';
+
+interface ThemedProps {
+  isDarkMode: boolean;
+}
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
@@ -124,6 +128,14 @@ export const Container = styled.View`
 
 export const WhiteText = styled.Text`
   color: white;
+`;
+
+export const Heading = styled.Text<ThemedProps & TextProps>`
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: ${({ isDarkMode }) =>
+    isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1};
 `;
 
 export const DisconnectButton = styled.TouchableOpacity`

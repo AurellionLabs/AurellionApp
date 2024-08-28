@@ -17,14 +17,6 @@ export const Section = styled.View<ViewProps>`
   margin-bottom: 10px;
 `;
 
-export const Heading = styled.Text<ThemedProps & TextProps>`
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: ${({ isDarkMode }) =>
-    isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1};
-`;
-
 export const Label = styled.Text<ThemedProps & TextProps>`
   font-size: 17px;
   font-weight: 300;

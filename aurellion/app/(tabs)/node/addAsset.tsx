@@ -3,12 +3,12 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Image } from "react-native";
 import {
   Container,
-  Heading,
   Section,
   Label,
   Input,
 } from "@/components/screens/addAsset/styledComponents";
 import {
+  Heading,
   ImageContainer,
   RedButton,
   RedButtonText,

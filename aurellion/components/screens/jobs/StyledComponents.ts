@@ -1,7 +1,6 @@
-import styled from 'styled-components/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { LightTheme, DarkTheme } from '@/constants/Colors';
-
+import styled from "styled-components/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { LightTheme, DarkTheme } from "@/constants/Colors";
 
 interface CustomProps {
   [key: string]: any;
@@ -17,6 +16,18 @@ interface Props {
 interface props {
   isDarkMode: boolean;
 }
+
+interface ThemedProps {
+  isDarkMode: boolean;
+}
+
+export const Container = styled.View<ThemedProps>`
+  padding-horizontal: 15px;
+  padding-vertical: 25px;
+  height: 100%;
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode ? DarkTheme.background1 : LightTheme.background1};
+`;
 
 export const SelectedBox = styled.TouchableOpacity<Props>`
   width: 100%;
@@ -44,7 +55,8 @@ export const StyledSelectedBox = styled.TouchableOpacity<Props>`
   padding: 12px;
   margin: 4px;
   border-radius: 12px;
-  background-color: ${(props: props) => (props.isDarkMode ? DarkTheme.background3 : LightTheme.background3)};
+  background-color: ${(props: props) =>
+    props.isDarkMode ? DarkTheme.background3 : LightTheme.background3};
 `;
 
 export const TextRow = styled.View`

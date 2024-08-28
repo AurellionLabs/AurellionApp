@@ -10,7 +10,7 @@ import LocationsMenu from '@/components/screens/createDelivery/locationsMenu';
 import { useMainContext } from '@/providers/main.provider';
 import { Container, StyledText } from '@/components/common/styledComponents';
 
-const LocationsScreen = () => {
+const SendPackage = () => {
   const { isDarkMode } = useMainContext();
   const [region, setRegion] = useState<Region>({
     latitude: 37.78825,
@@ -40,7 +40,7 @@ const LocationsScreen = () => {
     <Container >
       {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
       <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
-            Create Delivery Screen
+            Send Package Screen
       </StyledText>
       {/* <LocationsMenu
         style={styles.locationsMenu}
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LocationsScreen;
+export default SendPackage;

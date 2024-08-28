@@ -1,10 +1,69 @@
-import { View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useCallback, useEffect } from 'react';
 
-export default function SendPackage() {
+import {
+  StyleSheet,
+  Keyboard,
+} from 'react-native';
+
+import MapView, { Region } from 'react-native-maps';
+import LocationsMenu from '@/components/screens/createDelivery/locationsMenu';
+import { useMainContext } from '@/providers/main.provider';
+import { Container, StyledText } from '@/components/common/styledComponents';
+
+const LocationsScreen = () => {
+  const { isDarkMode } = useMainContext();
+  const [region, setRegion] = useState<Region>({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, [isKeyboardVisible]);
+
   return (
-    <SafeAreaView>
-      <Text>Send Package Tab</Text>
-    </SafeAreaView>
+    <Container >
+      {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
+      <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
+            Create Delivery Screen
+      </StyledText>
+      {/* <LocationsMenu
+        style={styles.locationsMenu}
+        region={region}
+        setRegion={setRegion}
+        isKeyboardVisible={isKeyboardVisible}
+      /> */}
+    </Container>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  locationsMenu: {
+    width: '100%',
+    borderRadius: 30,
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: 0,
+  },
+  mapView: {
+    flex: 1,
+    width: '100%',
+  },
+});
+
+export default LocationsScreen;

@@ -19,11 +19,10 @@ import {
 import Loader from "@/components/common/loader";
 import { listenForSignature } from "../../dapp-connectors/dapp-listener";
 import { Journey, JourneyStatus } from "@/constants/Types";
-import { useDeliveryContext } from "@/providers/delivery.provider";
 
 const SignatureScreen = () => {
   const { userType, setRefetchDataFromAPI, isDarkMode } = useMainContext();
-  const { selectedJourney, signatureScreenHeading } = useDeliveryContext();
+  // const { selectedJourney, signatureScreenHeading } = useDeliveryContext();
   const [isSigned, setIsSigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -38,12 +37,12 @@ const SignatureScreen = () => {
     if (selectedJourney) {
       setIsLoading(true);
       console.log("calling packageSign");
-      await packageSign(selectedJourney);
+      // await packageSign(selectedJourney);
       console.log("packageSign complete");
-      await allSignedCheck(selectedJourney);
-      await resolvePackageHandling(selectedJourney);
+      // await allSignedCheck(selectedJourney);
+      // await resolvePackageHandling(selectedJourney);
     } else {
-      console.error("Selected Journey object is undefined");
+      // console.error("Selected Journey object is undefined");
       setIsError(true);
       setErrorMessage("Selected Journey object is undefined");
     }

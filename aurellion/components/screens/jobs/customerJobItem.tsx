@@ -2,7 +2,6 @@ import React from "react";
 import { TextRow, StyledSelectedBox } from "./StyledComponents";
 import { Journey, JourneyStatus } from "@/constants/Types";
 import { StyledText } from "@/components/common/styledComponents";
-import { useDeliveryContext } from "@/providers/delivery.provider";
 import { useMainContext } from "@/providers/main.provider";
 import { router } from "expo-router";
 import { SCREEN_TEXT } from "@/constants/ScreenText";
@@ -15,8 +14,8 @@ type BoxProps = {
 
 const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
   const { isDarkMode } = useMainContext();
-  const { setSelectedJourney, setSignatureScreenHeading } =
-    useDeliveryContext();
+  // const { setSelectedJourney, setSignatureScreenHeading } =
+  //   useDeliveryContext();
 
   if (!handOn && !handOff) {
     console.error(
@@ -26,12 +25,12 @@ const CustomerJobItem: React.FC<BoxProps> = ({ journey, handOn, handOff }) => {
   }
 
   const onPress = () => {
-    setSelectedJourney(journey);
-    if (handOn) {
-      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON);
-    } else if (handOff) {
-      setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF);
-    }
+    // setSelectedJourney(journey);
+    // if (handOn) {
+    //   setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_ON);
+    // } else if (handOff) {
+    //   setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.CUSTOMER_HAND_OFF);
+    // }
     router.push({ pathname: "/delivery/signature" });
   };
   return (

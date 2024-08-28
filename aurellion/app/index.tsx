@@ -1,4 +1,6 @@
 import "@walletconnect/react-native-compat";
+import { EmailProvider } from '@web3modal/email-ethers-react-native'
+
 
 import {
     createWeb3Modal,
@@ -6,23 +8,27 @@ import {
     Web3Modal,
     W3mButton,
     useWeb3ModalProvider,
+    useWeb3ModalAccount,
 } from "@web3modal/ethers-react-native";
 
 // 1. Get projectId from https://cloud.walletconnect.com
-const projectId = "35338a6f79245a5b3f4db27235965e29";
+const projectId = "9ed14a0db16fd3ed0105f7e0889c2716";
 
 // 2. Create config
 const metadata = {
-    name: "Web3Modal RN",
-    description: "Web3Modal RN Example",
+    name: "Aurellion",
+    description: "decentralised shipping",
     url: "https://web3modal.com",
     icons: ["https://avatars.githubusercontent.com/u/37784886"],
     redirect: {
         native: "YOUR_APP_SCHEME://",
     },
 };
-
-const config = defaultConfig({ metadata });
+const emailProvider = new EmailProvider({projectId,metadata}) 
+const config = defaultConfig({
+    metadata,
+    extraConnectors: [emailProvider]
+})
 
 // 3. Define your chains
 const mainnet = {
@@ -71,15 +77,18 @@ import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import TypingText from '@/components/common/TypingText';
 import { useMainContext } from "@/providers/main.provider";
 import { BrowserProvider } from "ethers";
+import { setWalletProvider } from "@/dapp-connectors/dapp-listener";
 
 function WalletScreen(): JSX.Element {
     const [modalVisible, setModalVisible] = useState(false);
     const [currentWCURI, setCurrentWCURI] = useState<string>();
     const { walletProvider } = useWeb3ModalProvider()
+    const { } = useWeb3ModalAccount()
     const {
         setIsDarkMode,
         isDarkMode,
         walletAddress,
+        setWalletAddress,
         setEthersProvider,
     } = useMainContext();
     const close = () => {
@@ -90,6 +99,7 @@ function WalletScreen(): JSX.Element {
         if (walletProvider) {
             var ethersProvider = new BrowserProvider(walletProvider)
             setEthersProvider(ethersProvider);
+            setWalletProvider(ethersProvider)
         }
     }, [walletProvider])
     const backgroundColor = isDarkMode

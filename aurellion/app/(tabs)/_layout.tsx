@@ -1,3 +1,4 @@
+import DeliveryProvider from '@/providers/delivery.provider';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
@@ -13,6 +14,7 @@ export default function TabLayout() {
           headerShown: false
         }}
       />
+      <DeliveryProvider>
       <Tabs.Screen
         name="jobs"
         options={{
@@ -21,6 +23,7 @@ export default function TabLayout() {
           headerShown: false
         }}
       />
+      </DeliveryProvider>
     </Tabs>
   );
 }

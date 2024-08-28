@@ -5,7 +5,6 @@ import { LightTheme, DarkTheme } from '@/constants/Colors';
 import {
     fetchDriverUnassignedJourneys,
     fetchDriverAssignedJourneys,
-    fetchCustomerJobs,
     fetchReceiverJobs,
 } from '../../../dapp-connectors/dapp-controller';
 import { useMainContext } from '@/providers/main.provider';
@@ -15,9 +14,11 @@ import DriverJobItem from './driverJobItem';
 import { Container } from '@/components/common/StyledComponents';
 import Loader from '@/components/common/loader';
 import Accordion from './accordian';
-
+import { Signer, ethers } from 'ethers';
+const contractABI = require('../../../aurellion-abi.json');
+const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const Menu = () => {
-    const { userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
+    const { ethersProvider, userType, setUserType, refetchDataFromAPI, setRefetchDataFromAPI, isDarkMode } = useMainContext();
     const [switchOption, setSwitchOption] = useState(0);
     const [createdJobs, setCreatedJobs] = useState<Journey[]>([]);
     const [receiverJobs, setReceiveJobs] = useState<Journey[]>([]);
@@ -32,6 +33,130 @@ const Menu = () => {
     ];
 
     const backgroundColor = isDarkMode ? DarkTheme.background2 : LightTheme.background2;
+
+    const fetchReceiverJobs = async () => {
+        let contract;
+        var signer: Signer | undefined;
+        if (ethersProvider)
+            signer = await ethersProvider.getSigner();
+        else console.error("ethersProvider is underfined")
+        try {
+            if (!signer) {
+                throw new Error('Signer is undefined');
+            }
+            if (!AUSYS_ADDRESS)
+                throw new Error("AUSYS_ADDRESS is undefined")
+            try {
+                contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
+            } catch (error) {
+                console.error(
+                    `failed to instantiate contract object at with Contract Address: ${AUSYS_ADDRESS} contractABI: ${contractABI} signer:${signer}`
+                );
+                throw error;
+            }
+
+            const walletAddress = await signer.getAddress();
+            if (!walletAddress) {
+                throw new Error('Failed to get wallet address');
+            }
+
+            let jobNumber;
+            try {
+                jobNumber = await contract.numberOfJobsCreatedForReceiver(walletAddress);
+            } catch (error) {
+                console.error('Error fetching number of jobs for receiver with wallet address', walletAddress, 'Error:', error);
+                throw error;
+            }
+            const jobs = [];
+            const jobsObjList: Journey[] = [];
+            for (let i = 0; i < jobNumber; i++) {
+                try {
+                    const job = await contract.receiverToJobId(walletAddress, i);
+                    jobs.push(job);
+                } catch (err) {
+                    console.error(`Error fetching journeyId with index ${i}:`, err);
+                }
+            }
+
+            for (const journeyId of jobs) {
+                try {
+                    const jobsObj = await contract.jobIdToJourney(journeyId);
+                    jobsObjList.push(jobsObj);
+                } catch (err) {
+                    console.error(`Error fetching job object with journeyId ${journeyId}:`, err);
+                }
+            }
+            return jobsObjList;
+        } catch (error) {
+            console.error('General error in fetchReceiverJobs:', error);
+            return []; // Return an empty array in case of an error
+        }
+    };
+
+    const fetchCustomerJobs = async () => {
+        const journeyIds = [];
+        const jobs: Journey[] = [];
+        let contract;
+        var signer: Signer | undefined;
+        if (ethersProvider)
+            signer = await ethersProvider.getSigner();
+        else console.error("ethersProvider is underfined")
+        try {
+            if (!signer) {
+                throw new Error('Signer is undefined');
+            }
+            if (!AUSYS_ADDRESS)
+                throw new Error("AUSYS_ADDRESS is undefined")
+            try {
+                contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
+            } catch (error) {
+                console.error(
+                    `failed to instantiate contract object at with Contract Address: ${AUSYS_ADDRESS} contractABI: ${contractABI} signer:${signer}`
+                );
+                throw error;
+            }
+
+            const walletAddress = await signer.getAddress();
+            if (!walletAddress) {
+                throw new Error('Failed to get wallet address');
+            }
+
+            let jobNumber;
+            try {
+                jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
+            } catch (error) {
+                console.log(walletAddress);
+                console.error('Error fetching number of jobs created with walletAddress', walletAddress, 'Error:', error);
+                throw error;
+            }
+            contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
+
+            jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
+
+            for (let i = 0; i < jobNumber; i++) {
+                try {
+                    const journeyId = await contract.customerToJobId(walletAddress, i);
+                    journeyIds.push(journeyId);
+                } catch (err) {
+                    console.error(`Error fetching job with index ${i}:`, err);
+                }
+            }
+
+            for (const journeyId of journeyIds) {
+                try {
+                    const job = await contract.jobIdToJourney(journeyId);
+                    jobs.push(job);
+                } catch (err) {
+                    console.error(`Error fetching job object with ID ${journeyId}:`, err);
+                }
+            }
+            return jobs;
+        } catch (error) {
+            console.error('General error in fetchCustomerJobs:', error);
+            return []; // Return an empty array in case of an error
+        }
+    };
+
 
     const fetchAndSetJourneys = async () => {
         let createdJourneys: Journey[] = [];
@@ -69,16 +194,16 @@ const Menu = () => {
         try {
             if (userType === 'customer') {
                 setSwitchOption(0);
-                 createdJourneys = await fetchCustomerJobs();
-                 setCreatedJobs(createdJourneys);
-                 receiveJourneys = await fetchReceiverJobs();
-                 setReceiveJobs(receiveJourneys);
+                createdJourneys = await fetchCustomerJobs();
+                setCreatedJobs(createdJourneys);
+                receiveJourneys = await fetchReceiverJobs();
+                setReceiveJobs(receiveJourneys);
             } else if (userType === 'driver') {
                 setSwitchOption(1);
-                 unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
-                 setUnassignedDriverJobs(unassignedDriverJourneys);
-                 assignedDriverJourneys = await fetchDriverAssignedJourneys();
-                 setAssignedDriverJobs(assignedDriverJourneys);
+                unassignedDriverJourneys = await fetchDriverUnassignedJourneys();
+                setUnassignedDriverJobs(unassignedDriverJourneys);
+                assignedDriverJourneys = await fetchDriverAssignedJourneys();
+                setAssignedDriverJobs(assignedDriverJourneys);
             }
         } catch (error) {
             console.log('Error Fetching Jobs');

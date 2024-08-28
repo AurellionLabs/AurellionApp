@@ -30,18 +30,17 @@ const CustomerJobItem: React.FC<BoxProps> = ({
   }
 
   const onPress = () => {
-    // if (available) {
-    //   setSelectedJourney(journey);
-    //   router.push({ pathname: "/delivery/driver/assignDriver" });
-    // } else if (assigned) {
-    //   if (journey.currentStatus == JourneyStatus.PENDING) {
-    //     setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON);
-    //     router.push({ pathname: "/delivery/signature" });
-    //   } else if (journey.currentStatus == JourneyStatus.IN_PROGRESS) {
-    //     setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_OFF);
-    //     router.push({ pathname: "/delivery/signature" });
-    //   }
-    // }
+    if (available) {
+      router.push({ pathname: `/driver/assignDriver/${journey.jobId}` });
+    } else if (assigned) {
+      if (journey.currentStatus == JourneyStatus.PENDING) {
+        setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_ON);
+        router.push({ pathname: "/delivery/signature" });
+      } else if (journey.currentStatus == JourneyStatus.IN_PROGRESS) {
+        setSignatureScreenHeading(SCREEN_TEXT.SIGNATURE.DRIVER_HAND_OFF);
+        router.push({ pathname: "/delivery/signature" });
+      }
+    }
   };
   return (
     <StyledSelectedBox

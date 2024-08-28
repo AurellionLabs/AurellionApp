@@ -8,19 +8,29 @@ import {
   Container,
   TextContainer,
 } from "@/components/screens/signature/styledComponents";
+import { Order } from "@/constants/Types";
 import { useMainContext } from "@/providers/main.provider";
 import { useNodeContext } from "@/providers/node.provider";
 import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AcceptOrderSign() {
   const { isDarkMode } = useMainContext();
   const { availableOrders } = useNodeContext();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { orderId } = useLocalSearchParams<{ orderId: string }>();
 
-  // TODO: Hack - need to implement finding order object from list of orders by id.
-  const orderId = parseInt(id as string, 10)
+  const [order, setOrder] = useState<Order | undefined>(undefined);
+
+
+  useEffect(() => {
+    if (orderId) {
+      const foundOrder = availableOrders.find(order => order.id === orderId);
+      setOrder(foundOrder);
+    }
+  }, [orderId, availableOrders]);
+
   
   const acceptOrder = () => {
     console.log("Accepted order");
@@ -42,16 +52,16 @@ export default function AcceptOrderSign() {
         </ImageContainer>
         <TextContainer>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Buyer Name: {availableOrders[orderId]?.buyerName}
+            Buyer Name: {order?.buyerName}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Asset Type: {availableOrders[orderId]?.assetType}
+            Asset Type: {order?.assetType}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Asset Class: {availableOrders[orderId]?.assetClass}
+            Asset Class: {order?.assetClass}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Quantity: {availableOrders[orderId]?.quantity}
+            Quantity: {order?.quantity}
           </StyledText>
         </TextContainer>
         <RedButton

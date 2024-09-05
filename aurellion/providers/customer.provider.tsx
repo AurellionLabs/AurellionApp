@@ -1,11 +1,13 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import { Journey } from "@/constants/Types";
+import { Asset, Journey } from "@/constants/Types";
 
 interface ICustomerContext {
   sendingPackages: Journey[] | [];
   setSendingPackages: Dispatch<SetStateAction<Journey[] | []>>;
   receivingPackages: Journey[] | [];
   setReceivingPackages: Dispatch<SetStateAction<Journey[] | []>>;
+  availableAssets: Asset[] | [];
+  setAvailableAssets: Dispatch<SetStateAction<Asset[] | []>>;
 }
 
 export const CustomerContext = React.createContext<ICustomerContext>({
@@ -13,6 +15,8 @@ export const CustomerContext = React.createContext<ICustomerContext>({
   setSendingPackages: () => {},
   receivingPackages: [],
   setReceivingPackages: () => {},
+  availableAssets: [],
+  setAvailableAssets: () => {},
 });
 
 interface customerProviderProps {
@@ -24,6 +28,7 @@ const customerProvider = ({ children }: customerProviderProps) => {
   const [receivingPackages, setReceivingPackages] = useState<Journey[] | []>(
     []
   );
+  const [availableAssets, setAvailableAssets] = useState<Asset[] | []>([]);
 
   return (
     <CustomerContext.Provider
@@ -31,7 +36,9 @@ const customerProvider = ({ children }: customerProviderProps) => {
         sendingPackages,
         setSendingPackages,
         receivingPackages,
-        setReceivingPackages
+        setReceivingPackages,
+        availableAssets,
+        setAvailableAssets,
       }}
     >
       {children}

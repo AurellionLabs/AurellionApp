@@ -29,6 +29,13 @@ export type Location = {
     bounty: number;
     ETA: number;
   };
+
+  export type Asset = {
+    id: string,
+    assetType: string,
+    assetClass: string,
+    totalQuantity: number
+  }
   
   export type UserType = 'customer' | 'driver';
   

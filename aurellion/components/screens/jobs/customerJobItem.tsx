@@ -4,7 +4,6 @@ import { Journey, JourneyStatus } from "@/constants/Types";
 import { StyledText } from "@/components/common/styledComponents";
 import { useMainContext } from "@/providers/main.provider";
 import { router } from "expo-router";
-import { SCREEN_TEXT } from "@/constants/ScreenText";
 
 type BoxProps = {
   journey: Journey;

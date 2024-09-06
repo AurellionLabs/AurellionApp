@@ -5,7 +5,7 @@ import {
   Button,
   ButtonText,
   StyledText,
-} from "@/components/common/styledComponents";
+} from "@/components/common/StyledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import LottieView from "lottie-react-native";
 import { router } from "expo-router";

@@ -7,7 +7,7 @@ import {
   LayoutAnimation,
   Image,
 } from "react-native";
-import { StyledText } from "@/components/common/styledComponents";
+import { StyledText } from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
 type AccordionData = {
   title: string;

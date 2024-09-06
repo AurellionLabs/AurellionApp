@@ -8,7 +8,7 @@ import {
 import MapView, { Region } from 'react-native-maps';
 import LocationsMenu from '@/components/screens/createDelivery/locationsMenu';
 import { useMainContext } from '@/providers/main.provider';
-import { Container, StyledText } from '@/components/common/styledComponents';
+import { Container, StyledText } from '@/components/common/StyledComponents';
 
 const SendPackage = () => {
   const { isDarkMode } = useMainContext();

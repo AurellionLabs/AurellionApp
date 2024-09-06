@@ -62,8 +62,8 @@ import {
 } from "react-native";
 import { router } from 'expo-router';
 import { DarkTheme, LightTheme } from "@/constants/Colors";
-import { RedButton, RedButtonText } from "@/components/common/styledComponents";
-import TypingText from "@/components/common/typingText";
+import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
+import TypingText from "@/components/common/TypingText";
 import { useMainContext } from "@/providers/main.provider";
 import { RoleType } from "@/constants/Types";
 

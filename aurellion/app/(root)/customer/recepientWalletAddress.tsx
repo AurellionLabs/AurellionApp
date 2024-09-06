@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useMainContext } from "@/providers/main.provider";
-import { RedButton, RedButtonText } from "@/components/common/styledComponents";
+import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import {
   Container,
   Heading,

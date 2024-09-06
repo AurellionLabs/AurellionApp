@@ -14,7 +14,7 @@ import {
 import Geolocation from "@react-native-community/geolocation";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Region } from "react-native-maps";
-import { RedButton, RedButtonText } from "@/components/common/styledComponents";
+import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import { useNavigation } from "@react-navigation/native";
 import { useMainContext } from "@/providers/main.provider";
 import { PackageDeliveryData } from "@/constants/Types";

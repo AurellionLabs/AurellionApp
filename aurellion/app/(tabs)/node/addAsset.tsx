@@ -6,13 +6,13 @@ import {
   Section,
   Label,
   Input,
-} from "@/components/screens/addAsset/styledComponents";
+} from "@/components/screens/addAsset/StyledComponents";
 import {
   Heading,
   ImageContainer,
   RedButton,
   RedButtonText,
-} from "@/components/common/styledComponents";
+} from "@/components/common/StyledComponents";
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import { useMainContext } from "@/providers/main.provider";
 import { SafeAreaView } from "react-native-safe-area-context";

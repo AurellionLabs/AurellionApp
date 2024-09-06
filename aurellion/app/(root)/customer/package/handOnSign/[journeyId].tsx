@@ -3,7 +3,7 @@ import {
     ButtonText,
     ImageContainer,
     StyledText,
-  } from "@/components/common/styledComponents";
+  } from "@/components/common/StyledComponents";
   import {
     Container,
     TextContainer,

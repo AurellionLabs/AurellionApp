@@ -5,7 +5,7 @@ import DriverJobItem from "@/components/screens/jobs/driverJobItem";
 import { useDriverContext } from "@/providers/driver.provider";
 import { useEffect } from "react";
 import { JourneyStatus } from "@/constants/Types";
-import { Heading } from "@/components/common/styledComponents";
+import { Heading } from "@/components/common/StyledComponents";
 
 export default function YourJourneys() {
   const { isDarkMode } = useMainContext();

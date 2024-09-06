@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Modal, StyleSheet, Text, View, useColorScheme } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
-import { Button, ButtonText } from "@/components/common/styledComponents";
+import { Button, ButtonText } from "@/components/common/StyledComponents";
 import { LightTheme } from "@/constants/Colors";
 
 interface LoaderProps {

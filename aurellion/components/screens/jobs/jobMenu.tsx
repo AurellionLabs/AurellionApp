@@ -12,7 +12,7 @@ import { useMainContext } from "@/providers/main.provider";
 import { Journey, UserType } from "@/constants/Types";
 import CustomerJobItem from "./customerJobItem";
 import DriverJobItem from "./driverJobItem";
-import { Container } from "@/components/common/styledComponents";
+import { Container } from "@/components/common/StyledComponents";
 import Loader from "@/components/common/loader";
 import Accordion from "./accordian";
 

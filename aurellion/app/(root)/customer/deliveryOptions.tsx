@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useColorScheme } from "react-native";
-import { Container } from "@/components/common/styledComponents";
+import { Container } from "@/components/common/StyledComponents";
 import DeliveryMenu from "@/components/screens/deliveryOptions/DeliveryMenu";
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import MapView, { Marker, Region } from "react-native-maps";

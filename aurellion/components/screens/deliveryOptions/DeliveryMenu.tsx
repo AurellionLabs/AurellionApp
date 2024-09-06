@@ -18,7 +18,7 @@ import {
   RedButton,
   RedButtonText,
   StyledText,
-} from "@/components/common/styledComponents";
+} from "@/components/common/StyledComponents";
 import { jobCreation } from "../../../dapp-connectors/dapp-controller";
 import { useMainContext } from "@/providers/main.provider";
 import { DeliverySpeedOption } from "@/constants/Types";

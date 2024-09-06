@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TitleText } from "./styledComponents";
+import { TitleText } from "./StyledComponents";
 
 function TypingText({ text, speed, isDarkMode }) {
   const [displayedText, setDisplayedText] = useState("");

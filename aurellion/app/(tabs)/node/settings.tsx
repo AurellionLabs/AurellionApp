@@ -16,7 +16,7 @@ import {
   ImageContainer,
   RedButton,
   RedButtonText,
-} from "@/components/common/styledComponents";
+} from "@/components/common/StyledComponents";
 
 export default function Settings() {
   const { isDarkMode } = useMainContext();

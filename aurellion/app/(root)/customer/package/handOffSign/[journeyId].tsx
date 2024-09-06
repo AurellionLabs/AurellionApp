@@ -1,4 +1,4 @@
-import { Button, ButtonText, ImageContainer, StyledText } from "@/components/common/styledComponents";
+import { Button, ButtonText, ImageContainer, StyledText } from "@/components/common/StyledComponents";
 import { Container, TextContainer } from "@/components/screens/signature/styledComponents";
 import { LightTheme } from "@/constants/Colors";
 import { Journey } from "@/constants/Types";

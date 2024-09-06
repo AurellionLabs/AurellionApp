@@ -1,7 +1,7 @@
 import React from "react";
 import { TextRow, StyledSelectedBox } from "./StyledComponents";
 import { Journey, JourneyStatus } from "@/constants/Types";
-import { StyledText } from "@/components/common/styledComponents";
+import { StyledText } from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
 import { router } from "expo-router";
 

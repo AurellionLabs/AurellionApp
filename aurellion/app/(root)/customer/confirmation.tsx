@@ -12,7 +12,7 @@ import {
 } from "@/components/screens/confirmation/StyledComponents";
 // import { jobCreation } from '../../dapp-connectors/dapp-controller';
 import { DeliverySpeedOption } from "@/constants/Types";
-import { RedButton, RedButtonText } from "@/components/common/styledComponents";
+import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import Loader from "@/components/common/loader";
 import { router } from "expo-router";
 

@@ -17,6 +17,14 @@ export default function CustomerLayout() {
         name="package/handOffSign/[journeyId]"
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="order/makeOrderSign/[assetId]"
+        options={{ headerShown: false }}
+      />
+      {/* <Stack.Screen
+        name="order/receivedOrderSign/[orderId]"
+        options={{ headerShown: false }}
+      /> */}
     </Stack>
   );
 }

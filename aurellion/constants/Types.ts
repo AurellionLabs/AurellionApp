@@ -68,5 +68,6 @@ export type Location = {
     assetType: string,
     assetClass: string,
     quantity: number
+    image?: any
   }
   

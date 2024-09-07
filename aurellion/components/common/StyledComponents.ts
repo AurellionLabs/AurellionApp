@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { DarkTheme, LightTheme } from '@/constants/Colors';
 
 import { TextProps, ViewStyle } from 'react-native';
+import { ScrollViewProps } from 'react-native';
 
 interface ThemedProps {
   isDarkMode: boolean;
@@ -118,12 +119,16 @@ export const BoldText = styled.Text`
 
 interface ContainerProps {
   styles: ViewStyle;
+  isDarkMode?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.View<ContainerProps>`
   flex: 1;
   align-items: center;
-  ${({ styles }: ContainerProps) => styles};
+  margin-top: 2%;
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode ? DarkTheme.background1 : LightTheme.background2};
+  ${({ styles }) => styles};
 `;
 
 export const WhiteText = styled.Text`
@@ -151,4 +156,20 @@ export const ImageContainer = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+interface ScrollContentProps extends ScrollViewProps {
+  scrollIndicator: boolean;
+  styles?: ViewStyle;
+  isDarkMode: boolean;
+}
+
+export const ScrollContent = styled.ScrollView.attrs<ScrollContentProps>(props => ({
+  showsVerticalScrollIndicator: props.scrollIndicator,
+  contentContainerStyle: { flexGrow: 1, minWidth: '100%', alignItems: 'center', justifyContent: 'center', 
+    backgroundColor: props.isDarkMode ? DarkTheme.background1 : LightTheme.background2
+  },
+}))<ScrollContentProps>`
+  margin-top: 6%;
+  ${(props) => props.styles}
 `;

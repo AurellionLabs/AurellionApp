@@ -3,12 +3,12 @@ import {
   RedButton,
   RedButtonText,
   StyledText,
-} from "@/components/common/styledComponents";
+} from "@/components/common/StyledComponents";
 import {
   Input,
   Label,
   Section,
-} from "@/components/screens/addAsset/styledComponents";
+} from "@/components/screens/addAsset/StyledComponents";
 import { MakeOrderContainer } from "@/components/screens/orders/styledComponents";
 import { TextContainer } from "@/components/screens/signature/styledComponents";
 import { DarkTheme, LightTheme } from "@/constants/Colors";

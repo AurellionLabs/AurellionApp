@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
-import { DarkTheme, LightTheme } from '@/constants/Colors';
+import styled from "styled-components/native";
+import { DarkTheme, LightTheme } from "@/constants/Colors";
 
-import { TextProps, ViewStyle } from 'react-native';
-import { ScrollViewProps } from 'react-native';
+import { TextProps, ViewStyle } from "react-native";
+import { ScrollViewProps } from "react-native";
 
 interface ThemedProps {
   isDarkMode: boolean;
@@ -53,7 +53,8 @@ export const RedButtonText = styled.Text`
   color: white;
 `;
 export const TitleText = styled.Text<props>`
-  color: ${(props: props) => (props.isDarkMode ? DarkTheme.title : LightTheme.title)};
+  color: ${(props: props) =>
+    props.isDarkMode ? DarkTheme.title : LightTheme.title};
   font-size: 40px;
 `;
 export const Box = styled.View`
@@ -68,10 +69,11 @@ export const Box = styled.View`
   border-top-color: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: ${(props: props) => (props.isDarkMode ? DarkTheme.background2 : LightTheme.background2)};
+  background-color: ${(props: props) =>
+    props.isDarkMode ? DarkTheme.background2 : LightTheme.background2};
 `;
 export const StyledText = styled.Text<props>`
-  color: ${(props: props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props: props) => (props.isDarkMode ? "white" : "black")};
 `;
 export const ButtonBox = styled.View`
   padding: 8px;
@@ -128,7 +130,6 @@ export const Container = styled.View<ContainerProps>`
   margin-top: 2%;
   background-color: ${({ isDarkMode }) =>
     isDarkMode ? DarkTheme.background1 : LightTheme.background2};
-  ${({ styles }) => styles};
 `;
 
 export const WhiteText = styled.Text`
@@ -158,18 +159,6 @@ export const ImageContainer = styled.View`
   align-items: center;
 `;
 
-interface ScrollContentProps extends ScrollViewProps {
-  scrollIndicator: boolean;
-  styles?: ViewStyle;
-  isDarkMode: boolean;
-}
-
-export const ScrollContent = styled.ScrollView.attrs<ScrollContentProps>(props => ({
-  showsVerticalScrollIndicator: props.scrollIndicator,
-  contentContainerStyle: { flexGrow: 1, minWidth: '100%', alignItems: 'center', justifyContent: 'center', 
-    backgroundColor: props.isDarkMode ? DarkTheme.background1 : LightTheme.background2
-  },
-}))<ScrollContentProps>`
-  margin-top: 6%;
-  ${(props) => props.styles}
-`;
+export const ScrollContent = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})``;

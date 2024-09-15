@@ -2,9 +2,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNodeContext } from "@/providers/node.provider";
 import { useEffect } from "react";
 import NodeOrderItem from "@/components/screens/orders/nodeOrderItem";
-import { Container, ScrollContent } from "@/components/common/StyledComponents";
+import { Heading, ScrollContent } from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
-import { LightTheme, DarkTheme } from "@/constants/Colors";
+import { Container } from "@/components/screens/orders/styledComponents";
 
 export default function AcceptOrder() {
   const { availableOrders, setAvailableOrders } = useNodeContext();
@@ -90,13 +90,14 @@ export default function AcceptOrder() {
 
   return (
     <SafeAreaView>
-      <ScrollContent isDarkMode={isDarkMode} scrollIndicator={true}>
-        <Container isDarkMode={isDarkMode} styles={{ width: "97%" }}>
+      <Container isDarkMode={isDarkMode}>
+        <Heading isDarkMode={isDarkMode}>Available Orders</Heading>
+        <ScrollContent>
           {availableOrders.map((order) => (
-            <NodeOrderItem key={order.id} order={order} acceptOrder />
+            <NodeOrderItem key={order.id} order={order} acceptOrder/>
           ))}
-        </Container>
-      </ScrollContent>
+        </ScrollContent>
+      </Container>
     </SafeAreaView>
   );
 }

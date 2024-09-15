@@ -1,5 +1,8 @@
 import { View, Image } from "react-native";
-import { OrderItem, TextRow } from "@/components/screens/orders/styledComponents";
+import {
+  OrderItem,
+  TextRow,
+} from "@/components/screens/orders/styledComponents";
 import { Order } from "@/constants/Types";
 import { useMainContext } from "@/providers/main.provider";
 import { router } from "expo-router";
@@ -11,40 +14,22 @@ type CustomerOrderProps = {
   yourOrder?: boolean;
 };
 
-const NodeOrderItem: React.FC<CustomerOrderProps> = ({
-  order,
-  makeOrder,
-  yourOrder,
-}) => {
+const CustomerOrderItem: React.FC<CustomerOrderProps> = ({ order }) => {
   const { isDarkMode } = useMainContext();
   const keyWidth = "40%";
   const valueWidth = "60%";
 
-  if (!makeOrder && !yourOrder) {
-    console.error(
-      "At least one of 'makeOrder' or 'yourOrder' prop must be provided"
-    );
-    return null;
-  }
-
   const onPress = () => {
-    if (makeOrder) {
-      // pass id as search param to access it in signature screen
-      router.push({
-        pathname: `/node/acceptOrderSign/${order?.id}`,
-      });
-    } else if (yourOrder) {
-      // pass id as search param to access it in signature screen
-      router.push({
-        pathname: `/node/handOffSign/${order?.id}`,
-      });
-    }
+    // pass id as search param to access it in signature screen
+    router.push({
+      pathname: `/customer/order/receivedOrderSign/${order?.id}`,
+    });
   };
-  
+
   return (
     <OrderItem isDarkMode={isDarkMode} onPress={onPress}>
-      <View style={{display:'flex', flexDirection:'row'}}>
-        <View style={{width:'70%'}}>
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <View style={{ width: "70%" }}>
           <TextRow>
             <StyledText
               isDarkMode={isDarkMode}
@@ -88,7 +73,7 @@ const NodeOrderItem: React.FC<CustomerOrderProps> = ({
             </StyledText>
             <StyledText
               isDarkMode={isDarkMode}
-              style={{ width: valueWidth}}
+              style={{ width: valueWidth }}
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -105,7 +90,7 @@ const NodeOrderItem: React.FC<CustomerOrderProps> = ({
             </StyledText>
             <StyledText
               isDarkMode={isDarkMode}
-              style={{ width: valueWidth}}
+              style={{ width: valueWidth }}
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -114,16 +99,23 @@ const NodeOrderItem: React.FC<CustomerOrderProps> = ({
           </TextRow>
         </View>
         {order?.image && (
-          <View style={{width:'30%', display:'flex', alignItems:'center', justifyContent:'center'}}>
-          <Image
-            source={order?.image}
-            style={{ height: 100, width: 100, borderRadius: 10 }}
-          />
-          </View>)
-        }
+          <View
+            style={{
+              width: "30%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              source={order?.image}
+              style={{ height: 100, width: 100, borderRadius: 10 }}
+            />
+          </View>
+        )}
       </View>
     </OrderItem>
   );
 };
 
-export default NodeOrderItem;
+export default CustomerOrderItem;

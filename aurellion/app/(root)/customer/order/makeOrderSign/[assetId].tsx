@@ -59,7 +59,7 @@ const makeOrderSign = () => {
         </StyledText>
         <ImageContainer style={{ marginBottom: 30 }}>
           <Image
-            source={require("@/assets/images/goat.png")}
+            source={asset?.image}
             style={{ height: 200, width: 200 }}
           />
         </ImageContainer>
@@ -71,7 +71,7 @@ const makeOrderSign = () => {
             Asset Type: {asset?.assetType}
           </StyledText>
           <StyledText isDarkMode={isDarkMode} style={{ marginBottom: 10 }}>
-            Total Quantity: {asset?.totalQuantity}
+            Quantity Available: {asset?.totalQuantity}
           </StyledText>
         </TextContainer>
         <Section>

@@ -89,12 +89,14 @@ export default function AcceptOrder() {
   }, []);
 
   return (
+    <SafeAreaView>
       <ScrollContent isDarkMode={isDarkMode} scrollIndicator={true}>
-        <Container isDarkMode={isDarkMode} styles={{width: "97%"}}>
-            {availableOrders.map(order => (
-              <NodeOrderItem key={order.id} order={order} acceptOrder/>
-            ))}
+        <Container isDarkMode={isDarkMode} styles={{ width: "97%" }}>
+          {availableOrders.map((order) => (
+            <NodeOrderItem key={order.id} order={order} acceptOrder />
+          ))}
         </Container>
       </ScrollContent>
+    </SafeAreaView>
   );
 }

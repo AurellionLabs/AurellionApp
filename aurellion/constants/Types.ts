@@ -34,7 +34,8 @@ export type Location = {
     id: string,
     assetType: string,
     assetClass: string,
-    totalQuantity: number
+    totalQuantity: number,
+    image?: any
   }
   
   export type UserType = 'customer' | 'driver';

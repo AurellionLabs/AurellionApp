@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import { Asset, Journey } from "@/constants/Types";
+import { Asset, Journey, Order } from "@/constants/Types";
 
 interface ICustomerContext {
   sendingPackages: Journey[] | [];
@@ -8,6 +8,8 @@ interface ICustomerContext {
   setReceivingPackages: Dispatch<SetStateAction<Journey[] | []>>;
   availableAssets: Asset[] | [];
   setAvailableAssets: Dispatch<SetStateAction<Asset[] | []>>;
+  yourOrders: Order[] | [];
+  setYourOrders: Dispatch<SetStateAction<Order[] | []>>;
 }
 
 export const CustomerContext = React.createContext<ICustomerContext>({
@@ -17,6 +19,8 @@ export const CustomerContext = React.createContext<ICustomerContext>({
   setReceivingPackages: () => {},
   availableAssets: [],
   setAvailableAssets: () => {},
+  yourOrders: [],
+  setYourOrders: () => {},
 });
 
 interface customerProviderProps {
@@ -29,7 +33,7 @@ const customerProvider = ({ children }: customerProviderProps) => {
     []
   );
   const [availableAssets, setAvailableAssets] = useState<Asset[] | []>([]);
-
+  const [yourOrders, setYourOrders] = useState<Order[] | []>([]);
   return (
     <CustomerContext.Provider
       value={{
@@ -39,6 +43,8 @@ const customerProvider = ({ children }: customerProviderProps) => {
         setReceivingPackages,
         availableAssets,
         setAvailableAssets,
+        yourOrders,
+        setYourOrders,
       }}
     >
       {children}

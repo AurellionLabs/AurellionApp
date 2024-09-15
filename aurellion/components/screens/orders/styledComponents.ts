@@ -6,20 +6,13 @@ interface ThemedProps {
   isDarkMode: boolean;
 }
 
-interface CustomProps {
-  [key: string]: any;
-}
-
-interface Props {
-  height: number;
-  boxState: boolean;
-  customProps: CustomProps;
-  boxSelected: boolean;
-}
-
-interface props {
-  isDarkMode: boolean;
-}
+export const Container = styled.View<ThemedProps>`
+  padding-horizontal: 10px;
+  padding-top: 25px;
+  height: 100%;
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode ? DarkTheme.background1 : LightTheme.background2};
+`;
 
 export const OrderItem = styled.TouchableOpacity<ThemedProps>`
   padding: 12px;

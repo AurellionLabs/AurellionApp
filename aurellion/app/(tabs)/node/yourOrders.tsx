@@ -2,9 +2,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNodeContext } from "@/providers/node.provider";
 import { useEffect } from "react";
 import NodeOrderItem from "@/components/screens/orders/nodeOrderItem";
-import { ScrollView } from "react-native-gesture-handler";
-import {ScrollContent, Container} from "@/components/common/StyledComponents";
+import {Heading, ScrollContent} from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
+import { Container } from "@/components/screens/orders/styledComponents";
 
 export default function YourOrders() {
   const { yourOrders, setYourOrders } = useNodeContext();
@@ -89,12 +89,15 @@ export default function YourOrders() {
   }, []);
 
   return (
-    <ScrollContent isDarkMode={isDarkMode} scrollIndicator={true}>
-      <Container isDarkMode={isDarkMode} styles={{width: "97%"}}>
-      {yourOrders.map((order) => (
-        <NodeOrderItem key={order.id} order={order} yourOrder/>
-      ))}
+    <SafeAreaView>
+      <Container isDarkMode={isDarkMode}>
+        <Heading isDarkMode={isDarkMode}>Your Orders</Heading>
+        <ScrollContent>
+          {yourOrders.map((order) => (
+            <NodeOrderItem key={order.id} order={order} yourOrder/>
+          ))}
+        </ScrollContent>
       </Container>
-    </ScrollContent>
+    </SafeAreaView>
   );
 }

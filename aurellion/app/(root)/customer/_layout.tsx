@@ -21,10 +21,10 @@ export default function CustomerLayout() {
         name="order/makeOrderSign/[assetId]"
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="order/receivedOrderSign/[orderId]"
         options={{ headerShown: false }}
-      /> */}
+      />
     </Stack>
   );
 }

@@ -5,9 +5,17 @@ interface ThemedProps {
   isDarkMode: boolean;
 }
 
-export const OrderItem = styled.TouchableOpacity<ThemedProps>`
+export const Container = styled.View<ThemedProps>`
+  padding-horizontal: 10px;
+  padding-top: 25px;
+  height: 100%;
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode ? DarkTheme.background1 : LightTheme.background2};
+`;
+
+export const AssetItemContainer = styled.TouchableOpacity<ThemedProps>`
   padding: 12px;
-  margin: 4px;
+  margin-vertical: 4px;
   border-radius: 12px;
   background-color: ${({ isDarkMode }) =>
     isDarkMode ? DarkTheme.background2 : LightTheme.background1};

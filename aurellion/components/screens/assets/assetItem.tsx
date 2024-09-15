@@ -1,6 +1,6 @@
 import { View, Image } from "react-native";
 import {
-  OrderItem,
+  AssetItemContainer,
   TextRow,
 } from "@/components/screens/assets/styledComponents";
 import { Asset } from "@/constants/Types";
@@ -25,7 +25,7 @@ const AssetItem: React.FC<AssetItemProps> = ({ asset }) => {
   };
 
   return (
-    <OrderItem isDarkMode={isDarkMode} onPress={onPress}>
+    <AssetItemContainer isDarkMode={isDarkMode} onPress={onPress}>
       <View style={{ display: "flex", flexDirection: "row" }}>
         <View style={{ width: "70%" }}>
           <TextRow>
@@ -95,7 +95,7 @@ const AssetItem: React.FC<AssetItemProps> = ({ asset }) => {
           </View>
         )}
       </View>
-    </OrderItem>
+    </AssetItemContainer>
   );
 };
 

@@ -130,7 +130,6 @@ export const Container = styled.View<ContainerProps>`
   margin-top: 2%;
   background-color: ${({ isDarkMode }) =>
     isDarkMode ? DarkTheme.background1 : LightTheme.background2};
-  ${({ styles }) => styles};
 `;
 
 export const WhiteText = styled.Text`
@@ -160,22 +159,6 @@ export const ImageContainer = styled.View`
   align-items: center;
 `;
 
-interface ScrollContentProps extends ScrollViewProps {
-  scrollIndicator: boolean;
-  isDarkMode: boolean;
-}
-
-export const ScrollContent = styled.ScrollView.attrs<ScrollContentProps>(
-  (props) => ({
-    showsVerticalScrollIndicator: props.scrollIndicator,
-    contentContainerStyle: {
-      flexGrow: 1,
-      minWidth: "100%",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: props.isDarkMode
-        ? DarkTheme.background1
-        : LightTheme.background2,
-    },
-  })
-)<ScrollContentProps>``;
+export const ScrollContent = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})``;

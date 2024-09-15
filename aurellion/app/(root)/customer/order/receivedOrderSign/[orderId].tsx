@@ -46,7 +46,7 @@ import { useCustomerContext } from "@/providers/customer.provider";
           </StyledText>
           <ImageContainer style={{ marginBottom: 30 }}>
             <Image
-              source={require("@/assets/images/goat.png")}
+              source={order?.image}
               style={{ height: 200, width: 200 }}
             />
           </ImageContainer>

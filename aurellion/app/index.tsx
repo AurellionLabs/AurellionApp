@@ -71,13 +71,14 @@ import {
     ImageBackground,
     Pressable,
 } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
 import TypingText from '@/components/common/TypingText';
 import { useMainContext } from "@/providers/main.provider";
 import { BrowserProvider } from "ethers";
 import { setWalletProvider } from "@/dapp-connectors/dapp-controller";
+import { RoleType } from "@/constants/Types";
 
 function WalletScreen(): JSX.Element {
     const [modalVisible, setModalVisible] = useState(false);
@@ -89,6 +90,7 @@ function WalletScreen(): JSX.Element {
         isDarkMode,
         walletAddress,
         setWalletAddress,
+        setRole,
         setEthersProvider,
     } = useMainContext();
     const close = () => {
@@ -102,13 +104,20 @@ function WalletScreen(): JSX.Element {
             setWalletProvider(ethersProvider)
         }
     }, [walletProvider])
+
     const backgroundColor = isDarkMode
         ? DarkTheme.background2
         : LightTheme.background2;
+
     const changeColourScheme = () => {
         if (isDarkMode) setIsDarkMode(false);
         else setIsDarkMode(true);
     };
+
+    const onHomePress = () => {
+        setRole(RoleType.Customer)
+        router.push('customer/sendPackage')
+    }
     return (
         <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
             <View style={[styles.container, { backgroundColor }]}>
@@ -158,18 +167,14 @@ function WalletScreen(): JSX.Element {
                     // </RedButton>
                     <>
                         <W3mButton />
-                        <Link href="/delivery/customer/confirmation" asChild>
-                            <RedButton
-                                style={{ marginTop: "7%" }}
-                            >
-                                <RedButtonText>Home Screen</RedButtonText>
-                            </RedButton>
-                        </Link>
+                        <RedButton style={{ marginTop: "7%" }} onPress={onHomePress}>
+                            <RedButtonText>Home Screen</RedButtonText>
+                        </RedButton>
                     </>
                 )}
                 <Web3Modal />
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 

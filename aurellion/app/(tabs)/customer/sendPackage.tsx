@@ -1,14 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   StyleSheet,
   Keyboard,
 } from 'react-native';
-
 import MapView, { Region } from 'react-native-maps';
 import LocationsMenu from '@/components/screens/createDelivery/locationsMenu';
 import { useMainContext } from '@/providers/main.provider';
-import { Container, StyledText } from '@/components/common/StyledComponents';
+import { Container } from '@/components/common/StyledComponents';
 
 const SendPackage = () => {
   const { isDarkMode } = useMainContext();
@@ -37,26 +36,30 @@ const SendPackage = () => {
   }, [isKeyboardVisible]);
 
   return (
-    <Container >
-      {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
-      <StyledText isDarkMode={isDarkMode} style={{ fontWeight: 700, fontSize: 17 }}>
-            Send Package Screen
-      </StyledText>
-      {/* <LocationsMenu
-        style={styles.locationsMenu}
-        region={region}
-        setRegion={setRegion}
-        isKeyboardVisible={isKeyboardVisible}
-      /> */}
-    </Container>
+    <SafeAreaView style={styles.safeArea}>
+      <Container isDarkMode={isDarkMode}>
+        {!isKeyboardVisible && <MapView style={styles.mapView} showsUserLocation region={region} showsCompass />}
+        <LocationsMenu
+          region={region}
+          setRegion={setRegion}
+          isKeyboardVisible={isKeyboardVisible}
+        />
+      </Container>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+  },
   locationsMenu: {
     width: '100%',
     borderRadius: 30,
-    backgroundColor: 'white',
+    backgroundColor: 'red',
     position: 'absolute',
     top: 0,
   },

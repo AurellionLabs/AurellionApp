@@ -4,27 +4,31 @@ import {
   Text,
   TextInput,
   Button,
-  PermissionsAndroid,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-} from "react-native";
-import Geolocation from "@react-native-community/geolocation";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { Region } from "react-native-maps";
-import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
-import { useNavigation } from "@react-navigation/native";
-import { useMainContext } from "@/providers/main.provider";
-import { PackageDeliveryData } from "@/constants/Types";
-import { LightTheme } from "@/constants/Colors";
-const GMAPS_API_KEY = "AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA";
+  BackHandler,
+} from 'react-native';
+import * as Location from 'expo-location';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Region } from 'react-native-maps';
+import { RedButton, RedButtonText } from '@/components/common/StyledComponents';
+// import { useNavigation } from '@react-navigation/native';
+import { useMainContext } from '@/providers/main.provider';
+import { ParcelData } from '@/constants/Types';
+import { LightTheme, DarkTheme } from '@/constants/Colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens';
+
+const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA';
+
 interface LocationMenuProps {
   region: Region;
   setRegion: React.Dispatch<React.SetStateAction<Region>>;
   isKeyboardVisible: boolean;
-  style: any;
 }
 
 interface GeoLocationCoords {
@@ -46,13 +50,7 @@ type AutocompleteState = {
   fieldName: AutocompleteLocationField;
 };
 
-const LocationsMenu = ({
-  region,
-  setRegion,
-  isKeyboardVisible,
-  style,
-}: LocationMenuProps) => {
-  // const navigation = useNavigation<RecipientWalletAddrScreenNavigationProp>();
+const LocationsMenu = ({ region, setRegion, isKeyboardVisible }: LocationMenuProps) => {
   const { setPackageDeliveryData } = useMainContext();
   const [currentAddress, setCurrentAddress] = useState<string>("");
   const [sendingAddress, setSendingAddress] = useState("Enter sending address");
@@ -73,37 +71,21 @@ const LocationsMenu = ({
     fieldName: AutocompleteLocationField.RECIPIENT,
   });
 
-  navigator.geolocation = require("@react-native-community/geolocation");
+  // navigator.geolocation = require('expo-location');s
+
+  const { isDarkMode } = useMainContext();
 
   useEffect(() => {
     const requestLocationPermission = async () => {
       try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: "Location Permission",
-            message: "This app needs access to your location.",
-            buttonPositive: "OK",
-          }
-        );
-        console.log("granted permission: ", granted);
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          getCurrentLocation();
-        } else {
-          console.log("Location permission denied");
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Permission to access location was denied');
+          return;
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    requestLocationPermission();
-  }, []);
-
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
+        let location = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = location.coords;
         setCurrentLocationCoords({
           location: { lat: latitude, lng: longitude },
         });
@@ -123,11 +105,13 @@ const LocationsMenu = ({
             setCurrentAddress(address);
           })
           .catch((error) => console.error(error));
-      },
-      (error) => console.error(error),
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    );
-  };
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    requestLocationPermission();
+  }, []);
 
   const handleSendingAddressChange = (text: string) => {
     setSendingAddress(text);
@@ -175,14 +159,15 @@ const LocationsMenu = ({
 
       Promise.all(geocodePromises)
         .then(([sendingLocation, recipientLocation]) => {
+          console.log('sendingLocation, recipientLocation');
+          console.log(sendingLocation, recipientLocation);
           // Extract latitude and longitude
           const sendingLatitude = sendingLocation.latitude.toString();
           const sendingLongitude = sendingLocation.longitude.toString();
           const recipientLatitude = recipientLocation.latitude.toString();
           const recipientLongitude = recipientLocation.longitude.toString();
 
-          //   Navigate to the new screen passing the latitude and longitude as parameters
-          const packageDeliveryData: PackageDeliveryData = {
+          const packageDeliveryData: ParcelData = {
             startLocation: {
               lat: sendingLatitude,
               lng: sendingLongitude,
@@ -199,6 +184,13 @@ const LocationsMenu = ({
           console.log("in Submit");
           console.log("packageDeliveryData");
           console.log(packageDeliveryData);
+
+          setRegion({
+            latitude: parseFloat(sendingLatitude),
+            longitude: parseFloat(sendingLongitude),
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          });
 
           // navigation.navigate('RecipientWalletAddress');
         })
@@ -228,7 +220,6 @@ const LocationsMenu = ({
     ) {
       return {
         height: 15,
-        backgroundColor: "white",
         paddingHorizontal: 15,
         paddingBottom: "13%",
       };
@@ -238,7 +229,6 @@ const LocationsMenu = ({
     ) {
       return {
         height: "100%",
-        backgroundColor: "white",
         paddingHorizontal: 15,
       };
     } else if (
@@ -247,7 +237,6 @@ const LocationsMenu = ({
     ) {
       return {
         height: "100%",
-        backgroundColor: "white",
         paddingHorizontal: 15,
       };
     } else if (
@@ -258,7 +247,6 @@ const LocationsMenu = ({
     ) {
       return {
         height: 15,
-        backgroundColor: "white",
         paddingHorizontal: 15,
         paddingBottom: "13%",
         ariaDisabled: true,
@@ -276,93 +264,110 @@ const LocationsMenu = ({
   const currentLocationGeo = {
     description: currentAddress,
     formatted_address: currentAddress,
-    geometry: currentLocationCoords,
+    geometry: currentLocationCoords, 
   };
 
-  const placesAutocompleteRef: any = useRef();
+  const sendingPlacesAutocompleteRef: any = useRef();
+  const recipientPlacesAutocompleteRef: any = useRef();
+
+  const styles = getStyles(isDarkMode);
 
   return (
-    <View
-      style={
-        // !isKeyboardVisible ? styles.container : styles.containerKeyboardOpen}
-        style
-      }
-    >
-      {/* <Text style={{paddingBottom:10, borderRadius:5, paddingHorizontal:15, color:'white'}}>Current Address: {currentAddress}</Text> */}
-
-      {
-        // recipientAutocomplete == false &&
-        <SafeAreaView
-          style={[
-            { paddingTop: "7%" },
-            getTextStyle(sendingAutocomplete, recipientAutocomplete),
-          ]}
-        >
-          <GooglePlacesAutocomplete
-            ref={placesAutocompleteRef}
-            placeholder={sendingAddress}
-            onPress={(data, details = null) => {
-              let address = details?.formatted_address || "";
-              setSendingAddress(address);
+    <View style={styles.locationsMenu}>
+      <SafeAreaView style={[{ paddingTop: '7%', flex: 1,}, getTextStyle(sendingAutocomplete, recipientAutocomplete), styles.safeAreaVeiw]}>
+        <GooglePlacesAutocomplete
+        listViewDisplayed="auto"
+          ref={sendingPlacesAutocompleteRef}
+          placeholder={sendingAddress}
+          onPress={(data, details = null) => {
+            let address = details?.formatted_address || '';
+            setSendingAddress(address);
+          }}
+          fetchDetails={true}
+          query={{
+            key: GMAPS_API_KEY,
+            language: 'en',
+          }}
+          // currentLocation={true} // Not working with Expo Location as navigator.geolocation
+          styles={textInputStyles(isDarkMode)}
+          textInputProps={{
+            onFocus: () => {
+              setSendingAutocomplete((prevState) => ({ ...prevState, autocompleteState: true }));
+              setRecipientAutocomplete((prevState) => ({ ...prevState, autocompleteState: false }));
+              if(sendingAddress == currentLocationGeo.formatted_address) {
+                setSendingAddress('Enter sending address');
+                sendingPlacesAutocompleteRef.current?.setAddressText('');
+                sendingPlacesAutocompleteRef.placeholder = 'Enter sending address';
+              }
+            },
+            clearButtonMode: 'never',
+            placeholderTextColor: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+          }}
+          renderRightButton={() => (
+            <Ionicons name="close" size={20} color={
+              isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1
+            } onPress={() => {
+              setSendingAddress('Enter sending address');
+              sendingPlacesAutocompleteRef.current?.setAddressText('');
+              sendingPlacesAutocompleteRef.placeholder = 'Enter sending address';
+           }} 
+              style={{
+                display: sendingAddress !== 'Enter sending address' ? 'flex' : 'none',
+                position: 'absolute',
+                right: 0,
+                top: 10,
+                zIndex: 1,
+              }}/>)}
+          predefinedPlaces={[currentLocationGeo, { description: 'Current Location', formatted_address: currentLocationGeo.formatted_address, geometry: currentLocationCoords }]}
+        />
+      </SafeAreaView>
+      <SafeAreaView style={[getTextStyle(recipientAutocomplete, sendingAutocomplete), styles.safeAreaVeiw]}>
+        <GooglePlacesAutocomplete
+          ref={recipientPlacesAutocompleteRef}
+          placeholder={recipientAddress}
+          onPress={(data, details = null) => {
+            let address = details?.formatted_address || '';
+            setRecipientAddress(address);
+          }}
+          fetchDetails={true}
+          query={{
+            key: GMAPS_API_KEY,
+            language: 'en',
+          }}
+          // currentLocation={true} // Not working with Expo Location as navigator.geolocation
+          styles={textInputStyles(isDarkMode)}
+          textInputProps={{
+            onFocus: () => {
+              setRecipientAutocomplete((prevState) => ({ ...prevState, autocompleteState: true }));
+              setSendingAutocomplete((prevState) => ({ ...prevState, autocompleteState: false }));
+              if(recipientAddress == currentLocationGeo.formatted_address) {
+                setRecipientAddress('Enter recipient address');
+                recipientPlacesAutocompleteRef.current?.setAddressText('');
+                recipientPlacesAutocompleteRef.placeholder = 'Enter recipient address';
+              }
+            },
+            clearButtonMode: 'never',
+            placeholderTextColor: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+          }}
+          renderRightButton={() => (
+            <Ionicons name="close" size={20} color={
+              isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1
+            } onPress={() => {
+              setRecipientAddress('Enter recipient address');
+              recipientPlacesAutocompleteRef.current?.setAddressText('');
+              recipientPlacesAutocompleteRef.placeholder = 'Enter recipient address';
             }}
-            fetchDetails={true}
-            query={{
-              key: GMAPS_API_KEY,
-              language: "en",
-            }}
-            currentLocation={true}
-            styles={textInputStyles}
-            textInputProps={{
-              onFocus: () => {
-                setSendingAutocomplete((prevState) => ({
-                  ...prevState,
-                  autocompleteState: true,
-                }));
-                setRecipientAutocomplete((prevState) => ({
-                  ...prevState,
-                  autocompleteState: false,
-                }));
-              },
-            }}
-            predefinedPlaces={[currentLocationGeo]}
-          />
-        </SafeAreaView>
-      }
-
-      {
-        // sendingAutocomplete == false &&
-        <SafeAreaView
-          style={getTextStyle(recipientAutocomplete, sendingAutocomplete)}
-        >
-          <GooglePlacesAutocomplete
-            placeholder={recipientAddress}
-            onPress={(data, details = null) => {
-              let address = details?.formatted_address || "";
-              setRecipientAddress(address);
-            }}
-            fetchDetails={true}
-            query={{
-              key: GMAPS_API_KEY,
-              language: "en",
-            }}
-            // currentLocation={true}
-            styles={textInputStyles}
-            textInputProps={{
-              onFocus: () => {
-                setRecipientAutocomplete((prevState) => ({
-                  ...prevState,
-                  autocompleteState: true,
-                }));
-                setSendingAutocomplete((prevState) => ({
-                  ...prevState,
-                  autocompleteState: false,
-                }));
-              },
-            }}
-            predefinedPlaces={[currentLocationGeo]}
-          />
-        </SafeAreaView>
-      }
+            style={{
+              display: recipientAddress !== 'Enter recipient address' ? 'flex' : 'none',
+              position: 'absolute',
+              right: 0,
+              top: 10,
+              zIndex: 1,
+            }}/>
+          )}
+          predefinedPlaces={[currentLocationGeo, { description: 'Current Location', formatted_address: currentLocationGeo.formatted_address, geometry: currentLocationCoords }]}
+        />
+      </SafeAreaView>
       {!isKeyboardVisible && (
         <View
           style={{ borderRadius: 50, alignSelf: "center", marginBottom: 5 }}
@@ -373,26 +378,77 @@ const LocationsMenu = ({
           >
             <RedButtonText>Submit</RedButtonText>
           </RedButton>
-          {/* <Button title="Submit" onPress={handleSubmit} /> */}
         </View>
       )}
     </View>
   );
 };
 
-const textInputStyles = {
-  container: {
-    marginBottom: 10,
+const getStyles = (isDarkMode: boolean) => StyleSheet.create({
+  locationsMenu: {
+    width: '100%',
+    borderRadius: 30,
+    backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+    position: 'absolute',
+    top: 0,
   },
-  textInputContainer: {
-    width: "98%",
-    alignSelf: "center",
+  safeAreaVeiw: {
+    backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
   },
-  textInput: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-  },
-};
+
+});
+
+  const textInputStyles = (isDarkMode: boolean) => {
+    return {
+      container: {
+        marginBottom: 10,
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+      },
+      textInputContainer: {
+        width: '100%',
+        alignSelf: 'center',
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+      },
+      textInput: {
+        height: 40,
+        marginRight: 20,
+        borderColor: 'gray',
+        borderWidth: 1,
+        backgroundColor: isDarkMode ? DarkTheme.background2 : LightTheme.background2,
+        color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+      },
+      row: {
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+        // paddingVertical: 0,
+        // paddingHorizontal: 0,
+      },
+      description: {
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+      },
+    
+    containerResultRow: {
+        flex: 1,
+        height: 55,
+        justifyContent: 'center',
+        // paddingHorizontal: 15,
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+      },
+      poweredContainer: {
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'none',
+      },
+      powered: {
+        color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
+        display: 'none',
+      },
+    };
+    };
+  
 
 export default LocationsMenu;

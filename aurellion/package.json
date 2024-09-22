@@ -46,7 +46,8 @@
     "react-native-svg": "15.2.0",
     "react-native-switch-selector": "^2.3.0",
     "react-native-web": "~0.19.10",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "expo-location": "~17.0.1"
   },
   "overrides": {
     "valtio": "1.10.5"

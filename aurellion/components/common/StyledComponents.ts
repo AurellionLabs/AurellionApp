@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 
-import { TextProps, ViewStyle } from "react-native";
+import { StyleProp, TextProps, ViewStyle } from "react-native";
 import { ScrollViewProps } from "react-native";
 
 interface ThemedProps {
@@ -120,17 +120,31 @@ export const BoldText = styled.Text`
 `;
 
 interface ContainerProps {
-  styles: ViewStyle;
+  styles?: ViewStyle;
   isDarkMode?: boolean;
 }
 
 export const Container = styled.View<ContainerProps>`
   flex: 1;
   align-items: center;
-  margin-top: 2%;
   background-color: ${({ isDarkMode }) =>
     isDarkMode ? DarkTheme.background1 : LightTheme.background2};
 `;
+
+
+interface StyledContainerProps {
+  styles?: StyleProp<ViewStyle>;
+  isDarkMode?: boolean;
+}
+
+export const StyledContainer = styled.View.attrs<StyledContainerProps>((props) => ({
+  style: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: props.isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+  },
+}))<ContainerProps>`
+  ${({ props }) => props?.styles}`;
 
 export const WhiteText = styled.Text`
   color: white;

@@ -62,8 +62,8 @@ export enum RoleType {
 }
 
 export enum NodeStatus {
-    Active,
-    Inactive
+    Active = "0x01",
+    Inactive = "0x00"
 }
 
 export type DeliveryOption = {

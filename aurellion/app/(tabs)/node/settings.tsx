@@ -34,11 +34,12 @@ export default function Settings() {
     const [assetsOpen, setAssetsOpen] = useState(false);
 
     const [statusItems, setStatusItems] = useState([
-        { label: "Active", value: "0x01"},
-        { label: "Inactive", value: "0x00"},
+        { label: "Active", value: NodeStatus.Active},
+        { label: "Inactive", value: NodeStatus.Inactive},
     ]);
 
     const [assetItems, setAssetItems] = useState([
+    //TODO: instead of switch casing please use this
         { label: "Goat", value: "Goat" },
         { label: "Sheep", value: "Sheep" },
         { label: "Watch", value: "Watch" },

@@ -46,8 +46,15 @@ const polygon = {
     explorerUrl: "https://polygonscan.com",
     rpcUrl: "https://polygon-rpc.com",
 };
+const amoy = {
+    chainId: 80002,
+    name: "Amoy",
+    currency: "MATIC",
+    explorerUrl: "https://polygon-amoy.drpc.org",
+    rpcUrl: "https://polygon-amoy.drpc.org"
+};
 
-const chains = [mainnet, polygon];
+const chains = [mainnet, polygon,amoy];
 
 // 4. Create modal
 createWeb3Modal({

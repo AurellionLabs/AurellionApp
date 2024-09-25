@@ -50,11 +50,11 @@ const amoy = {
     chainId: 80002,
     name: "Amoy",
     currency: "MATIC",
-    explorerUrl: "https://polygon-amoy.drpc.org",
-    rpcUrl: "https://polygon-amoy.drpc.org"
+    explorerUrl: "https://polygon-amoy.infura.io/v3/281dfd93e10842199b64ed6f3535fa4c",
+    rpcUrl: "https://polygon-amoy.infura.io/v3/281dfd93e10842199b64ed6f3535fa4c"
 };
 
-const chains = [mainnet, polygon,amoy];
+const chains = [mainnet, polygon, amoy];
 
 // 4. Create modal
 createWeb3Modal({
@@ -104,11 +104,14 @@ function WalletScreen(): JSX.Element {
         setModalVisible(false);
     };
     useEffect(() => {
-        console.log("setting provider to ", walletProvider)
+        console.log("setting provider to ", walletProvider);
+        console.log("in setProviders")
         if (walletProvider) {
-            var ethersProvider = new BrowserProvider(walletProvider)
-            setEthersProvider(ethersProvider);
-            setWalletProvider(ethersProvider)
+        var ethersProvider = new BrowserProvider(walletProvider)
+        console.log("etherssssssssss",ethersProvider)
+        setEthersProvider(ethersProvider);
+        console.log("before await")
+        setWalletProvider(ethersProvider)
         }
     }, [walletProvider])
 

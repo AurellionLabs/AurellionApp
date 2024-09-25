@@ -1,32 +1,93 @@
-import { BrowserProvider, Signer, ethers } from 'ethers'; import { ParcelData, Journey } from '@/constants/Types';
+import { BrowserProvider, Contract, Signer, ethers } from 'ethers'; import { ParcelData, Journey, Node } from '@/constants/Types';
 import contractABI from './aurellion-abi.json';
 import nodeManagerABI from './aurum-abi.json';
 var ethersProvider: BrowserProvider | undefined;
 const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const NODE_MANAGER_ADDRESS = process.env.EXPO_PUBLIC_NODE_MANAGER_CONTRACT_ADDRESS
-export const setWalletProvider = (_ethersProvider: BrowserProvider) => {
-    ethersProvider = _ethersProvider;
-}
-export const loadAvailableOrders = async () => {
-
-    console.log("here")
+var walletAddress: string;
+export const setWalletProvider = async (_ethersProvider: BrowserProvider) => {
+    console.log("heeeeeeeeeeeeeeeere")
     var signer: Signer | undefined;
-
+    console.log("ethers provider param",_ethersProvider)
+    ethersProvider = _ethersProvider;
+    // this will console log as empty {} but it actually does definitely exist
+    console.log("here")
+    console.log("ethers provider in dapp controller",ethersProvider)
     try {
         if (ethersProvider)
             try {
                 signer = await ethersProvider.getSigner();
+                console.log("signer set")
             } catch (e) {
                 throw new Error("getSigner failed with " + e)
             }
         else console.error("ethersProvider is underfined")
         if (!signer)
             throw new Error('Signer is undefined');
-        if (!NODE_MANAGER_ADDRESS)
-            throw new Error("NODE_MANAGER_ADDRESS is undefined")
-        const contract = new ethers.Contract(NODE_MANAGER_ADDRESS, nodeManagerABI, signer);
+        walletAddress = await signer.getAddress();
+    } catch (error) {
+        console.error(`failed to set address:${walletAddress} \n error: ${error} \n provider: ${ethersProvider}`)
+    }
+}
+
+const getAurumContract = async (): Promise<Contract> =>
+    new Promise(async (resolve, reject) => {
+        console.log("here")
+        var signer: Signer | undefined;
+
+        try {
+            if (ethersProvider)
+                try {
+                    signer = await ethersProvider.getSigner();
+                } catch (e) {
+                    throw new Error("getSigner failed with " + e)
+                }
+            else console.error("ethersProvider is underfined ethersProvider:",ethersProvider)
+            if (!signer)
+                throw new Error('Signer is undefined');
+            if (!NODE_MANAGER_ADDRESS)
+                throw new Error("NODE_MANAGER_ADDRESS is undefined")
+            const contract = new ethers.Contract(NODE_MANAGER_ADDRESS, nodeManagerABI, signer);
+            console.log("Manager Address", NODE_MANAGER_ADDRESS)
+            const walletAddress = await signer.getAddress();
+            console.log(walletAddress)
+            console.log("calling function")
+            resolve(contract)
+        } catch (error) {
+            console.error('Error in asset search:', error);
+            reject(error);
+        }
+    })
+const getAusysContract = async (): Promise<Contract> =>
+    new Promise(async (resolve, reject) => {
+        console.log("here")
+        var signer: Signer | undefined;
+        try {
+            if (ethersProvider)
+                try {
+                    signer = await ethersProvider.getSigner();
+                } catch (e) {
+                    throw new Error("getSigner failed with " + e)
+                }
+            else throw new Error("ethersProvider is underfined")
+            if (!signer)
+                throw new Error('Signer is undefined');
+            if (!AUSYS_ADDRESS)
+                throw new Error("AUSYS_ADDRESS is undefined")
+            const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
+            resolve(contract)
+            console.log("Ausys Address", AUSYS_ADDRESS)
+        } catch (error) {
+            console.error('Error when tring to initialise Ausys contract object:', error);
+            reject(error);
+        }
+    })
+export const loadAvailableOrders = async () => {
+
+    console.log("here")
+    const contract = await getAurumContract()
+    try{
         console.log("Manager Address", NODE_MANAGER_ADDRESS)
-        const walletAddress = await signer.getAddress();
         console.log(walletAddress)
         console.log("calling function")
         // const jobTx = await contract.jobCreation(
@@ -53,36 +114,24 @@ export const loadAvailableOrders = async () => {
         throw error;
     }
 };
-export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
-
-    console.log("here")
-    var signer: Signer | undefined;
+export const registerNode = async (nodeData: Node) => {
+    const contract = await getAurumContract()
     try {
-        if (ethersProvider)
-            try {
-                signer = await ethersProvider.getSigner();
-            } catch (e) {
-                throw new Error("getSigner failed with " + e)
-            }
-        else console.error("ethersProvider is underfined")
-        if (!signer)
-            throw new Error('Signer is undefined');
-        if (!AUSYS_ADDRESS)
-            throw new Error("AUSYS_ADDRESS is undefined")
-        const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        console.log("Ausys Address", AUSYS_ADDRESS)
-        const walletAddress = await signer.getAddress();
-        console.log(walletAddress)
-        console.log(recipientWalletAddress)
-        console.log(locationData)
-        console.log("calling function")
+        await contract.registerNode(nodeData)
+    } catch (error) {
+        console.error('Error when registering node:', error)
+    }
+
+}
+export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
+    try {
+        const contract = await getAusysContract()
         const jobTx = await contract.jobCreation(
             walletAddress,
             recipientWalletAddress,
             locationData,
             1,
             10);
-        console.log("called function")
         console.log(jobTx);
         const receipt = await jobTx.wait();
         console.log('Job Creation Transaction Hash:');
@@ -97,18 +146,10 @@ export const jobCreation = async (locationData: ParcelData, recipientWalletAddre
 };
 
 export const customerPackageSign = async (journeyId: string) => {
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
     try {
-        if (!signer) {
-            throw new Error('Signer is undefined');
-        }
-        const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        const customerAddress = await signer.getAddress();
+        const contract = await getAusysContract()
         const journey = await contract.jobIdToJourney(journeyId);
-        const customerPackageSignTx = await contract.packageSign(journey.driver, customerAddress, journeyId);
+        const customerPackageSignTx = await contract.packageSign(journey.driver, walletAddress, journeyId);
         const receipt = await customerPackageSignTx.wait();
         console.log(receipt);
     } catch (error) {
@@ -118,18 +159,10 @@ export const customerPackageSign = async (journeyId: string) => {
 };
 
 export const driverPackageSign = async (journeyId: string) => {
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
-    try {
-        if (!signer) {
-            throw new Error('Signer is undefined');
-        }
-        const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        const driverAddress = await signer.getAddress();
+    try{
+    const contract = await getAusysContract()
         const journey = await contract.jobIdToJourney(journeyId);
-        const driverPackageSignTx = await contract.packageSign(driverAddress, journey.customer, journeyId);
+        const driverPackageSignTx = await contract.packageSign(walletAddress, journey.customer, journeyId);
         const receipt = await driverPackageSignTx.wait();
         console.log(receipt);
     } catch (error) {
@@ -141,29 +174,8 @@ export const driverPackageSign = async (journeyId: string) => {
 export const fetchCustomerJobs = async () => {
     const journeyIds = [];
     const jobs: Journey[] = [];
-    let contract;
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
-    try {
-        if (!signer) {
-            throw new Error('Signer is undefined');
-        }
-        try {
-            contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        } catch (error) {
-            console.error(
-                `failed to instantiate contract object at with Contract Address: ${AUSYS_ADDRESS} contractABI: ${contractABI} signer:${signer}`
-            );
-            throw error;
-        }
-
-        const walletAddress = await signer.getAddress();
-        if (!walletAddress) {
-            throw new Error('Failed to get wallet address');
-        }
-
+    const contract = await getAusysContract()
+    try{
         let jobNumber;
         try {
             jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
@@ -172,8 +184,6 @@ export const fetchCustomerJobs = async () => {
             console.error('Error fetching number of jobs created with walletAddress', walletAddress, 'Error:', error);
             throw error;
         }
-        contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-
         jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);
 
         for (let i = 0; i < jobNumber; i++) {
@@ -201,29 +211,9 @@ export const fetchCustomerJobs = async () => {
 };
 
 export const fetchReceiverJobs = async () => {
-    let contract;
     var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
+    const contract = await getAusysContract()
     try {
-        if (!signer) {
-            throw new Error('Signer is undefined');
-        }
-        try {
-            contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        } catch (error) {
-            console.error(
-                `failed to instantiate contract object at with Contract Address: ${AUSYS_ADDRESS} contractABI: ${contractABI} signer:${signer}`
-            );
-            throw error;
-        }
-
-        const walletAddress = await signer.getAddress();
-        if (!walletAddress) {
-            throw new Error('Failed to get wallet address');
-        }
-
         let jobNumber;
         try {
             jobNumber = await contract.numberOfJobsCreatedForReceiver(walletAddress);
@@ -258,15 +248,8 @@ export const fetchReceiverJobs = async () => {
 };
 
 export const checkIfDriverAssignedToJobId = async (journeyId: string) => {
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
+    const contract = await getAusysContract()
     try {
-        if (!signer) {
-            throw new Error('Signer is undefined');
-        }
-        const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
         const journey = await contract.jobIdToJourney(journeyId);
         const isAssigned = journey.driver === ethers.ZeroAddress ? false : true;
         return isAssigned;
@@ -277,18 +260,9 @@ export const checkIfDriverAssignedToJobId = async (journeyId: string) => {
 };
 
 export const assignDriverToJobId = async (journeyId: string) => {
-    var signer: Signer | undefined;
-    var ethersProvider: BrowserProvider | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
+    const contract = await getAusysContract()
     try {
-        if (!signer) {
-            throw new Error('Signer is undefined');
-        }
-        const contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-        const driverAddress = await signer.getAddress();
-        const assignDriverToJobIdTx = await contract.assignDriverToJobId(driverAddress, journeyId);
+        const assignDriverToJobIdTx = await contract.assignDriverToJobId(walletAddress, journeyId);
         const receipt = await assignDriverToJobIdTx.wait();
         console.log(receipt);
     } catch (error) {
@@ -300,20 +274,10 @@ export const assignDriverToJobId = async (journeyId: string) => {
 export const fetchDriverUnassignedJourneys = async () => {
     const journeyIds: string[] = [];
     const journeys: Journey[] = [];
-    let contract;
     let totalJobsCount;
     let journeyId: string | null = null;
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
-    let journey: Journey | null = null;
-    try {
-        contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-    } catch (error) {
-        console.error('Could not create Contract object');
-        throw error;
-    }
+    const contract = await getAusysContract()
+    var journey;
     try {
         totalJobsCount = await contract.jobIdCounter();
     } catch (error) {
@@ -350,73 +314,40 @@ export const fetchDriverUnassignedJourneys = async () => {
 export const fetchDriverAssignedJourneys = async () => {
     const journeyIds: string[] = [];
     const journeys: Journey[] = [];
-    let contract;
     let journeyId: string | null = null;
     let journey: Journey;
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
-    let numberOfJobsAssignedForDriver;
+    var numberOfJobsAssignedForDriver;
+    const contract = await getAusysContract()
     try {
-        contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
+        numberOfJobsAssignedForDriver = await contract.numberOfJobsAssigned(walletAddress);
     } catch (error) {
-        console.error('Could not create Contract object');
+        console.error('Could not get number of jobs assigned to driver');
         throw error;
     }
-    if (signer) {
-        const walletAddress = await signer.getAddress();
-        if (!walletAddress) {
-            throw new Error('Failed to get wallet address');
-        }
+    for (let i = 0; i < numberOfJobsAssignedForDriver; i++) {
         try {
-            numberOfJobsAssignedForDriver = await contract.numberOfJobsAssigned(walletAddress);
+            journeyId = await contract.driverToJobId(walletAddress, i);
         } catch (error) {
-            console.error('Could not get number of jobs assigned to driver');
-            throw error;
+            console.error(`No journeyId exists at index ${i} for driver`);
         }
-        for (let i = 0; i < numberOfJobsAssignedForDriver; i++) {
-            try {
-                journeyId = await contract.driverToJobId(walletAddress, i);
-            } catch (error) {
-                console.error(`No journeyId exists at index ${i} for driver`);
-            }
-            if (journeyId) {
-                journeyIds.push(journeyId);
-            }
+        if (journeyId) {
+            journeyIds.push(journeyId);
         }
-        for (let i = 0; i < journeyIds.length; i++) {
-            try {
-                journey = await contract.jobIdToJourney(journeyIds[i]);
-                journeys.push(journey);
-            } catch (error) {
-                console.error(`Error retrieving journey from journeyId ${journeyIds[i]}`);
-            }
+    }
+    for (let i = 0; i < journeyIds.length; i++) {
+        try {
+            journey = await contract.jobIdToJourney(journeyIds[i]);
+            journeys.push(journey);
+        } catch (error) {
+            console.error(`Error retrieving journey from journeyId ${journeyIds[i]}`);
         }
     }
     return journeys;
-};
+}
 
 export const packageHandOn = async (customerAddress: string, driverAddress: string, journeyId: string) => {
-    let contract;
-    let handOnSuccessful = false;
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
-    try {
-        contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-    } catch (error) {
-        console.error('Could not create Contract object');
-        throw error;
-    }
-    if (signer) {
-        const walletAddress = await signer.getAddress();
-        if (!walletAddress) {
-            console.error('Failed to get wallet address');
-            throw new Error('Failed to get wallet address');
-        }
-    }
+    const contract = await getAusysContract()
+    var handOnSuccessful = false
     try {
         handOnSuccessful = await contract.handOn(driverAddress, customerAddress, journeyId);
     } catch (error) {
@@ -427,26 +358,8 @@ export const packageHandOn = async (customerAddress: string, driverAddress: stri
 };
 
 export const packageHandOff = async (customerAddress: string, driverAddress: string, journeyId: string) => {
-    let contract;
     let handOffSuccessful = false;
-    var signer: Signer | undefined;
-    if (ethersProvider)
-        signer = await ethersProvider.getSigner();
-    else console.error("ethersProvider is underfined")
-
-    try {
-        contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-    } catch (error) {
-        console.error('Could not create Contract object');
-        throw error;
-    }
-    if (signer) {
-        const walletAddress = await signer.getAddress();
-        if (!walletAddress) {
-            console.log('Failed to get wallet address');
-            throw new Error('Failed to get wallet address');
-        }
-    }
+    const contract = await getAusysContract()
     try {
         handOffSuccessful = await contract.handOff(driverAddress, customerAddress, journeyId);
     } catch (error) {

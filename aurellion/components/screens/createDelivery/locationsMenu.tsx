@@ -1,16 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
   View,
-  Text,
-  TextInput,
-  Button,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
-  BackHandler,
 } from 'react-native';
 import * as Location from 'expo-location';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -21,7 +13,7 @@ import { useMainContext } from '@/providers/main.provider';
 import { ParcelData } from '@/constants/Types';
 import { LightTheme, DarkTheme } from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens';
+import { router } from "expo-router";
 
 const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA';
 
@@ -113,14 +105,6 @@ const LocationsMenu = ({ region, setRegion, isKeyboardVisible }: LocationMenuPro
     requestLocationPermission();
   }, []);
 
-  const handleSendingAddressChange = (text: string) => {
-    setSendingAddress(text);
-  };
-
-  const handleRecipientAddressChange = (text: string) => {
-    setRecipientAddress(text);
-  };
-
   const geocodeAddress = (
     address: string
   ): Promise<{ latitude: number; longitude: number }> => {
@@ -157,45 +141,48 @@ const LocationsMenu = ({ region, setRegion, isKeyboardVisible }: LocationMenuPro
         geocodeAddress(recipientAddress),
       ];
 
-      Promise.all(geocodePromises)
-        .then(([sendingLocation, recipientLocation]) => {
-          console.log('sendingLocation, recipientLocation');
-          console.log(sendingLocation, recipientLocation);
-          // Extract latitude and longitude
-          const sendingLatitude = sendingLocation.latitude.toString();
-          const sendingLongitude = sendingLocation.longitude.toString();
-          const recipientLatitude = recipientLocation.latitude.toString();
-          const recipientLongitude = recipientLocation.longitude.toString();
+      // Promise.all(geocodePromises)
+      //   .then(([sendingLocation, recipientLocation]) => {
+      //     console.log('sendingLocation, recipientLocation');
+      //     console.log(sendingLocation, recipientLocation);
+      //     // Extract latitude and longitude
+      //     const sendingLatitude = sendingLocation.latitude.toString();
+      //     const sendingLongitude = sendingLocation.longitude.toString();
+      //     const recipientLatitude = recipientLocation.latitude.toString();
+      //     const recipientLongitude = recipientLocation.longitude.toString();
 
-          const packageDeliveryData: ParcelData = {
-            startLocation: {
-              lat: sendingLatitude,
-              lng: sendingLongitude,
-            },
-            endLocation: {
-              lat: recipientLatitude,
-              lng: recipientLongitude,
-            },
-            startName: sendingAddress,
-            endName: recipientAddress,
-          };
-          setPackageDeliveryData(packageDeliveryData);
+      //     const packageDeliveryData: ParcelData = {
+      //       startLocation: {
+      //         lat: sendingLatitude,
+      //         lng: sendingLongitude,
+      //       },
+      //       endLocation: {
+      //         lat: recipientLatitude,
+      //         lng: recipientLongitude,
+      //       },
+      //       startName: sendingAddress,
+      //       endName: recipientAddress,
+      //     };
+      //     setPackageDeliveryData(packageDeliveryData);
 
-          console.log("in Submit");
-          console.log("packageDeliveryData");
-          console.log(packageDeliveryData);
+      //     console.log("in Submit");
+      //     console.log("packageDeliveryData");
+      //     console.log(packageDeliveryData);
 
-          setRegion({
-            latitude: parseFloat(sendingLatitude),
-            longitude: parseFloat(sendingLongitude),
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          });
+      //     setRegion({
+      //       latitude: parseFloat(sendingLatitude),
+      //       longitude: parseFloat(sendingLongitude),
+      //       latitudeDelta: 0.01,
+      //       longitudeDelta: 0.01,
+      //     });
 
-          // navigation.navigate('RecipientWalletAddress');
-        })
-        .catch((error) => {
-          console.error("Error geocoding addresses:", error);
+          
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error geocoding addresses:", error);
+      //   });
+        router.push({
+          pathname: `customer/package/recepientWalletAddress`,
         });
     }
   };

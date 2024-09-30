@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  TextInput,
 } from "react-native";
 import { useMainContext } from "@/providers/main.provider";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
@@ -15,7 +16,6 @@ import {
   Section,
   ConfirmedAddr,
 } from "@/components/screens/recipientWalletAddress/StyledComponents";
-import { TextInput } from "react-native-gesture-handler";
 import { router } from "expo-router";
 
 const RecipientWalletAddressScreen: React.FC = () => {

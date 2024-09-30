@@ -140,7 +140,8 @@ const LocationsMenu = ({ region, setRegion, isKeyboardVisible }: LocationMenuPro
         geocodeAddress(sendingAddress),
         geocodeAddress(recipientAddress),
       ];
-
+      // TODO: commeted as it doesn't work reliably - get network error when getting geocode date
+      
       // Promise.all(geocodePromises)
       //   .then(([sendingLocation, recipientLocation]) => {
       //     console.log('sendingLocation, recipientLocation');

@@ -18,6 +18,7 @@ const DeliveryOptionsScreen = () => {
   });
 
   return (
+    // TODO: Need to add SafeAreaView
     <Container style={{ backgroundColor }}>
       <MapView
         style={{ flex: 1, width: "100%", height: "100%" }}

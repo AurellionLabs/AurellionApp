@@ -1,6 +1,7 @@
 import { BrowserProvider, Contract, Signer, ethers } from 'ethers'; import { ParcelData, Journey, Node } from '@/constants/Types';
 import contractABI from './aurellion-abi.json';
 import nodeManagerABI from './aurum-abi.json';
+import nodeABI from './aurum-node-abi.json';
 var ethersProvider: BrowserProvider | undefined;
 const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const NODE_MANAGER_ADDRESS = process.env.EXPO_PUBLIC_NODE_MANAGER_CONTRACT_ADDRESS
@@ -8,11 +9,11 @@ var walletAddress: string;
 export const setWalletProvider = async (_ethersProvider: BrowserProvider) => {
     console.log("heeeeeeeeeeeeeeeere")
     var signer: Signer | undefined;
-    console.log("ethers provider param",_ethersProvider)
+    console.log("ethers provider param", _ethersProvider)
     ethersProvider = _ethersProvider;
     // this will console log as empty {} but it actually does definitely exist
     console.log("here")
-    console.log("ethers provider in dapp controller",ethersProvider)
+    console.log("ethers provider in dapp controller", ethersProvider)
     try {
         if (ethersProvider)
             try {
@@ -42,7 +43,7 @@ const getAurumContract = async (): Promise<Contract> =>
                 } catch (e) {
                     throw new Error("getSigner failed with " + e)
                 }
-            else console.error("ethersProvider is underfined ethersProvider:",ethersProvider)
+            else console.error("ethersProvider is underfined ethersProvider:", ethersProvider)
             if (!signer)
                 throw new Error('Signer is undefined');
             if (!NODE_MANAGER_ADDRESS)
@@ -54,7 +55,36 @@ const getAurumContract = async (): Promise<Contract> =>
             console.log("calling function")
             resolve(contract)
         } catch (error) {
-            console.error('Error in asset search:', error);
+            console.error('Error fetching contract:', error);
+            reject(error);
+        }
+    })
+
+const getAurumNodeContract = async (address: string): Promise<Contract> =>
+    new Promise(async (resolve, reject) => {
+        console.log("here")
+        var signer: Signer | undefined;
+
+        try {
+            if (ethersProvider)
+                try {
+                    signer = await ethersProvider.getSigner();
+                } catch (e) {
+                    throw new Error("getSigner failed with " + e)
+                }
+            else console.error("ethersProvider is underfined ethersProvider:", ethersProvider)
+            if (!signer)
+                throw new Error('Signer is undefined');
+            if (!NODE_MANAGER_ADDRESS)
+                throw new Error("NODE_MANAGER_ADDRESS is undefined")
+            const contract = new ethers.Contract(address, nodeABI, signer);
+            console.log("Manager Address", NODE_MANAGER_ADDRESS)
+            const walletAddress = await signer.getAddress();
+            console.log(walletAddress)
+            console.log("calling function")
+            resolve(contract)
+        } catch (error) {
+            console.error('Error fetching contract:', error);
             reject(error);
         }
     })
@@ -86,7 +116,7 @@ export const loadAvailableOrders = async () => {
 
     console.log("here")
     const contract = await getAurumContract()
-    try{
+    try {
         console.log("Manager Address", NODE_MANAGER_ADDRESS)
         console.log(walletAddress)
         console.log("calling function")
@@ -114,6 +144,7 @@ export const loadAvailableOrders = async () => {
         throw error;
     }
 };
+// Node Functions:
 export const registerNode = async (nodeData: Node) => {
     const contract = await getAurumContract()
     try {
@@ -123,6 +154,113 @@ export const registerNode = async (nodeData: Node) => {
     }
 
 }
+
+export const addItem = async (node: string, itemOwner: string, assetClass: number, amount: number, data: any) => {
+    const contract = await getAurumNodeContract(node)
+    try {
+        await contract.addItem(itemOwner, assetClass, amount, data)
+    } catch (error) {
+        console.error('Error when registering node:', error)
+    }
+}
+
+export const getOwnedNode = async () => {
+    const contract = await getAurumContract()
+    try {
+        await contract.ownedNodes(walletAddress)
+    } catch (error) {
+        console.error(`unable to get nodes for wallet address ${walletAddress}`)
+    }
+}
+
+export const updateOwner = async (node: string) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.updateOwner(walletAddress, node)
+    } catch (error) {
+        console.error(`unable to updateOwner for wallet address ${walletAddress} and node: ${node}`)
+    }
+}
+
+export const updateSupportedAssets = async (supportedAssetsList: number[], capacity: number[], nodeAddress: string) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.updateSupportedAssets(supportedAssetsList, capacity, nodeAddress)
+    } catch (error) {
+        console.error(`unable to updateSupportedAssets for node address: ${walletAddress} and capacity: ${capacity} nodeAddress: ${nodeAddress}`)
+    }
+}
+
+export const updateLocation = async (location: string, node: string) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.updateLocation(location, node)
+    } catch (error) {
+        console.error(`unable to updateLocation for location: ${location} and node: ${node}`)
+    }
+}
+
+export const getNode = async (node: string) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.getNode(node)
+    } catch (error) {
+        console.error(`unable to get nodes for wallet address ${walletAddress}`)
+    }
+}
+
+export const gasSafeUpdateCapacity = async (node: string, quantities: number[], assets: number[]) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.gasSafeUpdateCapacity(node, quantities, assets)
+    } catch (error) {
+        console.error(`unable to gasSafeUpdateCapacity for node: ${node} quantities: ${quantities}, assets: ${assets}`)
+    }
+}
+
+export const updateStatus = async (node: string) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.updateStatus(node)
+    } catch (error) {
+        console.error(`unable to updateStatus for node${node}`)
+    }
+}
+export const nodeHandOff = async (node: string,
+    driver: string,
+    reciever: string,
+    id: string,
+    tokenIds: number[],
+    token: string,
+    quantities: number[],
+    data: any) => {
+    const contract = await getAurumNodeContract(node)
+    try {
+        await contract.nodeHandoff(
+            node,
+            driver,
+            reciever,
+            id,
+            tokenIds,
+            token,
+            quantities,
+            data
+        )
+    } catch (error) {
+        console.error(`unable nodeHandoff for node${node} driver: ${driver}, reciever: ${reciever}, id:${id} tokenIDs:  ${tokenIds} token: ${token} quantities: ${quantities} data: ${data}`)
+    }
+}
+
+export const nodeHandOn = async (node: string, driver: string, reciever: string, id: string) => {
+    const contract = await getAurumNodeContract(node)
+    try {
+        await contract.nodeHandOn(driver, reciever, id)
+    } catch (error) {
+        console.error(`unable to updateStatus for node: ${driver} reciever: ${reciever} id: ${id}}`)
+    }
+}
+// Ausys
+
 export const jobCreation = async (locationData: ParcelData, recipientWalletAddress: string) => {
     try {
         const contract = await getAusysContract()
@@ -159,8 +297,8 @@ export const customerPackageSign = async (journeyId: string) => {
 };
 
 export const driverPackageSign = async (journeyId: string) => {
-    try{
-    const contract = await getAusysContract()
+    try {
+        const contract = await getAusysContract()
         const journey = await contract.jobIdToJourney(journeyId);
         const driverPackageSignTx = await contract.packageSign(walletAddress, journey.customer, journeyId);
         const receipt = await driverPackageSignTx.wait();
@@ -175,7 +313,7 @@ export const fetchCustomerJobs = async () => {
     const journeyIds = [];
     const jobs: Journey[] = [];
     const contract = await getAusysContract()
-    try{
+    try {
         let jobNumber;
         try {
             jobNumber = await contract.numberOfJobsCreatedForCustomer(walletAddress);

@@ -3,6 +3,7 @@ import "./Aura.sol";
 import "./AuSys.sol";
 import "./AuraGoat.sol";
 pragma solidity 0.8.26;
+//TODO: make an asset name to number finder on smart contract
 
 contract AurumNodeManager {
     struct Location {
@@ -23,6 +24,7 @@ contract AurumNodeManager {
         string location;
         //stteal ausys location struct
         bytes1 validNode;
+        //TODO: Make a setter for this
         address owner;
         uint256[] supportedAssets;
         bytes1 status;
@@ -37,16 +39,7 @@ contract AurumNodeManager {
     uint256 public nodeIdCounter = 0;
     mapping(address => address[]) ownedNodes;
     mapping(address => Node) AllNodes;
-    struct test {
-        string location;
-        //stteal ausys location struct
-        bytes1 validNode;
-        address owner;
-        uint256[] supportedAssets;
-        bytes1 status;
-        uint256[] capacity;
-    }
-    mapping(address => test) tests;
+    address[] public nodeList;
     locationContract ausys;
     AuraGoat auraGoat;
     address admin;
@@ -69,6 +62,7 @@ contract AurumNodeManager {
 
     function setAdmin(address _admin) public adminOnly {
         admin = _admin;
+        emit eventUpdateAdmin(_admin);
     }
 
     function registerNode(Node memory node) public returns (address id) {
@@ -77,9 +71,12 @@ contract AurumNodeManager {
         AllNodes[id] = node;
         AllNodes[id].validNode = bytes1(uint8(1));
         updateOwner(node.owner, id);
+        nodeList.push(id);
+        nodeIdCounter+=1;
+
     }
 
-    function getNode(address nodeAddress) public returns (Node memory node) {
+    function getNode(address nodeAddress) public view returns (Node memory node) {
         node = AllNodes[nodeAddress];
     }
 
@@ -87,6 +84,7 @@ contract AurumNodeManager {
     //create a node package sign function that mints to the node from aura when
     // thhe node succesfully calls hand off
     event eventUpdateOwner(address owner, address node);
+    event eventUpdateAdmin(address admin);
 
     function updateOwner(address owner, address node) public isOwner(node) {
         AllNodes[node].owner = owner;
@@ -110,7 +108,7 @@ contract AurumNodeManager {
         uint256[] memory assets
     ) public isOwner(node) {
         Node storage targetNode = AllNodes[node];
-        for (uint256 i = 0; i > AllNodes[node].supportedAssets.length; i++) {
+        for (uint256 i = 0; i < AllNodes[node].supportedAssets.length; i++) {
             if (targetNode.supportedAssets[i] == assets[i]) {
                 targetNode.capacity[i] = quantities[i];
                 break;
@@ -125,10 +123,10 @@ contract AurumNodeManager {
     ) public isOwner(node) {
         Node storage targetNode = AllNodes[node];
         require(assets.length == targetNode.supportedAssets.length);
-        for (uint256 k = 0; k > assets.length; k++)
+        for (uint256 k = 0; k < assets.length; k++)
             for (
                 uint256 i = 0;
-                i > AllNodes[node].supportedAssets.length;
+                i < AllNodes[node].supportedAssets.length;
                 i++
             ) {
                 if (targetNode.supportedAssets[i] == assets[k]) {
@@ -207,7 +205,10 @@ contract aurumNode {
         auraGoat = _auraGoat;
         manager = _manager;
     }
-
+    modifier isOwner(address user){
+        require(user == owner);
+        _;
+    }
     function nodeHandoff(
         address node,
         address driver,
@@ -250,8 +251,9 @@ contract aurumNode {
         uint256 amount,
         address item,
         bytes memory data
-    ) public {
+    ) public isOwner(msg.sender) {
         auraGoat.nodeMint(itemOwner, weight, amount, data);
+        //TODO:
         //add the item to the node
         // data should be a abi.encode of the entire data struct of an asset
         // data should be decoded in the mint function of the desired asset

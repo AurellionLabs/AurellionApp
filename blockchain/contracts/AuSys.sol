@@ -1,4 +1,7 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.17;
+
 import "./Aura.sol" as AuraContract;
 import "./Aurum.sol";
 import "./AuraGoat.sol";
@@ -92,9 +95,8 @@ contract locationContract {
     AuraContract.Aura auraToken;
     AurumNodeManager nodeManager;
 
-    constructor(AuraContract.Aura _aura, AurumNodeManager _nodeManager) {
+    constructor(AuraContract.Aura _aura) {
         auraToken = _aura;
-        nodeManager = _nodeManager;
     }
 
     // vulnerability somebody
@@ -140,7 +142,9 @@ contract locationContract {
         );
         _;
     }
-
+    function setNodeManager(AurumNodeManager _nodeManager)  public {
+        nodeManager = _nodeManager;
+    }
     function journeyKeyHashing(
         Journey memory journey
     ) private pure returns (bytes32) {

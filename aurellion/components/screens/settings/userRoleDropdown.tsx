@@ -37,7 +37,13 @@ export default function UserRoleDropdown({
         break;
       case RoleType.Node:
         setRole(RoleType.Node);
-        router.replace("/node/addAsset");
+        // TODO: Fetch whether current user has registered a node
+        const nodeRegistered = false
+        if(nodeRegistered){
+          router.replace("/node/addAsset");
+        } else {
+          router.replace("/node/registerNode")
+        }
         break;
       default:
         console.error("Unknown Role");

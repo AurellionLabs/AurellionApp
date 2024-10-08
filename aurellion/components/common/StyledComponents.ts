@@ -131,20 +131,24 @@ export const Container = styled.View<ContainerProps>`
     isDarkMode ? DarkTheme.background1 : LightTheme.background2};
 `;
 
-
 interface StyledContainerProps {
   styles?: StyleProp<ViewStyle>;
   isDarkMode?: boolean;
 }
 
-export const StyledContainer = styled.View.attrs<StyledContainerProps>((props) => ({
-  style: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: props.isDarkMode ? DarkTheme.background1 : LightTheme.background2,
-  },
-}))<ContainerProps>`
-  ${({ props }) => props?.styles}`;
+export const StyledContainer = styled.View.attrs<StyledContainerProps>(
+  (props) => ({
+    style: {
+      flex: 1,
+      alignItems: "center",
+      backgroundColor: props.isDarkMode
+        ? DarkTheme.background1
+        : LightTheme.background2,
+    },
+  })
+)<ContainerProps>`
+  ${({ props }) => props?.styles}
+`;
 
 export const WhiteText = styled.Text`
   color: white;

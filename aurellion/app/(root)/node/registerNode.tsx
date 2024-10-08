@@ -24,10 +24,8 @@ export default function RegisterNode() {
   const [nodeName, setNodeName] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [status, setStatus] = useState("Active");
   const [assets, setAssets] = useState(null);
 
-  const [statusOpen, setStatusOpen] = useState(false);
   const [assetsOpen, setAssetsOpen] = useState(false);
 
   const [assetItems, setAssetItems] = useState([
@@ -36,34 +34,20 @@ export default function RegisterNode() {
     { label: "Watch", value: "Watch" },
   ]);
 
-  const onChangeRoleOpen = () => {
-    setAssetsOpen(false);
-    setStatusOpen(false);
-  };
-
-  const onStatusOpen = () => {
-    setAssetsOpen(false);
-  };
-
-  const onAssetsOpen = () => {
-    setStatusOpen(false);
-  };
-
-  const handleSubmit = () => {
+  const registerNode = () => {
     // Process the asset data as needed
     const data = {
       nodeName,
       walletAddress,
       capacity,
-      status,
       assets,
     };
     console.log(data);
-    router.replace("/node/addAsset")
+    router.replace("/node/addAsset");
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Container isDarkMode={isDarkMode}>
           <Heading isDarkMode={isDarkMode}>Register Node</Heading>
@@ -101,7 +85,6 @@ export default function RegisterNode() {
             <Label isDarkMode={isDarkMode}>Supported Assets</Label>
             <DropDownPicker
               open={assetsOpen}
-              onOpen={onAssetsOpen}
               value={assets}
               items={assetItems}
               setOpen={setAssetsOpen}
@@ -130,10 +113,10 @@ export default function RegisterNode() {
             />
           </Section>
           <RedButton
-            onPress={handleSubmit}
+            onPress={registerNode}
             style={{ alignSelf: "center", marginTop: "7%" }}
           >
-            <RedButtonText>Save</RedButtonText>
+            <RedButtonText>Register Node</RedButtonText>
           </RedButton>
         </Container>
       </ScrollView>

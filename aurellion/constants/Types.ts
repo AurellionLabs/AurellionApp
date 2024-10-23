@@ -81,3 +81,8 @@ export type Order = {
     image?: any
 }
 
+export enum AssetNameToId {
+    Goat = 1,
+    Sheep = 2,
+    Cow = 3,
+}

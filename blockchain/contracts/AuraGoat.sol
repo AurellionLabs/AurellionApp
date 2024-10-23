@@ -3,7 +3,7 @@ pragma solidity ^0.8.26;
 import "./Aurum.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+// import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
@@ -19,8 +19,7 @@ contract AuraGoat is ERC1155, ERC1155Burnable, Ownable, ERC1155Supply {
     constructor(
         address initialOwner,
         string memory _uri,
-        AurumNodeManager _NodeManager,
-        address _NodeManagerAddress
+        AurumNodeManager _NodeManager
     ) payable ERC1155(_uri) Ownable(initialOwner){
         NodeManager = _NodeManager;
     }

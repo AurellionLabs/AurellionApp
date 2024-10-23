@@ -17,6 +17,8 @@ import {
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 import { router } from "expo-router";
+import { Node, NodeStatus, AssetNameToId } from "@/constants/Types";
+import { registerNode } from "@/dapp-connectors/dapp-controller";
 
 export default function RegisterNode() {
   const { isDarkMode } = useMainContext();
@@ -24,7 +26,7 @@ export default function RegisterNode() {
   const [nodeName, setNodeName] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [assets, setAssets] = useState(null);
+  const [assets, setAssets] = useState([]);
 
   const [assetsOpen, setAssetsOpen] = useState(false);
 
@@ -34,15 +36,41 @@ export default function RegisterNode() {
     { label: "Watch", value: "Watch" },
   ]);
 
-  const registerNode = () => {
+  const onPress = async () => {
     // Process the asset data as needed
-    const data = {
-      nodeName,
-      walletAddress,
-      capacity,
-      assets,
+    // const data = {
+    //   nodeName,
+    //   walletAddress,
+    //   capacity,
+    //   assets,
+    // };
+    // console.log(data);
+
+
+
+    let supportedAssetIds: number[] = [];
+    for(const assetName of assets){
+      const assetId = AssetNameToId[assetName as keyof typeof AssetNameToId]
+      if(assetId != undefined) supportedAssetIds.push(assetId)
+    }
+    const data: Node = {
+        location: nodeName,
+        owner: walletAddress,
+        capacity: [Number(capacity)],
+        status: NodeStatus.Active,
+        supportedAssets: supportedAssetIds,
+        validNode: "0x01"
     };
     console.log(data);
+    try {
+        await registerNode(data)
+    } catch (e) {
+        console.error("couldnt register node", e)
+    } 
+
+
+
+
     router.replace("/node/addAsset");
   };
 
@@ -113,7 +141,7 @@ export default function RegisterNode() {
             />
           </Section>
           <RedButton
-            onPress={registerNode}
+            onPress={onPress}
             style={{ alignSelf: "center", marginTop: "7%" }}
           >
             <RedButtonText>Register Node</RedButtonText>

@@ -10,6 +10,7 @@ import {
   Value,
   Separator,
 } from "@/components/screens/confirmation/StyledComponents";
+
 // import { jobCreation } from '../../dapp-connectors/dapp-controller';
 import { DeliverySpeedOption } from "@/constants/Types";
 import { RedButton, RedButtonText } from "@/components/common/StyledComponents";
@@ -57,6 +58,7 @@ const ConfirmationScreen: React.FC = () => {
   };
 
   return (
+    // TODO: Need to add SafeAreaView
     <>
       {isLoading || isError ? (
         <Loader

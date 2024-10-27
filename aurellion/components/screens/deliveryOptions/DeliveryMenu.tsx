@@ -88,7 +88,7 @@ const DeliveryMenu = () => {
       ...prevState,
       deliverySpeed: selectedDeliverOption,
     }));
-    router.push({ pathname: "/delivery/customer/confirmation" });
+    router.push({ pathname: "customer/package/confirmation" });
   };
 
   return (

@@ -101,12 +101,12 @@ contract AurumNodeManager {
 
     event eventUpdateStatus(bytes1 status, address node);
 
-    //secure dis
+    //TODO: secure dis
     function gasSafeUpdateCapacity(
         address node,
         uint256[] memory quantities,
         uint256[] memory assets
-    ) public isOwner(node) {
+    ) public {
         Node storage targetNode = AllNodes[node];
         for (uint256 i = 0; i < AllNodes[node].supportedAssets.length; i++) {
             if (targetNode.supportedAssets[i] == assets[i]) {

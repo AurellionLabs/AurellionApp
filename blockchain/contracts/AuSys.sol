@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: GPL-3.0
 
 pragma solidity ^0.8.17;
 
@@ -32,13 +32,14 @@ contract locationContract {
     struct Order {
         bytes32 id;
         address token;
-        uint[] tokenId;
-        uint[] tokenQuantity;
+        uint tokenId;
+        uint tokenQuantity;
+        uint[] requestedTokenQuantity;
         uint price;
         address amount;
         uint txFee;
         address customer;
-        bytes32[] journeys;
+        bytes32[] journeyIds;
         address[] nodes;
         ParcelData locationData;
         Status currentStatus;
@@ -49,7 +50,7 @@ contract locationContract {
         bytes32 journeyId;
         Status currentStatus;
         address sender;
-        address reciever;
+        address receiver;
         address driver;
         uint journeyStart;
         uint journeyEnd;
@@ -108,7 +109,7 @@ contract locationContract {
         require(
             (journeyIdToJourney[id].driver == driver &&
                 journeyIdToJourney[id].sender == sender) ||
-                journeyIdToJourney[id].reciever == sender,
+                journeyIdToJourney[id].receiver == sender,
             "Was not correct 1"
         );
         require(
@@ -142,9 +143,11 @@ contract locationContract {
         );
         _;
     }
-    function setNodeManager(AurumNodeManager _nodeManager)  public {
+
+    function setNodeManager(AurumNodeManager _nodeManager) public {
         nodeManager = _nodeManager;
     }
+
     function journeyKeyHashing(
         Journey memory journey
     ) private pure returns (bytes32) {
@@ -157,18 +160,18 @@ contract locationContract {
 
     event emitSig(address indexed user, bytes32 indexed id);
 
-    function getjourney(bytes32 id) public view returns (Journey memory){
+    function getjourney(bytes32 id) public view returns (Journey memory) {
         return journeyIdToJourney[id];
-
     }
-        //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all journeys then not showing up
+
+    //could you exploit this feature by an agent calling from a non aurellion source  assign themseleves to all journeys then not showing up
     function assignDriverToJourneyId(address driver, bytes32 journeyID) public {
         driverToJourneyId[driver].push(journeyID);
         journeyIdToJourney[journeyID].driver = driver;
         numberOfJourneysAssigned[driver] += 1;
     }
 
-    //sender can be both reciever and sender
+    //sender can be both receiver and sender
     function packageSign(
         address driver,
         address sender,
@@ -253,18 +256,18 @@ contract locationContract {
 
     function handOff(
         address driver,
-        address reciever,
+        address receiver,
         bytes32 id,
         //pass 0x0 if addr not requred
         address token
     )
         public
         isInProgress(id)
-        customerDriverCheck(reciever, driver, id)
+        customerDriverCheck(receiver, driver, id)
         returns (bool)
     {
         if (
-            customerHandOff[reciever][id] == true &&
+            customerHandOff[receiver][id] == true &&
             driverHandOn[driver][id] == true
         ) {
             journeyIdToJourney[id].currentStatus = Status.Completed;
@@ -283,7 +286,7 @@ contract locationContract {
     function nodeHandOff(
         address sendingNode,
         address driver,
-        address reciever,
+        address receiver,
         bytes32 id,
         uint256[] memory tokenIds,
         address token,
@@ -294,15 +297,16 @@ contract locationContract {
         //perform the transfer per token
         Order memory order = idToOrder[journeyToOrderId[id]];
         if (
-            bytes1(nodeManager.getNode(reciever).validNode) == bytes1(uint8(1)) ||
-            reciever == order.customer
+            bytes1(nodeManager.getNode(receiver).validNode) ==
+            bytes1(uint8(1)) ||
+            receiver == order.customer
         ) {
-            handOff(driver, reciever, id, token);
+            handOff(driver, receiver, id, token);
             (bool success, bytes memory result) = token.call(
                 abi.encodeWithSignature(
                     "safeBatchTransferFrom(adress,address,uint256,uin256,bytes)",
                     journeyIdToJourney[id].sender,
-                    journeyIdToJourney[id].reciever,
+                    journeyIdToJourney[id].receiver,
                     tokenIds,
                     quantities,
                     data
@@ -310,13 +314,17 @@ contract locationContract {
             );
             require(success);
             //reducing the capacity of the recieving nod if it is a
-            if (reciever == order.customer) {
+            if (receiver == order.customer) {
                 order.currentStatus = Status.Completed;
-                nodeManager.updateSupportedAssets(tokenIds,quantities,sendingNode);
+                nodeManager.updateSupportedAssets(
+                    tokenIds,
+                    quantities,
+                    sendingNode
+                );
                 uint nodeReward = order.txFee / order.nodes.length;
 
                 for (uint i = 0; i > order.nodes.length; i++)
-                    auraToken.transfer(order.nodes[i],nodeReward);
+                    auraToken.transfer(order.nodes[i], nodeReward);
             }
             return true;
         } else {
@@ -327,7 +335,7 @@ contract locationContract {
     //TO DO make function to send funds to treasury
 
     //function uploads(ParcelData memory _data) public {
-    //Journey memory journey = Journey({parcelData: _data, journeyId: getHashedJourneyId(), currentStatus: Status.Pending, sender: address(0), driver: address(0), reciever: address(0) });
+    //Journey memory journey = Journey({parcelData: _data, journeyId: getHashedJourneyId(), currentStatus: Status.Pending, sender: address(0), driver: address(0), receiver: address(0) });
     //journeyIdToJourney[journey.journeyId] = journey;
     //journeyToBox[journey.journeyId] = journeyIdCounter;
 
@@ -342,7 +350,7 @@ contract locationContract {
     // }
     function journeyCreation(
         address sender,
-        address reciever,
+        address receiver,
         ParcelData memory _data,
         uint bounty,
         uint ETA
@@ -356,7 +364,7 @@ contract locationContract {
             currentStatus: Status.Pending,
             sender: sender,
             driver: address(0),
-            reciever: reciever,
+            receiver: receiver,
             journeyStart: 0,
             journeyEnd: 0,
             bounty: bounty,
@@ -368,22 +376,40 @@ contract locationContract {
         numberOfJourneysCreatedForCustomer[sender] += 1;
         customerToJourneyId[sender].push(journey.journeyId);
 
-        numberOfJourneysCreatedForReceiver[reciever] += 1;
-        receiverToJourneyId[reciever].push(journey.journeyId);
+        numberOfJourneysCreatedForReceiver[receiver] += 1;
+        receiverToJourneyId[receiver].push(journey.journeyId);
         // add journeyId to global mapping of journeys
         numberToJourneyID[journeyIdCounter] = journey.journeyId;
     }
 
+    // TODO: node Acceptance function as this is just forced creation of order by a node, algo runs acceptance and then creation is pushed through
+    //made flexible by adding nullish value to any param
+    function addReceiver(
+        bytes32 orderId,
+        address receiver,
+        address sender
+    ) public {
+        bytes32[] memory _journeyIds = idToOrder[orderId].journeyIds;
+        for (uint i; i < _journeyIds.length; i++) {
+            if (journeyIdToJourney[_journeyIds[i]].sender == sender) {
+                journeyIdToJourney[idToOrder[orderId].journeyIds[i]].receiver = receiver;
+            }
+        }
+    }
+
+    //only called with a node as the sender
     function orderJourneyCreation(
         bytes32 orderId,
         address sender,
-        address reciever,
+        address receiver,
+        // not neccessarily a receiver
         ParcelData memory _data,
         uint bounty,
-        uint ETA
+        uint ETA,
+        uint tokenQuantity
     ) public {
         // TO DO transfer bounty  from sender to contract make mapping of sender => tokens and make a withdraw function later
-        auraToken.transferFrom(sender, address(this), bounty * 10 ** 18);
+        //    auraToken.transferFrom(sender, address(this), bounty * 10 ** 18);
         customerToTokenAmount[sender] += bounty;
         Journey memory journey = Journey({
             parcelData: _data,
@@ -391,7 +417,7 @@ contract locationContract {
             currentStatus: Status.Pending,
             sender: sender,
             driver: address(0),
-            reciever: reciever,
+            receiver: receiver,
             journeyStart: 0,
             journeyEnd: 0,
             bounty: bounty,
@@ -403,13 +429,26 @@ contract locationContract {
         numberOfJourneysCreatedForCustomer[sender] += 1;
         customerToJourneyId[sender].push(journey.journeyId);
 
-        numberOfJourneysCreatedForReceiver[reciever] += 1;
-        receiverToJourneyId[reciever].push(journey.journeyId);
+        numberOfJourneysCreatedForReceiver[receiver] += 1;
+        receiverToJourneyId[receiver].push(journey.journeyId);
         // add journeyId to global mapping of journeys
         numberToJourneyID[journeyIdCounter] = journey.journeyId;
-        idToOrder[orderId].journeys.push(journey.journeyId);
+        idToOrder[orderId].journeyIds.push(journey.journeyId);
         idToOrder[orderId].currentStatus = Status.Pending;
         journeyToOrderId[journey.journeyId] = orderId;
+        AurumNodeManager.Node memory _node = nodeManager.getNode(sender);
+        for (uint i; i < _node.supportedAssets.length; i++) {
+            if (idToOrder[orderId].tokenId == _node.supportedAssets[i])
+                if (_node.capacity[i] >= tokenQuantity) {
+                    idToOrder[orderId].tokenQuantity += tokenQuantity;
+                    _node.capacity[i] -= tokenQuantity;
+                    nodeManager.gasSafeUpdateCapacity(
+                        sender,
+                        _node.capacity,
+                        _node.supportedAssets
+                    );
+                }
+        }
     }
 
     function orderCreation(Order memory order) public {
@@ -420,3 +459,5 @@ contract locationContract {
         idToOrder[id].txFee = (order.price * 2) / 100;
     }
 }
+
+

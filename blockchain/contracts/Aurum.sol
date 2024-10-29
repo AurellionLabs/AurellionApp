@@ -26,8 +26,9 @@ contract AurumNodeManager {
         bytes1 validNode;
         //TODO: Make a setter for this
         address owner;
-        SupportedAssets[] supportedAssets;
+        uint256[] supportedAssets;
         bytes1 status;
+        uint256[] capacity;
         //capacity needs to be kept on an asset by asset basis
     }
     struct Item {
@@ -35,18 +36,6 @@ contract AurumNodeManager {
         string subCategory;
         string Type;
     }
-    struct SupportedAssets {
-    string tokenId;
-    string name;
-    uint capacity;
-    AssetPropety[] properties;
-}
-struct AssetProperty = {
-    string label;
-    string variation;
-    string options;
-    string datatype;
-}
     uint256 public nodeIdCounter = 0;
     mapping(address => address[]) ownedNodes;
     mapping(address => Node) AllNodes;
@@ -112,16 +101,16 @@ struct AssetProperty = {
 
     event eventUpdateStatus(bytes1 status, address node);
 
-    //secure dis
+    //TODO: secure dis
     function gasSafeUpdateCapacity(
         address node,
         uint256[] memory quantities,
         uint256[] memory assets
-    ) public isOwner(node) {
+    ) public {
         Node storage targetNode = AllNodes[node];
         for (uint256 i = 0; i < AllNodes[node].supportedAssets.length; i++) {
-            if (targetNode.supportedAssets[i].tokenId == assets[i]) {
-                targetNode.supportedAssets[i].capacity = quantities[i];
+            if (targetNode.supportedAssets[i] == assets[i]) {
+                targetNode.capacity[i] = quantities[i];
                 break;
             }
         }
@@ -133,6 +122,7 @@ struct AssetProperty = {
         uint256[] memory assets
     ) public isOwner(node) {
         Node storage targetNode = AllNodes[node];
+        require(assets.length == targetNode.supportedAssets.length);
         for (uint256 k = 0; k < assets.length; k++)
             for (
                 uint256 i = 0;
@@ -277,4 +267,5 @@ contract aurumNode {
         //(bool success, bytes memory result) = addr.call(abi.encodeWithSignature("myFunction(uint,address)", 10, msg.sender));
     }
 }
+
 

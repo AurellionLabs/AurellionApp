@@ -1,4 +1,4 @@
-import { BrowserProvider, Contract, Signer, ethers } from 'ethers'; import { ParcelData, Journey, Node } from '@/constants/Types';
+import { BrowserProvider, Contract, Signer, assert, ethers } from 'ethers'; import { ParcelData, Journey, Node } from '@/constants/Types';
 import contractABI from './aurellion-abi.json';
 import nodeManagerABI from './aurum-abi.json';
 import nodeABI from './aurum-node-abi.json';
@@ -508,17 +508,11 @@ export const packageHandOff = async (customerAddress: string, driverAddress: str
 };
 
 export const jobIdToJourney = async (journeyId: string) => {
-    let contract;
     var signer: Signer | undefined;
     if (ethersProvider)
         signer = await ethersProvider.getSigner();
     else console.error("ethersProvider is underfined")
-    try {
-        contract = new ethers.Contract(AUSYS_ADDRESS, contractABI, signer);
-    } catch (error) {
-        console.error('Could not create Contract object');
-        throw error;
-    }
+    const contract = await getAusysContract()
     if (signer) {
         try {
             const journey = await contract.jobIdToJourney(journeyId);
@@ -528,4 +522,10 @@ export const jobIdToJourney = async (journeyId: string) => {
             throw error;
         }
     }
+}
+export const makeOrer = () => {
+
+}
+async function orderFill() {
+
 }

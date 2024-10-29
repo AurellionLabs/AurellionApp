@@ -2,6 +2,7 @@ import { BrowserProvider, Contract, Signer, assert, ethers } from 'ethers'; impo
 import contractABI from './aurellion-abi.json';
 import nodeManagerABI from './aurum-abi.json';
 import nodeABI from './aurum-node-abi.json';
+import { Order } from '@/constants/ChainTypes';
 var ethersProvider: BrowserProvider | undefined;
 const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const NODE_MANAGER_ADDRESS = process.env.EXPO_PUBLIC_NODE_MANAGER_CONTRACT_ADDRESS
@@ -527,5 +528,25 @@ export const makeOrer = () => {
 
 }
 async function orderFill() {
+
+}
+
+const customerMakeOrder = async (orderData: Order) => {
+    const contract = await getAusysContract();
+    try {
+        await contract.orderCreation(orderData)
+    } catch (error) {
+        console.error('Could not make customer order');
+        throw error;
+    }
+}
+
+export const registerNode = async (nodeData: Node) => {
+    const contract = await getAurumContract()
+    try {
+        await contract.registerNode(nodeData)
+    } catch (error) {
+        console.error('Error when registering node:', error)
+    }
 
 }

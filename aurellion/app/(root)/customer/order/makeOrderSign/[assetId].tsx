@@ -42,6 +42,7 @@ const makeOrderSign = () => {
     console.log(quantity);
     console.log(deliveryLocation);
     console.log("Make Order");
+    
   };
   return (
     <SafeAreaView>

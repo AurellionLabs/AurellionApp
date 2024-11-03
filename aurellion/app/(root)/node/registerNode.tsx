@@ -17,9 +17,8 @@ import {
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 import { router } from "expo-router";
-import { Node, NodeStatus } from "@/constants/Types";
 import { registerNode } from "@/dapp-connectors/dapp-controller";
-
+import { Node, NodeStatus, NodeValidity } from "@/constants/ChainTypes";
 
 export default function RegisterNode() {
   const { isDarkMode } = useMainContext();
@@ -39,34 +38,36 @@ export default function RegisterNode() {
 
   const handleRegister = async () => {
     // Process the asset data as needed
-    var data: Node;
-    var supportedAssets: number[] = [];
+    let data: Node;
+    let supportedAssets: number[] = [];
+    let assetCapacities: number[] = [];
+    let capacityInt = Number(capacity);
     for (let i = 0; i < assets.length; i++) {
-        //TODO: make an asset name to number finder on smart contract
-        switch (assets[i]) {
-            case "Goat":
-              supportedAssets.push(1)
-            case "Sheep":
-              supportedAssets.push(2)
-            case "Watch":
-              supportedAssets.push(3)
-        }
-
+      //TODO: make an asset name to number finder on smart contract
+      switch (assets[i]) {
+        case "Goat":
+          supportedAssets.push(1);
+        case "Sheep":
+          supportedAssets.push(2);
+        case "Watch":
+          supportedAssets.push(3);
+      }
+      assetCapacities.push(capacityInt);
     }
     data = {
-        location: nodeName,
-        owner: walletAddress,
-        capacity: [Number(capacity)],
-        status: "0x01",
-        supportedAssets,
-        validNode: "0x01"
+      location: nodeName,
+      owner: walletAddress,
+      capacity: assetCapacities,
+      status: NodeStatus.Active,
+      supportedAssets,
+      validNode: NodeValidity.Valid,
     };
     try {
-        await registerNode(data)
+      await registerNode(data);
     } catch (e) {
-        console.error("couldnt register node", e)
+      console.error("couldnt register node", e);
     }
-};
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

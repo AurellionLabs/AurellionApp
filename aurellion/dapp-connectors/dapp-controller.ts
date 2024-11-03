@@ -6,6 +6,8 @@ import { Order } from '@/constants/ChainTypes';
 var ethersProvider: BrowserProvider | undefined;
 const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const NODE_MANAGER_ADDRESS = process.env.EXPO_PUBLIC_NODE_MANAGER_CONTRACT_ADDRESS
+export const GOAT_CONTRACT_ADDRESS = process.env.EXPO_PUBLIC_GOAT_CONTRACT_ADDRESS
+
 var walletAddress: string;
 export const setWalletProvider = async (_ethersProvider: BrowserProvider) => {
     console.log("heeeeeeeeeeeeeeeere")
@@ -152,6 +154,7 @@ export const registerNode = async (nodeData: Node) => {
         await contract.registerNode(nodeData)
     } catch (error) {
         console.error('Error when registering node:', error)
+        throw error
     }
 
 }
@@ -524,14 +527,8 @@ export const jobIdToJourney = async (journeyId: string) => {
         }
     }
 }
-export const makeOrer = () => {
 
-}
-async function orderFill() {
-
-}
-
-const customerMakeOrder = async (orderData: Order) => {
+export const customerMakeOrder = async (orderData: Order) => {
     const contract = await getAusysContract();
     try {
         await contract.orderCreation(orderData)
@@ -541,12 +538,3 @@ const customerMakeOrder = async (orderData: Order) => {
     }
 }
 
-export const registerNode = async (nodeData: Node) => {
-    const contract = await getAurumContract()
-    try {
-        await contract.registerNode(nodeData)
-    } catch (error) {
-        console.error('Error when registering node:', error)
-    }
-
-}

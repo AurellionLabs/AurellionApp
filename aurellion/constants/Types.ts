@@ -9,15 +9,6 @@ export type ParcelData = {
     startName: string;
     endName: string;
 };
-export type Node = {
-    location: string;
-    validNode: string;
-    owner: string;
-    supportedAssets: Array<number>;  // Using BigInt for large numbers
-    status: string;
-    capacity: Array<number>;         // Using BigInt for large numbers
-};
-
 
 export enum JourneyStatus {
     PENDING = 0,
@@ -59,11 +50,6 @@ export enum RoleType {
     Customer,
     Driver,
     Node
-}
-
-export enum NodeStatus {
-    Active = "0x01",
-    Inactive = "0x00"
 }
 
 export type DeliveryOption = {

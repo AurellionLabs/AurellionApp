@@ -23,7 +23,7 @@ import { Node, NodeStatus, NodeValidity } from "@/constants/ChainTypes";
 export default function RegisterNode() {
   const { isDarkMode } = useMainContext();
 
-  const [nodeName, setNodeName] = useState("");
+  const [location, setLocation] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [capacity, setCapacity] = useState("");
   const [assets, setAssets] = useState([]);
@@ -55,7 +55,7 @@ export default function RegisterNode() {
       assetCapacities.push(capacityInt);
     }
     data = {
-      location: nodeName,
+      location: location,
       owner: walletAddress,
       capacity: assetCapacities,
       status: NodeStatus.Active,
@@ -81,11 +81,11 @@ export default function RegisterNode() {
             />
           </ImageContainer>
           <Section>
-            <Label isDarkMode={isDarkMode}>Node Name</Label>
+            <Label isDarkMode={isDarkMode}>Node Location</Label>
             <Input
-              value={nodeName}
-              onChangeText={setNodeName}
-              placeholder="Enter Node Name"
+              value={location}
+              onChangeText={setLocation}
+              placeholder="Enter Node Location"
               isDarkMode={isDarkMode}
               placeholderTextColor={
                 isDarkMode ? DarkTheme.foreground2 : LightTheme.foreground1

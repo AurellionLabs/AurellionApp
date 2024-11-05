@@ -1,14 +1,17 @@
-import { BrowserProvider, Contract, Signer, assert, ethers } from 'ethers'; import { ParcelData, Journey, Node } from '@/constants/Types';
+import { BrowserProvider, Contract, Signer, ethers } from 'ethers'; 
+import { ParcelData, Journey } from '@/constants/Types';
+import { Node } from '@/constants/ChainTypes';
 import contractABI from './aurellion-abi.json';
 import nodeManagerABI from './aurum-abi.json';
 import nodeABI from './aurum-node-abi.json';
 import { Order } from '@/constants/ChainTypes';
+
 var ethersProvider: BrowserProvider | undefined;
 const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS
 const NODE_MANAGER_ADDRESS = process.env.EXPO_PUBLIC_NODE_MANAGER_CONTRACT_ADDRESS
 export const GOAT_CONTRACT_ADDRESS = process.env.EXPO_PUBLIC_GOAT_CONTRACT_ADDRESS
 
-var walletAddress: string;
+export var walletAddress: string;
 export const setWalletProvider = async (_ethersProvider: BrowserProvider) => {
     console.log("heeeeeeeeeeeeeeeere")
     var signer: Signer | undefined;
@@ -156,7 +159,6 @@ export const registerNode = async (nodeData: Node) => {
         console.error('Error when registering node:', error)
         throw error
     }
-
 }
 
 export const addItem = async (node: string, itemOwner: string, assetClass: number, amount: number, data: any) => {
@@ -165,15 +167,6 @@ export const addItem = async (node: string, itemOwner: string, assetClass: numbe
         await contract.addItem(itemOwner, assetClass, amount, data)
     } catch (error) {
         console.error('Error when registering node:', error)
-    }
-}
-
-export const getOwnedNode = async () => {
-    const contract = await getAurumContract()
-    try {
-        await contract.ownedNodes(walletAddress)
-    } catch (error) {
-        console.error(`unable to get nodes for wallet address ${walletAddress}`)
     }
 }
 
@@ -204,12 +197,34 @@ export const updateLocation = async (location: string, node: string) => {
     }
 }
 
-export const getNode = async (node: string) => {
+export const getNode = async (nodeAddress: string): Promise<Node> => {
+    const contract = await getAurumContract();
+    try {
+        const nodeData = await contract.getNode(nodeAddress);
+        return {
+            location: nodeData.location,
+            validNode: nodeData.validNode,
+            owner: nodeData.owner,
+            supportedAssets: nodeData.supportedAssets.map((assetId: bigint) => Number(assetId)),
+            status: nodeData.status,
+            capacity: nodeData.capacity.map((cap: bigint) => Number(cap))
+        };
+    } catch (error) {
+        console.error(`Unable to get node with address ${nodeAddress}:`, error);
+        throw error;
+    }
+};
+
+// As of current implmenetation, one wallet address will own one node
+// Therefore length of nodeAddressList is 1
+export const getOwnedNodeAddressList = async (): Promise<string[]> => {
     const contract = await getAurumContract()
     try {
-        await contract.getNode(node)
-    } catch (error) {
-        console.error(`unable to get nodes for wallet address ${walletAddress}`)
+        const nodeAddressList = await contract.ownedNodes(walletAddress)
+        return nodeAddressList;
+    } catch(error){
+        console.log(`Unable to get nodes addresses for owner address ${walletAddress}`, error)
+        throw error
     }
 }
 

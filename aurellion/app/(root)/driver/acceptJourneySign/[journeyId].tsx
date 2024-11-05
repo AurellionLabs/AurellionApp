@@ -19,6 +19,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useDriverContext } from "@/providers/driver.provider";
 import { Journey } from "@/constants/Types";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { assignDriverToJobId } from "@/dapp-connectors/dapp-controller";
 
 const AssignDriverScreen = () => {
   const { setRefetchDataFromAPI, isDarkMode } = useMainContext();
@@ -44,10 +45,13 @@ const AssignDriverScreen = () => {
   const acceptJob = async () => {
     setIsLoading(true);
     try {
-      // navigateDeepLink(universalLink, deepLink, wcURI);
-      // await assignDriverToJobId(journey?.jobId);
-      setIsAssigned(true);
-      setRefetchDataFromAPI(true);
+      if (journey) {
+        await assignDriverToJobId(journey?.jobId);
+        setIsAssigned(true);
+        setRefetchDataFromAPI(true);
+      } else {
+        console.error("Journey data not found")
+      }
     } catch (error) {
       setIsError(true);
       setErrorMessage("Error assigning driver to job");

@@ -1,22 +1,27 @@
-import { HardhatUserConfig } from "hardhat/types";
-import '@nomiclabs/hardhat-ethers';
-require('dotenv').config();
-// Add your Polygon network configuration here
-const polygonMaticUrl = "https://polygon-mumbai-bor.publicnode.com"; // Replace with your RPC URL
-const config: HardhatUserConfig = {
-  solidity: "0.8.17",
-  networks: {
-    // Other network configurations...
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+import "dotenv/config"
 
-    // Polygon Mainnet configuration
-    mumbai: {
-      url: polygonMaticUrl,
-      accounts: [process.env.PRIVATE_KEY],
-      chainId: 80001,
-      // Example gas price, you can adjust this value
-    },
+const config: HardhatUserConfig = {
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.27", // You can keep this as the latest version for compatibility with newer contracts
+      },
+      {
+        version: "0.8.26", // To support contracts with pragma ^0.8.26 or 0.8.26
+      },
+      {
+        version: "0.8.17", // To support contracts with pragma ^0.8.17
+      },
+    ],
   },
+  networks: {
+    polygonAmoy: {
+      url: process.env.RPC_URL,
+      accounts: [process.env.WALLET_PRIVATE_KEY as string]
+    }
+  }
 };
 
 export default config;
-

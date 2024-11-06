@@ -17,8 +17,13 @@ import {
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 import { router } from "expo-router";
+<<<<<<< HEAD
 import { registerNode } from "@/dapp-connectors/dapp-controller";
 import { Node, NodeStatus, NodeValidity } from "@/constants/ChainTypes";
+=======
+import { Node, NodeStatus, AssetNameToId } from "@/constants/Types";
+import { registerNode } from "@/dapp-connectors/dapp-controller";
+>>>>>>> feat/chain-integration
 
 export default function RegisterNode() {
   const { isDarkMode } = useMainContext();
@@ -136,7 +141,11 @@ export default function RegisterNode() {
             />
           </Section>
           <RedButton
+<<<<<<< HEAD
             onPress={handleRegister}
+=======
+            onPress={onPress}
+>>>>>>> feat/chain-integration
             style={{ alignSelf: "center", marginTop: "7%" }}
           >
             <RedButtonText>Register Node</RedButtonText>

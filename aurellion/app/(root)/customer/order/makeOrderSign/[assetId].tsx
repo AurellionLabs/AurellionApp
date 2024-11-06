@@ -18,6 +18,7 @@ import { Asset, ParcelData } from "@/constants/Types";
 import {
   customerMakeOrder,
   GOAT_CONTRACT_ADDRESS,
+  walletAddress
 } from "@/dapp-connectors/dapp-controller";
 import { useCustomerContext } from "@/providers/customer.provider";
 import { useMainContext } from "@/providers/main.provider";
@@ -26,9 +27,10 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { keccak256, toBeHex } from "ethers";
 
 const makeOrderSign = () => {
-  const { isDarkMode, walletAddress } = useMainContext();
+  const { isDarkMode } = useMainContext();
   const { assetId } = useLocalSearchParams<{ assetId: string }>();
   const { availableAssets } = useCustomerContext();
 
@@ -46,6 +48,12 @@ const makeOrderSign = () => {
     }
   }, [assetId, availableAssets]);
 
+  function hashNumber(num: number): string {
+    // Convert number to 32-byte hex format
+    const hexString = toBeHex(num, 32); // Pads to 32 bytes
+    return keccak256(hexString);
+  }
+
   const makeOrder = async () => {
     const locationData: ParcelData = {
       // start location details are nullish as we don't know starting node
@@ -60,23 +68,25 @@ const makeOrderSign = () => {
       },
       endName: "86 Argyle Street",
     };
-
+    console.log("wallet address", walletAddress)
     if (assetId && walletAddress && GOAT_CONTRACT_ADDRESS) {
+      const orderId = hashNumber(123)
+      console.log("Enterted if")
+      console.log("OrderID:", orderId)
       const orderDetails: Order = {
-        id: ethers.hexlify(ethers.randomBytes(32)),
+        id: orderId,
         token: GOAT_CONTRACT_ADDRESS,
         tokenId: parseInt(assetId),
         tokenQuantity: 0,
-        requestedTokenQuantity: [parseInt(quantity)],
+        requestedTokenQuantity: parseInt(quantity),
         price: parseFloat(price),
-        amount: "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef", // CLARIFY: not sure what this is supposed to refer to. Same as price?
         txFee: 100, // CLARIFY: is this supposed to be dynamic?
         customer: walletAddress,
         journeyIds: [],
         nodes: [],
         locationData: locationData, // CLARIFY:  we dont have a startLocation/startName
         currentStatus: Status.Pending,
-        contracatualAgreement: "",
+        contracatualAgreement: [""],
       };
       try {
         await customerMakeOrder(orderDetails);
@@ -85,7 +95,7 @@ const makeOrderSign = () => {
       }
     } else {
       console.error(
-        "Required data missing for customer make order contract call"
+        `Required data missing for customer make order contract call with assetid: ${assetId} walletAddress: ${walletAddress} goat token address: ${GOAT_CONTRACT_ADDRESS}`
       );
     }
   };

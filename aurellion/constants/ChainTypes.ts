@@ -12,16 +12,15 @@ export interface Order {
   token: string;
   tokenId: number;
   tokenQuantity: number;
-  requestedTokenQuantity: number[];
+  requestedTokenQuantity: number;
   price: number;
-  amount: string;
   txFee: number;
   customer: string;
   journeyIds: string[];
   nodes: string[];
   locationData: ParcelData;
   currentStatus: Status;
-  contracatualAgreement: string;
+  contracatualAgreement: string[];
 }
 
 export type Node = {

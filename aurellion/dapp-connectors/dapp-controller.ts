@@ -24,6 +24,7 @@ export const setWalletProvider = async (_ethersProvider: BrowserProvider) => {
         if (ethersProvider)
             try {
                 signer = await ethersProvider.getSigner();
+                walletAddress = await signer.getAddress()
                 console.log("signer set")
             } catch (e) {
                 throw new Error("getSigner failed with " + e)
@@ -548,7 +549,7 @@ export const customerMakeOrder = async (orderData: Order) => {
     try {
         await contract.orderCreation(orderData)
     } catch (error) {
-        console.error('Could not make customer order');
+        console.error('Could not make customer order', error);
         throw error;
     }
 }

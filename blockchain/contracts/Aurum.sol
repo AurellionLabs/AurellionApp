@@ -37,19 +37,19 @@ contract AurumNodeManager {
         string Type;
     }
     uint256 public nodeIdCounter = 0;
-    mapping(address => address[]) ownedNodes;
-    mapping(address => Node) AllNodes;
+    mapping(address => address[]) public ownedNodes;
+    mapping(address => Node) public AllNodes;
     address[] public nodeList;
     locationContract ausys;
     AuraGoat auraGoat;
     address admin;
 
-    constructor(locationContract _ausys, AuraGoat _auraGoat, address _admin) {
+    constructor(locationContract _ausys, address _admin) {
         ausys = _ausys;
-        auraGoat = _auraGoat;
+        // need to call add goat token for this to work
         admin = _admin;
     }
-
+    
     modifier adminOnly() {
         require(msg.sender == admin);
         _;
@@ -59,7 +59,10 @@ contract AurumNodeManager {
         require(msg.sender == owner);
         _;
     }
-
+    //PLEASEESSEEEE CALLL MEEEEEEE
+    function addToken(AuraGoat _auraGoat) public {
+        auraGoat = _auraGoat;
+    }
     function setAdmin(address _admin) public adminOnly {
         admin = _admin;
         emit eventUpdateAdmin(_admin);

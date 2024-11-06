@@ -34,16 +34,15 @@ contract locationContract {
         address token;
         uint tokenId;
         uint tokenQuantity;
-        uint[] requestedTokenQuantity;
+        uint requestedTokenQuantity;
         uint price;
-        address amount;
         uint txFee;
         address customer;
         bytes32[] journeyIds;
         address[] nodes;
         ParcelData locationData;
         Status currentStatus;
-        string contracatualAgreement;
+        bytes32 contracatualAgreement;
     }
     struct Journey {
         ParcelData parcelData;
@@ -65,6 +64,9 @@ contract locationContract {
     // Map a journey to multiple sub journeys
 
     // Keep count of which sub journey of a journey the parcel is on
+    bytes32[] public orderIds;
+    mapping(address => bytes32) customerToOrderId;
+    mapping(address => bytes32) nodeToOrderId;
     mapping(bytes32 => Order) public idToOrder;
     mapping(bytes32 => bytes32) public journeyToOrderId;
     mapping(bytes32 => uint256) public subJourneyCount;
@@ -282,7 +284,7 @@ contract locationContract {
 
     // when specifying please specify quantity for a given tokenID at the same
     // in the token qauntity list
-
+    //can be called by a customer and a node
     function nodeHandOff(
         address sendingNode,
         address driver,
@@ -392,12 +394,14 @@ contract locationContract {
         bytes32[] memory _journeyIds = idToOrder[orderId].journeyIds;
         for (uint i; i < _journeyIds.length; i++) {
             if (journeyIdToJourney[_journeyIds[i]].sender == sender) {
-                journeyIdToJourney[idToOrder[orderId].journeyIds[i]].receiver = receiver;
+                journeyIdToJourney[idToOrder[orderId].journeyIds[i]]
+                    .receiver = receiver;
             }
         }
     }
 
     //only called with a node as the sender
+    //TODO: restrict so only node can call
     function orderJourneyCreation(
         bytes32 orderId,
         address sender,
@@ -408,9 +412,10 @@ contract locationContract {
         uint ETA,
         uint tokenQuantity
     ) public {
-        // TO DO transfer bounty  from sender to contract make mapping of sender => tokens and make a withdraw function later
+        // TODO: transfer bounty  from sender to contract make mapping of sender => tokens and make a withdraw function later
         //    auraToken.transferFrom(sender, address(this), bounty * 10 ** 18);
-        customerToTokenAmount[sender] += bounty;
+        customerToTokenAmount[idToOrder[orderId].customer] += bounty;
+        // this is to add to an aggregate tx fee from all the journeys being created
         Journey memory journey = Journey({
             parcelData: _data,
             journeyId: getHashedJourneyId(),
@@ -457,7 +462,8 @@ contract locationContract {
         idToOrder[id].currentStatus = Status.Pending;
         idToOrder[id].id = id;
         idToOrder[id].txFee = (order.price * 2) / 100;
+        customerToOrderId[order.customer] = id;
+        nodeToOrderId[order.node] = id;
+        orderIds.push(id);
     }
 }
-
-

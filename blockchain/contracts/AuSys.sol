@@ -441,6 +441,9 @@ contract locationContract {
         idToOrder[orderId].journeyIds.push(journey.journeyId);
         idToOrder[orderId].currentStatus = Status.Pending;
         journeyToOrderId[journey.journeyId] = orderId;
+
+        nodeToOrderId[sender] = orderId;
+        
         AurumNodeManager.Node memory _node = nodeManager.getNode(sender);
         for (uint i; i < _node.supportedAssets.length; i++) {
             if (idToOrder[orderId].tokenId == _node.supportedAssets[i])
@@ -463,7 +466,6 @@ contract locationContract {
         idToOrder[id].id = id;
         idToOrder[id].txFee = (order.price * 2) / 100;
         customerToOrderId[order.customer] = id;
-        nodeToOrderId[order.node] = id;
         orderIds.push(id);
     }
 }

@@ -45,6 +45,29 @@
     {
       "inputs": [
         {
+          "internalType": "bytes32",
+          "name": "orderId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "addReceiver",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "driver",
           "type": "address"
@@ -296,7 +319,7 @@
             },
             {
               "internalType": "address",
-              "name": "reciever",
+              "name": "receiver",
               "type": "address"
             },
             {
@@ -342,7 +365,7 @@
         },
         {
           "internalType": "address",
-          "name": "reciever",
+          "name": "receiver",
           "type": "address"
         },
         {
@@ -418,13 +441,23 @@
         },
         {
           "internalType": "uint256",
-          "name": "price",
+          "name": "tokenId",
           "type": "uint256"
         },
         {
-          "internalType": "address",
-          "name": "amount",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "tokenQuantity",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "requestedTokenQuantity",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
@@ -493,9 +526,9 @@
           "type": "uint8"
         },
         {
-          "internalType": "string",
+          "internalType": "bytes32",
           "name": "contracatualAgreement",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "stateMutability": "view",
@@ -510,7 +543,7 @@
         },
         {
           "internalType": "address",
-          "name": "reciever",
+          "name": "receiver",
           "type": "address"
         },
         {
@@ -671,7 +704,7 @@
         },
         {
           "internalType": "address",
-          "name": "reciever",
+          "name": "receiver",
           "type": "address"
         },
         {
@@ -736,7 +769,7 @@
         },
         {
           "internalType": "address",
-          "name": "reciever",
+          "name": "receiver",
           "type": "address"
         },
         {
@@ -867,24 +900,24 @@
               "type": "address"
             },
             {
-              "internalType": "uint256[]",
+              "internalType": "uint256",
               "name": "tokenId",
-              "type": "uint256[]"
+              "type": "uint256"
             },
             {
-              "internalType": "uint256[]",
+              "internalType": "uint256",
               "name": "tokenQuantity",
-              "type": "uint256[]"
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "requestedTokenQuantity",
+              "type": "uint256"
             },
             {
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "amount",
-              "type": "address"
             },
             {
               "internalType": "uint256",
@@ -898,7 +931,7 @@
             },
             {
               "internalType": "bytes32[]",
-              "name": "journeys",
+              "name": "journeyIds",
               "type": "bytes32[]"
             },
             {
@@ -963,9 +996,9 @@
               "type": "uint8"
             },
             {
-              "internalType": "string",
+              "internalType": "bytes32",
               "name": "contracatualAgreement",
-              "type": "string"
+              "type": "bytes32"
             }
           ],
           "internalType": "struct locationContract.Order",
@@ -976,6 +1009,25 @@
       "name": "orderCreation",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "orderIds",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -992,7 +1044,7 @@
         },
         {
           "internalType": "address",
-          "name": "reciever",
+          "name": "receiver",
           "type": "address"
         },
         {
@@ -1054,6 +1106,11 @@
         {
           "internalType": "uint256",
           "name": "ETA",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenQuantity",
           "type": "uint256"
         }
       ],
@@ -1219,7 +1276,7 @@
         },
         {
           "internalType": "address",
-          "name": "reciever",
+          "name": "receiver",
           "type": "address"
         },
         {

@@ -18,10 +18,6 @@ import { DarkTheme, LightTheme } from "@/constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 import { router } from "expo-router";
 import { Location } from "@/constants/Types";
-// import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-// import { GMAPS_API_KEY, textInputStyles, GeoLocationCoords, Geometry } from '@/components/screens/createDelivery/locationsMenu';
-// import * as Location from 'expo-location';
-// import Ionicons from '@expo/vector-icons/Ionicons';
 import LocationAutocomplete from "@/components/common/LocationAutocomplete";
 
 export default function RegisterNode() {
@@ -31,17 +27,6 @@ export default function RegisterNode() {
   const [walletAddress, setWalletAddress] = useState("");
   const [capacity, setCapacity] = useState("");
   const [assets, setAssets] = useState(null);
-
-  //  const [currentAddress, setCurrentAddress] = useState<string>("");
-  // const [currentLocationCoords, setCurrentLocationCoords] = useState<Geometry>({
-  //     location: { lat: 0, lng: 0 },
-  // });
-  // const currentLocationGeo = {
-  //     description: currentAddress,
-  //     formatted_address: currentAddress,
-  //     geometry: currentLocationCoords, 
-  // };
-  // const nodeLocationAutocompleteRef: any = useRef(null);
 
   const [nodeAddress, setNodeAddress] = useState("Enter Node address");
   const [nodeLocation, setNodeLocation] = useState<Location>({
@@ -123,49 +108,6 @@ export default function RegisterNode() {
                     placeHolder="Enter Node address"
                     isDarkMode={isDarkMode}
                     />
-                {/* <GooglePlacesAutocomplete
-                  listViewDisplayed="auto"
-                  ref={nodeLocationAutocompleteRef}
-                  placeholder={nodeAddress}
-                  onPress={(data, details = null) => {
-                    let address = details?.formatted_address || '';
-                    setNodeAddress(address);
-                    console.log(address);
-                  }}
-                  fetchDetails={true}
-                  query={{
-                    key: GMAPS_API_KEY,
-                    language: 'en',
-                  }}
-                  styles={textInputStyles(isDarkMode)}
-                  textInputProps={{
-                    onFocus: () => {
-                      if(nodeAddress == currentLocationGeo.formatted_address) {
-                        setNodeAddress('Enter Node address');
-                        nodeLocationAutocompleteRef.current?.setAddressText('');
-                        nodeLocationAutocompleteRef.placeholder = 'Enter Node address';
-                      }
-                    },
-                    clearButtonMode: 'never',
-                    placeholderTextColor: isDarkMode ? DarkTheme.foreground2 : LightTheme.foreground1,
-                  }}
-                  renderRightButton={() => (
-                    <Ionicons name="close" size={20} color={
-                      isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1
-                    } onPress={() => {
-                      setNodeAddress('Enter Node address');
-                      nodeLocationAutocompleteRef.current?.setAddressText('');
-                      nodeLocationAutocompleteRef.placeholder = 'Enter Node address';
-                  }} 
-                      style={{
-                        display: nodeAddress !== 'Enter Node address' ? 'flex' : 'none',
-                        position: 'absolute',
-                        right: 0,
-                        top: 10,
-                        zIndex: 1,
-                      }}/>)}
-                    predefinedPlaces={[currentLocationGeo, { description: 'Current Location', formatted_address: currentLocationGeo.formatted_address, geometry: currentLocationCoords }]}
-                  /> */}
               </View>
             </Section>
             <Section>

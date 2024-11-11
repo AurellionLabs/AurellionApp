@@ -17,10 +17,12 @@ import {
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 import { router } from "expo-router";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { GMAPS_API_KEY, textInputStyles, GeoLocationCoords, Geometry } from '@/components/screens/createDelivery/locationsMenu';
-import * as Location from 'expo-location';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Location } from "@/constants/Types";
+// import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+// import { GMAPS_API_KEY, textInputStyles, GeoLocationCoords, Geometry } from '@/components/screens/createDelivery/locationsMenu';
+// import * as Location from 'expo-location';
+// import Ionicons from '@expo/vector-icons/Ionicons';
+import LocationAutocomplete from "@/components/common/LocationAutocomplete";
 
 export default function RegisterNode() {
   const { isDarkMode } = useMainContext();
@@ -30,17 +32,22 @@ export default function RegisterNode() {
   const [capacity, setCapacity] = useState("");
   const [assets, setAssets] = useState(null);
 
-  const [currentAddress, setCurrentAddress] = useState<string>("");
-  const [currentLocationCoords, setCurrentLocationCoords] = useState<Geometry>({
-    location: { lat: 0, lng: 0 },
-  });
-  const currentLocationGeo = {
-    description: currentAddress,
-    formatted_address: currentAddress,
-    geometry: currentLocationCoords, 
-  };
-  const nodeLocationAutocompleteRef: any = useRef(null);
+  //  const [currentAddress, setCurrentAddress] = useState<string>("");
+  // const [currentLocationCoords, setCurrentLocationCoords] = useState<Geometry>({
+  //     location: { lat: 0, lng: 0 },
+  // });
+  // const currentLocationGeo = {
+  //     description: currentAddress,
+  //     formatted_address: currentAddress,
+  //     geometry: currentLocationCoords, 
+  // };
+  // const nodeLocationAutocompleteRef: any = useRef(null);
+
   const [nodeAddress, setNodeAddress] = useState("Enter Node address");
+  const [nodeLocation, setNodeLocation] = useState<Location>({
+    lat: "",
+    lng: "",
+  })
 
   const [assetsOpen, setAssetsOpen] = useState(false);
 
@@ -62,38 +69,8 @@ export default function RegisterNode() {
     router.replace("/node/addAsset");
   };
 
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('Permission to access location was denied');
-          return;
-        }
 
-        let location = await Location.getCurrentPositionAsync({});
-        const { latitude, longitude } = location.coords;
-        setCurrentLocationCoords({
-          location: { lat: latitude, lng: longitude },
-        });
-        
-        fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GMAPS_API_KEY}`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            const address = data.results[0].formatted_address;
-            setCurrentAddress(address);
-          })
-          .catch((error) => console.error(error));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    requestLocationPermission();
-  }, []);
-
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: React.ReactNode }) => (
     <View>
       {item}
     </View>
@@ -138,7 +115,15 @@ export default function RegisterNode() {
             <Section>
               <View>
                 <Label isDarkMode={isDarkMode}>Location</Label>
-                <GooglePlacesAutocomplete
+                <LocationAutocomplete 
+                    address={nodeAddress}
+                    setAddress={setNodeAddress}
+                    location={nodeLocation}
+                    setLocation={setNodeLocation}
+                    placeHolder="Enter Node address"
+                    isDarkMode={isDarkMode}
+                    />
+                {/* <GooglePlacesAutocomplete
                   listViewDisplayed="auto"
                   ref={nodeLocationAutocompleteRef}
                   placeholder={nodeAddress}
@@ -180,7 +165,7 @@ export default function RegisterNode() {
                         zIndex: 1,
                       }}/>)}
                     predefinedPlaces={[currentLocationGeo, { description: 'Current Location', formatted_address: currentLocationGeo.formatted_address, geometry: currentLocationCoords }]}
-                  />
+                  /> */}
               </View>
             </Section>
             <Section>

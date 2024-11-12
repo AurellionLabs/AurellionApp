@@ -15,7 +15,7 @@ import { LightTheme, DarkTheme } from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from "expo-router";
 
-const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA';
+export const GMAPS_API_KEY = 'AIzaSyDM53QhcGwUGJgZ_yAAX3fLy7g7c5CWsDA';
 
 interface LocationMenuProps {
   region: Region;
@@ -23,12 +23,12 @@ interface LocationMenuProps {
   isKeyboardVisible: boolean;
 }
 
-interface GeoLocationCoords {
+export interface GeoLocationCoords {
   lat: number;
   lng: number;
 }
 
-interface Geometry {
+export interface Geometry {
   location: GeoLocationCoords;
 }
 
@@ -376,43 +376,43 @@ const getStyles = (isDarkMode: boolean) => StyleSheet.create({
   locationsMenu: {
     width: '100%',
     borderRadius: 30,
-    backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+    backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background1,
     position: 'absolute',
     top: 0,
   },
   safeAreaVeiw: {
-    backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+    backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background1,
   },
 
 });
 
-  const textInputStyles = (isDarkMode: boolean) => {
+  export const textInputStyles = (isDarkMode: boolean) => {
     return {
       container: {
         marginBottom: 10,
-        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background1,
       },
       textInputContainer: {
         width: '100%',
         alignSelf: 'center',
-        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background1,
       },
       textInput: {
         height: 40,
         marginRight: 20,
         borderColor: 'gray',
         borderWidth: 1,
-        backgroundColor: isDarkMode ? DarkTheme.background2 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background4 : LightTheme.background1,
         color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
       },
       row: {
-        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background4 : LightTheme.background1,
         color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
         // paddingVertical: 0,
         // paddingHorizontal: 0,
       },
       description: {
-        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background4 : LightTheme.background1,
         color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
       },
     
@@ -421,11 +421,11 @@ const getStyles = (isDarkMode: boolean) => StyleSheet.create({
         height: 55,
         justifyContent: 'center',
         // paddingHorizontal: 15,
-        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background1,
         color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
       },
       poweredContainer: {
-        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background2,
+        backgroundColor: isDarkMode ? DarkTheme.background1 : LightTheme.background1,
         color: isDarkMode ? DarkTheme.foreground1 : LightTheme.foreground1,
         justifyContent: 'center',
         alignItems: 'center',

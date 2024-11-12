@@ -1,4 +1,4 @@
-import { ParcelData } from "./Types";
+import { ParcelData, Location } from "./Types";
 
 export enum Status {
   Pending = "Pending",
@@ -23,8 +23,13 @@ export interface Order {
   contracatualAgreement: string[];
 }
 
+export type NodeLocation = {
+  addressName: string
+  location: Location
+}
+
 export type Node = {
-    location: string;
+    location: NodeLocation;
     validNode: string;
     owner: string;
     supportedAssets: number[]; 

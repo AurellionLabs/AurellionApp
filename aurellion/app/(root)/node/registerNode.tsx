@@ -24,7 +24,6 @@ import LocationAutocomplete from "@/components/common/LocationAutocomplete";
 export default function RegisterNode() {
   const { isDarkMode } = useMainContext();
 
-  const [location, setLocation] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [capacity, setCapacity] = useState("");
   const [assets, setAssets] = useState([]);
@@ -33,7 +32,7 @@ export default function RegisterNode() {
   const [nodeLocation, setNodeLocation] = useState<Location>({
     lat: "",
     lng: "",
-  })
+  });
 
   const [assetsOpen, setAssetsOpen] = useState(false);
 
@@ -62,7 +61,7 @@ export default function RegisterNode() {
       assetCapacities.push(capacityInt);
     }
     data = {
-      location: location,
+      location: { addressName: nodeAddress, location: nodeLocation },
       owner: walletAddress,
       capacity: assetCapacities,
       status: NodeStatus.Active,
@@ -72,15 +71,12 @@ export default function RegisterNode() {
     try {
       await registerNode(data);
     } catch (e) {
-      console.error("couldnt register node", e);
+      console.error("couldn't register node", e);
     }
   };
 
-
   const renderItem = ({ item }: { item: React.ReactNode }) => (
-    <View>
-      {item}
-    </View>
+    <View>{item}</View>
   );
 
   return (
@@ -110,14 +106,14 @@ export default function RegisterNode() {
             <Section>
               <View>
                 <Label isDarkMode={isDarkMode}>Location</Label>
-                <LocationAutocomplete 
-                    address={nodeAddress}
-                    setAddress={setNodeAddress}
-                    location={nodeLocation}
-                    setLocation={setNodeLocation}
-                    placeHolder="Enter Node address"
-                    isDarkMode={isDarkMode}
-                    />
+                <LocationAutocomplete
+                  address={nodeAddress}
+                  setAddress={setNodeAddress}
+                  location={nodeLocation}
+                  setLocation={setNodeLocation}
+                  placeHolder="Enter Node address"
+                  isDarkMode={isDarkMode}
+                />
               </View>
             </Section>
             <Section>
@@ -157,7 +153,7 @@ export default function RegisterNode() {
             >
               <RedButtonText>Register Node</RedButtonText>
             </RedButton>
-          </Container>
+          </Container>,
         ]}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}

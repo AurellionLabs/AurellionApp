@@ -10,18 +10,16 @@ contract AurumNodeManager {
         string lat;
         string lng;
     }
-    struct LocationData {
-        Location startLocation;
-        Location endLocation;
-        string startName;
-        string endName;
+    struct NodeLocationData {
+        string addressName;
+        Location location;
 
         //add customer?
         //add driver?
         //add box
     }
     struct Node {
-        string location;
+        NodeLocationData location;
         //stteal ausys location struct
         bytes1 validNode;
         //TODO: Make a setter for this
@@ -97,10 +95,10 @@ contract AurumNodeManager {
 
     event eventUpdateLocation(string location, address node);
 
-    function updateLocation(string memory location, address node) public {
-        AllNodes[node].location = location;
-        emit eventUpdateLocation(location, node);
-    }
+    function updateLocation(NodeLocationData memory newLocation, address node) public isOwner(node) {
+    AllNodes[node].location = newLocation;
+    emit eventUpdateLocation(newLocation.addressName, node);
+}
 
     event eventUpdateStatus(bytes1 status, address node);
 

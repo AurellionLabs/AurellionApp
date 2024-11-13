@@ -5,13 +5,31 @@ import NodeOrderItem from "@/components/screens/orders/nodeOrderItem";
 import { Heading, ScrollContent } from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
 import { Container } from "@/components/screens/orders/styledComponents";
+import { fetchNodeAvailableOrders } from "@/dapp-connectors/dapp-controller";
+import { OrderC } from "@/constants/ChainTypes";
+import { Order } from "@/constants/Types";
 
 export default function AcceptOrder() {
   const { availableOrders, setAvailableOrders } = useNodeContext();
   const { isDarkMode } = useMainContext();
 
   useEffect(() => {
-    // TODO: load and set available orders from chain
+    const getAvailableOrders = async () => {
+      const orders: OrderC[] = await fetchNodeAvailableOrders();
+      const parsedOrders: Order[] = orders.map((order) => {
+        const object: Order = {
+          id: order.id,
+          assetClass: order.tokenId.toString(),
+          assetType: "Grade B", // TODO: blockchain order struct is missing assetType
+          buyerName: order.customer,
+          quantity: order.requestedTokenQuantity,
+          image: require("@/assets/images/sheep.png"),
+        };
+        return object;
+      });
+      setAvailableOrders(parsedOrders)
+    };
+    getAvailableOrders();
     setAvailableOrders([
       {
         id: "0",

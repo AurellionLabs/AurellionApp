@@ -1,6 +1,6 @@
 import { BrowserProvider, Contract, Signer, ethers } from "ethers";
 import { ParcelData, Journey } from "@/constants/Types";
-import { Node } from "@/constants/ChainTypes";
+import { Node, Status } from "@/constants/ChainTypes";
 import contractABI from "./aurellion-abi.json";
 import nodeManagerABI from "./aurum-abi.json";
 import nodeABI from "./aurum-node-abi.json";
@@ -355,7 +355,30 @@ export const fetchNodeOrders = async (): Promise<OrderC[]> => {
       `Unable to get node orders for node address: ${walletAddress}`,
       error
     );
-    return []; // Return an empty array if there's an error
+    throw error
+  }
+};
+
+export const fetchNodeAvailableOrders = async (): Promise<OrderC[]> => {
+  const contract = await getAusysContract();
+  try {
+    const orderIdList = await contract.orderIds();
+
+    const pendingOrders: OrderC[] = await Promise.all(
+      orderIdList.map(async (orderId: string) => {
+        const order: OrderC = await contract.idToOrder(orderId);
+        return order.currentStatus === Status.PENDING ? order : null;
+      })
+    );
+
+    // Filter out any null values from the array, so only pending orders remain
+    return pendingOrders.filter((order) => order !== null);
+  } catch (error) {
+    console.error(
+      `Unable to get available orders`,
+      error
+    );
+    throw error
   }
 };
 
@@ -377,7 +400,7 @@ export const fetchCustomerOrders = async (): Promise<OrderC[]> => {
       `Unable to get customer orders for customer address: ${walletAddress}`,
       error
     );
-    return []; // Return an empty array if there's an error
+    throw error
   }
 };
 

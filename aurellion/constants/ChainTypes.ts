@@ -1,10 +1,10 @@
 import { ParcelData, Location } from "./Types";
 
 export enum Status {
-  Pending = "Pending",
-  InProgress = "InProgress",
-  Completed = "Completed",
-  Canceled = "Canceled",
+  PENDING = 0,
+  IN_PROGRESS = 1,
+  COMPLETED = 2,
+  CANCELED = 3,
 }
 
 export interface OrderC {

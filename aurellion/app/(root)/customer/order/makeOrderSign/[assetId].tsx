@@ -85,7 +85,7 @@ const makeOrderSign = () => {
         journeyIds: [],
         nodes: [],
         locationData: locationData, // CLARIFY:  we dont have a startLocation/startName
-        currentStatus: Status.Pending,
+        currentStatus: Status.PENDING,
         contracatualAgreement: [""],
       };
       try {

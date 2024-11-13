@@ -7,6 +7,7 @@ import { useMainContext } from "@/providers/main.provider";
 import { Container } from "@/components/screens/orders/styledComponents";
 import { fetchNodeOrders } from "@/dapp-connectors/dapp-controller";
 import { Order } from "@/constants/Types";
+import { OrderC } from "@/constants/ChainTypes";
 
 export default function YourOrders() {
   const { yourOrders, setYourOrders } = useNodeContext();
@@ -14,7 +15,7 @@ export default function YourOrders() {
 
   useEffect(() => {
     const getNodeOrders = async () => {
-      const orders = await fetchNodeOrders();
+      const orders: OrderC[] = await fetchNodeOrders();
       const parsedOrders: Order[] = orders.map((order) => {
         const object: Order = {
           id: order.id,

@@ -5,13 +5,31 @@ import { Heading, ScrollContent } from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
 import { Container } from "@/components/screens/assets/styledComponents";
 import CustomerOrderItem from "@/components/screens/orders/customerOrderItem";
+import { fetchCustomerOrders } from "@/dapp-connectors/dapp-controller";
+import { Order } from "@/constants/Types";
+import { OrderC } from "@/constants/ChainTypes";
 
 export default function YourOrders() {
   const { yourOrders, setYourOrders } = useCustomerContext();
   const { isDarkMode } = useMainContext();
 
   useEffect(() => {
-    // TODO: load and set available orders from chain
+    const getCustomerOrders = async () => {
+      const orders:OrderC[] = await fetchCustomerOrders();
+      const parsedOrders: Order[] = orders.map((order) => {
+        const object: Order = {
+          id: order.id,
+          assetClass: order.tokenId.toString(),
+          assetType: "Grade B", // TODO: blockchain order struct is missing assetType
+          buyerName: order.customer,
+          quantity: order.requestedTokenQuantity,
+          image: require("@/assets/images/sheep.png"),
+        };
+        return object;
+      });
+      setYourOrders(parsedOrders)
+    };
+    getCustomerOrders();
     setYourOrders([
       {
         id: "0",

@@ -4,7 +4,7 @@ import { Node } from "@/constants/ChainTypes";
 import contractABI from "./aurellion-abi.json";
 import nodeManagerABI from "./aurum-abi.json";
 import nodeABI from "./aurum-node-abi.json";
-import { Order } from "@/constants/ChainTypes";
+import { OrderC } from "@/constants/ChainTypes";
 
 var ethersProvider: BrowserProvider | undefined;
 const AUSYS_ADDRESS = process.env.EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS;
@@ -337,24 +337,49 @@ export const nodeHandOn = async (
   }
 };
 
-export const fetchNodeOrders = async (): Promise<Order[]> => {
-    const contract = await getAusysContract();
-    try {
-      const orderIdList = await contract.nodeToOrderIds(walletAddress);
-      
-      const orders: Order[] = await Promise.all(
-        orderIdList.map(async (orderId: string) => {
-          const order: Order = await contract.idToOrder(orderId);
-          return order;
-        })
-      );
-      
-      return orders;
-    } catch (error) {
-      console.error(`Unable to get node orders for node address: ${walletAddress}`, error);
-      return [];  // Return an empty array if there's an error
-    }
-  };
+export const fetchNodeOrders = async (): Promise<OrderC[]> => {
+  const contract = await getAusysContract();
+  try {
+    const orderIdList = await contract.nodeToOrderIds(walletAddress);
+
+    const orders: OrderC[] = await Promise.all(
+      orderIdList.map(async (orderId: string) => {
+        const order: OrderC = await contract.idToOrder(orderId);
+        return order;
+      })
+    );
+
+    return orders;
+  } catch (error) {
+    console.error(
+      `Unable to get node orders for node address: ${walletAddress}`,
+      error
+    );
+    return []; // Return an empty array if there's an error
+  }
+};
+
+export const fetchCustomerOrders = async (): Promise<OrderC[]> => {
+  const contract = await getAusysContract();
+  try {
+    const orderIdList = await contract.customerToOrderIds(walletAddress);
+
+    const orders: OrderC[] = await Promise.all(
+      orderIdList.map(async (orderId: string) => {
+        const order: OrderC = await contract.idToOrder(orderId);
+        return order;
+      })
+    );
+
+    return orders;
+  } catch (error) {
+    console.error(
+      `Unable to get customer orders for customer address: ${walletAddress}`,
+      error
+    );
+    return []; // Return an empty array if there's an error
+  }
+};
 
 // Ausys
 
@@ -666,7 +691,7 @@ export const jobIdToJourney = async (journeyId: string) => {
   }
 };
 
-export const customerMakeOrder = async (orderData: Order) => {
+export const customerMakeOrder = async (orderData: OrderC) => {
   const contract = await getAusysContract();
   try {
     await contract.orderCreation(orderData);

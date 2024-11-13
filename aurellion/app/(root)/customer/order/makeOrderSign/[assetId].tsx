@@ -12,13 +12,13 @@ import {
 } from "@/components/screens/addAsset/StyledComponents";
 import { MakeOrderContainer } from "@/components/screens/orders/styledComponents";
 import { TextContainer } from "@/components/screens/signature/styledComponents";
-import { Order, Status } from "@/constants/ChainTypes";
+import { OrderC, Status } from "@/constants/ChainTypes";
 import { DarkTheme, LightTheme } from "@/constants/Colors";
 import { Asset, ParcelData } from "@/constants/Types";
 import {
   customerMakeOrder,
   GOAT_CONTRACT_ADDRESS,
-  walletAddress
+  walletAddress,
 } from "@/dapp-connectors/dapp-controller";
 import { useCustomerContext } from "@/providers/customer.provider";
 import { useMainContext } from "@/providers/main.provider";
@@ -68,12 +68,12 @@ const makeOrderSign = () => {
       },
       endName: "86 Argyle Street",
     };
-    console.log("wallet address", walletAddress)
+    console.log("wallet address", walletAddress);
     if (assetId && walletAddress && GOAT_CONTRACT_ADDRESS) {
-      const orderId = hashNumber(123)
-      console.log("Enterted if")
-      console.log("OrderID:", orderId)
-      const orderDetails: Order = {
+      const orderId = hashNumber(123);
+      console.log("Enterted if");
+      console.log("OrderID:", orderId);
+      const orderDetails: OrderC = {
         id: orderId,
         token: GOAT_CONTRACT_ADDRESS,
         tokenId: parseInt(assetId),

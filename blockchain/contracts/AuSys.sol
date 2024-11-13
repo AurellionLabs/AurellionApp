@@ -65,8 +65,8 @@ contract locationContract {
 
     // Keep count of which sub journey of a journey the parcel is on
     bytes32[] public orderIds;
-    mapping(address => bytes32[]) customerToOrderIds;
-    mapping(address => bytes32[]) nodeToOrderIds;
+    mapping(address => bytes32[]) public customerToOrderIds;
+    mapping(address => bytes32[]) public nodeToOrderIds;
     mapping(bytes32 => Order) public idToOrder;
     mapping(bytes32 => bytes32) public journeyToOrderId;
     mapping(bytes32 => uint256) public subJourneyCount;

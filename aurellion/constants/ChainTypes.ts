@@ -7,7 +7,7 @@ export enum Status {
   Canceled = "Canceled",
 }
 
-export interface Order {
+export interface OrderC {
   id: string;
   token: string;
   tokenId: number;
@@ -24,26 +24,25 @@ export interface Order {
 }
 
 export type NodeLocation = {
-  addressName: string
-  location: Location
-}
-
-export type Node = {
-    location: NodeLocation;
-    validNode: string;
-    owner: string;
-    supportedAssets: number[]; 
-    status: string;
-    capacity: number[];       
+  addressName: string;
+  location: Location;
 };
 
+export type Node = {
+  location: NodeLocation;
+  validNode: string;
+  owner: string;
+  supportedAssets: number[];
+  status: string;
+  capacity: number[];
+};
 
 export enum NodeStatus {
-    Active = "0x01",
-    Inactive = "0x00"
+  Active = "0x01",
+  Inactive = "0x00",
 }
 
 export enum NodeValidity {
-    Valid = "0x01",
-    Invalid = "0x00"
+  Valid = "0x01",
+  Invalid = "0x00",
 }

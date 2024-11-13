@@ -2,16 +2,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNodeContext } from "@/providers/node.provider";
 import { useEffect } from "react";
 import NodeOrderItem from "@/components/screens/orders/nodeOrderItem";
-import {Heading, ScrollContent} from "@/components/common/StyledComponents";
+import { Heading, ScrollContent } from "@/components/common/StyledComponents";
 import { useMainContext } from "@/providers/main.provider";
 import { Container } from "@/components/screens/orders/styledComponents";
+import { fetchNodeOrders } from "@/dapp-connectors/dapp-controller";
+import { Order } from "@/constants/Types";
 
 export default function YourOrders() {
   const { yourOrders, setYourOrders } = useNodeContext();
   const { isDarkMode } = useMainContext();
 
   useEffect(() => {
-    // TODO: load and set your orders from chain
+    const getNodeOrders = async () => {
+      const orders = await fetchNodeOrders();
+      const parsedOrders: Order[] = orders.map((order) => {
+        const object: Order = {
+          id: order.id,
+          assetClass: order.tokenId.toString(),
+          assetType: "Grade B", // TODO: blockchain order struct is missing assetType
+          buyerName: order.customer,
+          quantity: order.requestedTokenQuantity,
+          image: require("@/assets/images/sheep.png"),
+        };
+        return object;
+      });
+      setYourOrders(parsedOrders)
+    };
+    getNodeOrders();
     setYourOrders([
       {
         id: "0",
@@ -85,7 +102,7 @@ export default function YourOrders() {
         quantity: 100,
         image: require("@/assets/images/cow.png"),
       },
-    ])
+    ]);
   }, []);
 
   return (
@@ -94,7 +111,7 @@ export default function YourOrders() {
         <Heading isDarkMode={isDarkMode}>Your Orders</Heading>
         <ScrollContent>
           {yourOrders.map((order) => (
-            <NodeOrderItem key={order.id} order={order} yourOrder/>
+            <NodeOrderItem key={order.id} order={order} yourOrder />
           ))}
         </ScrollContent>
       </Container>

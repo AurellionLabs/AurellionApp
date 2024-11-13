@@ -65,8 +65,8 @@ contract locationContract {
 
     // Keep count of which sub journey of a journey the parcel is on
     bytes32[] public orderIds;
-    mapping(address => bytes32) customerToOrderId;
-    mapping(address => bytes32) nodeToOrderId;
+    mapping(address => bytes32[]) customerToOrderIds;
+    mapping(address => bytes32[]) nodeToOrderIds;
     mapping(bytes32 => Order) public idToOrder;
     mapping(bytes32 => bytes32) public journeyToOrderId;
     mapping(bytes32 => uint256) public subJourneyCount;
@@ -442,7 +442,7 @@ contract locationContract {
         idToOrder[orderId].currentStatus = Status.Pending;
         journeyToOrderId[journey.journeyId] = orderId;
 
-        nodeToOrderId[sender] = orderId;
+        nodeToOrderIds[sender].push(orderId);
         
         AurumNodeManager.Node memory _node = nodeManager.getNode(sender);
         for (uint i; i < _node.supportedAssets.length; i++) {
@@ -465,7 +465,7 @@ contract locationContract {
         idToOrder[id].currentStatus = Status.Pending;
         idToOrder[id].id = id;
         idToOrder[id].txFee = (order.price * 2) / 100;
-        customerToOrderId[order.customer] = id;
+        customerToOrderIds[order.customer].push(id);
         orderIds.push(id);
     }
 }

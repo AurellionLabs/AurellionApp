@@ -70,8 +70,18 @@ export default function RegisterNode() {
     };
     try {
       await registerNode(data);
+
+      
+    
     } catch (e) {
-      console.error("couldn't register node", e);
+      console.error(`could not register node with owner: 
+      ${data.owner}, 
+      capacity: ${data.capacity} ,
+      location: ${data.location} 
+      status: ${data.status}, 
+      vlaidNode: ${data.validNode}, 
+      supportedAssets: ${data.supportedAssets} and 
+      error: ${e}`);
     }
   };
 

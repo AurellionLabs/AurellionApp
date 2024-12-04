@@ -16,9 +16,12 @@ import {
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import { useMainContext } from "@/providers/main.provider";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { updateSupportedAssets } from "@/dapp-connectors/dapp-controller";
+import { useNodeContext } from "@/providers/node.provider";
 
 export default function AddAsset() {
   const { isDarkMode } = useMainContext();
+  const { selectedNodeAddress, setSelectedNodeAddress } = useNodeContext();
 
   const [assetType, setAssetType] = useState("");
   const [assetClass, setAssetClass] = useState("");
@@ -37,16 +40,40 @@ export default function AddAsset() {
     { label: "Grade C", value: "Grade C" },
   ]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let parsedQuantity = parseInt(quantity, 10);
     const assetData = {
       assetType,
       assetClass,
       parsedQuantity,
     };
+    
+    try {
+      let supportedAssets: number[] = [];
+      let assetCapacities: number[] = [];
+      let capacityInt = Number(parsedQuantity);
 
-    console.log(assetData);
-    // Process the asset data as needed
+      for (let i = 0; i < assetType.length; i++) {
+        //TODO: make an asset name to number finder on smart contract
+        switch (assetType[i]) {
+          case "Goat":
+            supportedAssets.push(1);
+          case "Sheep":
+            supportedAssets.push(2);
+          case "Watch":
+            supportedAssets.push(3);
+        }
+        assetCapacities.push(capacityInt);
+      }
+
+      await updateSupportedAssets(
+        supportedAssets,
+        assetCapacities,
+        selectedNodeAddress
+      );
+    } catch (e) {
+      console.error("Couldn't update node details", e);
+    }
   };
 
   const onAssetTypeOpen = () => {

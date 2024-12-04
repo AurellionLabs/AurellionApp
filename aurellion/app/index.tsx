@@ -53,8 +53,14 @@ const amoy = {
     explorerUrl: "https://polygon-amoy.infura.io/v3/281dfd93e10842199b64ed6f3535fa4c",
     rpcUrl: "https://polygon-amoy.infura.io/v3/281dfd93e10842199b64ed6f3535fa4c"
 };
-
-const chains = [mainnet, polygon, amoy];
+const sepoilia = {
+    chainId: 11155111,
+    name: "Sepoilia",
+    currency: "ETH",
+    explorerUrl: "https://sepolia.infura.io/v3/53eb1be334c04bca983c217b8b3ca456",
+    rpcUrl: "https://sepolia.infura.io/v3/53eb1be334c04bca983c217b8b3ca456"
+};
+const chains = [mainnet, polygon, sepoilia];
 
 // 4. Create modal
 createWeb3Modal({
@@ -107,11 +113,11 @@ function WalletScreen(): JSX.Element {
         console.log("setting provider to ", walletProvider);
         console.log("in setProviders")
         if (walletProvider) {
-        var ethersProvider = new BrowserProvider(walletProvider)
-        console.log("etherssssssssss",ethersProvider)
-        setEthersProvider(ethersProvider);
-        console.log("before await")
-        setWalletProvider(ethersProvider)
+            var ethersProvider = new BrowserProvider(walletProvider)
+            console.log("etherssssssssss", ethersProvider)
+            setEthersProvider(ethersProvider);
+            console.log("before await")
+            setWalletProvider(ethersProvider)
         }
     }, [walletProvider])
 

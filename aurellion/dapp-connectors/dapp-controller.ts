@@ -220,6 +220,31 @@ export const updateSupportedAssets = async (
     }
 };
 
+export const addAsset = async(
+    // TODO: assetType is currently not getting used as only goat token is supported
+    assetType: string,
+    assetClass: number,
+    quantity: number,
+    nodeAddress: string
+) => {
+    console.log("Node addres>>>", nodeAddress)
+    const aurumNodeMangerContract = await getAurumContract();
+    const aurumNodeContract = await getAurumNodeContract(nodeAddress);
+    try{
+        // mint goat token
+        await aurumNodeContract.addItem(walletAddress, "0x0000000000000000000000000000000000000000000000000000000000000000", assetClass, quantity, '0x0000000000000000000000000000000000000000', '0x')
+        // get node's current nodeAsset data
+        const node: Node = await aurumNodeMangerContract.AllNodes(nodeAddress)
+        const supportedAssets = node.supportedAssets
+        const capacity = node.capacity
+        // update nodeAsset data
+        capacity[0] += quantity
+        await aurumNodeMangerContract.updateSupportedAssets(supportedAssets, capacity, nodeAddress)
+    } catch(error) {
+        console.error('Unable to add asset', error)
+    }
+}
+
 export const updateLocation = async (location: string, node: string) => {
     const contract = await getAurumContract();
     try {
@@ -255,16 +280,26 @@ export const getNode = async (nodeAddress: string): Promise<Node> => {
 // Therefore length of nodeAddressList is 1
 export const getOwnedNodeAddressList = async (): Promise<string[]> => {
     const contract = await getAurumContract();
-    try {
-        const nodeAddressList = await contract.ownedNodes(walletAddress,0);
-        return nodeAddressList;
-    } catch (error) {
-        console.log(
-            `Unable to get nodes addresses for owner address ${walletAddress}`,
-            error
-        );
-        throw error;
+    // console.log("node id counter", await contract.nodeIdCounter())
+    // console.log("COntract address",await contract.getAddress())
+    const nodeAddressList: string[] = [];
+    let counter = 0;
+
+    while (true) {
+        try {
+            // Fetch the owned node address at the current index
+            const nodeAddress = await contract.ownedNodes(walletAddress, counter);
+            // console.log("before push address", nodeAddress)
+            nodeAddressList.push(nodeAddress);
+            counter += 1;
+        } catch (error) {
+            // Assuming the error is caused by index out of range
+            console.log("Likely end of owned node address list reached.", error);
+            break;
+        }
     }
+
+    return nodeAddressList;
 };
 
 export const gasSafeUpdateCapacity = async (

@@ -16,10 +16,12 @@ import {
 import { LightTheme, DarkTheme } from "@/constants/Colors";
 import { useMainContext } from "@/providers/main.provider";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { addAsset, updateSupportedAssets } from "@/dapp-connectors/dapp-controller";
+import { useNodeContext } from "@/providers/node.provider";
 
 export default function AddAsset() {
   const { isDarkMode } = useMainContext();
-
+  const { selectedNodeAddress } = useNodeContext();
   const [assetType, setAssetType] = useState("");
   const [assetClass, setAssetClass] = useState("");
   const [quantity, setQuantity] = useState<string>("");
@@ -32,21 +34,26 @@ export default function AddAsset() {
   ]);
   const [assetClassOpen, setAssetClassOpen] = useState(false);
   const [assetClassItems, setAssetClassItems] = useState([
-    { label: "Grade A", value: "Grade A" },
-    { label: "Grade B", value: "Grade B" },
-    { label: "Grade C", value: "Grade C" },
+    { label: "Grade A", value: 1 },
+    { label: "Grade B", value: 2 },
+    { label: "Grade C", value: 3 },
+    { label: "Grade D", value: 4 },
+    { label: "Grade E", value: 5 },
   ]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let parsedQuantity = parseInt(quantity, 10);
     const assetData = {
       assetType,
       assetClass,
       parsedQuantity,
     };
-
-    console.log(assetData);
-    // Process the asset data as needed
+    console.log(assetData)
+    try {
+      addAsset(assetType, assetClass, parsedQuantity, selectedNodeAddress)
+    } catch (e) {
+      console.error("Couldn't add asset", e);
+    }
   };
 
   const onAssetTypeOpen = () => {

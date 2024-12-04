@@ -57,6 +57,8 @@ export default function Settings() {
     const getNodeData = async () => {
       // current implementation one wallet address only owns one node
       const nodeAddressList = await getOwnedNodeAddressList();
+      console.log(">>>>>>node address list", nodeAddressList)
+      console.log(">>>>>>selected node address", nodeAddressList[0])
       setSelectedNodeAddress(nodeAddressList[0]);
       const node = await getNode(selectedNodeAddress);
       setLocation(node.location);

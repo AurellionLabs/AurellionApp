@@ -8,7 +8,8 @@ async function main() {
     const Aura = await ethers.getContractFactory("Aura");
     const aura = await Aura.connect(wallet).deploy();
     await aura.waitForDeployment();
-    console.log("Aura deployed to:", await aura.getAddress());
+    const auraAddress = await aura.getAddress()
+    console.log("Aura deployed to:", auraAddress);
 
     // Mint tokens to the treasury
     const mintAmount = ethers.parseUnits("1000000", 18);
@@ -20,7 +21,8 @@ async function main() {
     const LocationContract = await ethers.getContractFactory("locationContract");
     const ausys = await LocationContract.connect(wallet).deploy(await aura.getAddress());
     await ausys.waitForDeployment();
-    console.log("locationContract deployed to:", await ausys.getAddress());
+    const ausysAddress = await ausys.getAddress()
+    console.log("locationContract deployed to:", ausysAddress);
 
     // Approve aura spending
     const auraTotalSupply = await aura.totalSupply();
@@ -35,7 +37,8 @@ async function main() {
         "0x9d4CCf6c3d6a1d5583c2918028c86Cc8267a0BE6"
     );
     await aurumNodeManager.waitForDeployment();
-    console.log("AurumNodeManager deployed to:", await aurumNodeManager.getAddress());
+    const aurumNodeManagerAddress = await aurumNodeManager.getAddress()
+    console.log("AurumNodeManager deployed to:", aurumNodeManagerAddress);
 
     // Deploy AuraGoat with specified addresses and aurumNodeManager as constructor arguments
     const AuraGoat = await ethers.getContractFactory("AuraGoat");
@@ -45,12 +48,19 @@ async function main() {
         await aurumNodeManager.getAddress()
     );
     await auraGoat.waitForDeployment();
-    console.log("AuraGoat deployed to:", await auraGoat.getAddress());
+    const auraGoatAddress = await auraGoat.getAddress()
+    console.log("AuraGoat deployed to:", auraGoatAddress);
 
     // Call addToken function in aurumNodeManager with auraGoat address
     const addTokenTx = await aurumNodeManager.addToken(await auraGoat.getAddress());
     await addTokenTx.wait();
     console.log(`Added AuraGoat token to AurumNodeManager`);
+
+    console.log(`EXPO_PUBLIC_RPC_URL=https://sepolia.infura.io/v3/53eb1be334c04bca983c217b8b3ca456`)
+    console.log(`EXPO_PUBLIC_AUSYS_CONTRACT_ADDRESS=${ausysAddress}`)
+    console.log(`EXPO_PUBLIC_AURA_CONTRACT_ADDRESS=${auraAddress}`)
+    console.log(`EXPO_PUBLIC_GOAT_CONTRACT_ADDRESS=${auraGoatAddress}`)
+    console.log(`EXPO_PUBLIC_NODE_MANAGER_CONTRACT_ADDRESS=${aurumNodeManagerAddress}`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

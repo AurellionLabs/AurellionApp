@@ -6,6 +6,7 @@ import { RoleType } from "@/constants/Types";
 import { router } from "expo-router";
 import { useMainContext } from "@/providers/main.provider";
 import { getNode, getOwnedNodeAddressList } from "@/dapp-connectors/dapp-controller";
+import { useNodeContext } from "@/providers/node.provider";
 
 type UserRoleDropdownProps = {
     onChangeRoleOpen: () => void;
@@ -19,6 +20,7 @@ export default function UserRoleDropdown({
     setChangeRoleOpen,
 }: UserRoleDropdownProps) {
     const { isDarkMode, role, setRole } = useMainContext();
+    const { selectedNodeAddress, setSelectedNodeAddress } = useNodeContext();
 
     const [roleItems, setRoleItems] = useState([
         { label: "Customer", value: RoleType.Customer },
@@ -41,7 +43,9 @@ export default function UserRoleDropdown({
                 setRole(RoleType.Node);
                 // TODO: Fetch whether current user has registered a node
                 try {
-                    await getOwnedNodeAddressList()
+                    const nodeAddressList = await getOwnedNodeAddressList()
+                    setSelectedNodeAddress(nodeAddressList[0]);
+                    console.log("called getOwnedNodes from userRoleDropdown.tsx")
                     nodeRegistered = true;
                 } catch (e) {
                     nodeRegistered = false;
